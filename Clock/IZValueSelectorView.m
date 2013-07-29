@@ -8,10 +8,10 @@
 
 #import "IZValueSelectorView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MyDB.h"
 
 
 @implementation IZValueSelectorView {
-    UITableView *_contentTableView;
     CGRect _selectionRect;
 }
 
@@ -103,6 +103,16 @@
     _contentTableView.showsVerticalScrollIndicator = NO;
     _contentTableView.showsHorizontalScrollIndicator = NO;
 
+    
+//    MyDB *mydb = [[MyDB alloc]init];
+    
+    
+//    [_contentTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:[mydb hour:3] inSection:0]
+//                                   animated:YES
+//                             scrollPosition:UITableViewScrollPositionBottom];
+    
+    
+    
     [self addSubview:_contentTableView];
     [self addSubview:selectionImageView];
     
@@ -235,7 +245,10 @@
 
 - (void)selectIndex:(NSIndexPath *)index
 {
-    [_contentTableView selectRowAtIndexPath:index animated:NO scrollPosition:UITableViewScrollPositionBottom];
+    [_contentTableView selectRowAtIndexPath:index
+                                   animated:NO
+                             scrollPosition:UITableViewScrollPositionBottom];
+    
 }
 
 

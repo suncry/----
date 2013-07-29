@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RingViewController : UIViewController
+{
+    IBOutlet UILabel *dayNumLable;
+}
+- (IBAction)getUpBtnClick:(id)sender;
+- (IBAction)sleepBtnClick:(id)sender;
 
 @end

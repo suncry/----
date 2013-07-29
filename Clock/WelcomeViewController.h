@@ -22,5 +22,6 @@
     UISwipeGestureRecognizer *_recognizerLeft;
 
     UIButton *_startBtn;
+    UIButton *_lineBtn;
 }
 @end

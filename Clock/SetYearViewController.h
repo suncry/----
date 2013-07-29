@@ -12,24 +12,22 @@
 
 @interface SetYearViewController : UIViewController<IZValueSelectorViewDataSource,IZValueSelectorViewDelegate>
 {
-    //设置出生年月
-    IZValueSelectorView *_yearSelectorView;
-    IZValueSelectorView *_monthSelectorView;
-    IZValueSelectorView *_daySelectorView;
-
     //用于记录 pickerView 的值
     int year;
     int month;
     int day;
     //当前年
     int yearNow;
-//    IBOutlet UIImageView *backgoundImageView;
-//    IBOutlet UIImageView *pickerBackgoundImageView;
-//    IBOutlet UIImageView *selectImageView;
     IBOutlet IZValueSelectorView *yearPickerView;
     IBOutlet IZValueSelectorView *monthPickerView;
     IBOutlet IZValueSelectorView *dayPickerView;
-
+    
+    //用于控制 取消按钮的隐藏
+    IBOutlet UIButton *_cancelBtn;
+    IBOutlet UIButton *_cancelBtn2;
 
 }
+- (IBAction)okBtnClick:(id)sender;
+- (IBAction)cancelBtnClick:(id)sender;
+
 @end

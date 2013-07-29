@@ -26,6 +26,10 @@
 
 
 @interface IZValueSelectorView : UIView <UITableViewDataSource,UITableViewDelegate>
+{
+    UITableView *_contentTableView;
+
+}
 
 @property (nonatomic,assign) IBOutlet id <IZValueSelectorViewDelegate> delegate;
 @property (nonatomic,assign) IBOutlet id <IZValueSelectorViewDataSource> dataSource;

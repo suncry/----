@@ -8,6 +8,7 @@
 
 #import "YearDrawView.h"
 #import "MyDB.h"
+#import "ColorControl.h"
 
 @implementation YearDrawView
 
@@ -43,73 +44,30 @@
     
     CGFloat _myColor[4]={0.0, 0.0, 0.0,1.0};//设置颜色
     
-    //过去了的日子的颜色设定
-    _passedColor1 = [UIColor colorWithRed:(CGFloat) 253/255.0
-                                    green:(CGFloat) 124/255.0
-                                     blue:(CGFloat) 128/255.0
-                                    alpha:(CGFloat) 1.0];
-    
-    _passedColor2 = [UIColor colorWithRed:(CGFloat) 255/255.0
-                                    green:(CGFloat) 101/255.0
-                                     blue:(CGFloat) 115/255.0
-                                    alpha:(CGFloat) 1.0];
-    
-    _passedColor3 = [UIColor colorWithRed:(CGFloat) 155/255.0
-                                    green:(CGFloat) 27/255.0
-                                     blue:(CGFloat) 50/255.0
-                                    alpha:(CGFloat) 1.0];
-    
-    _passedColor4 = [UIColor colorWithRed:(CGFloat) 254/255.0
-                                    green:(CGFloat) 68/255.0
-                                     blue:(CGFloat) 81/255.0
-                                    alpha:(CGFloat) 1.0];
-    
-    _passedColor5 = [UIColor colorWithRed:(CGFloat) 248/255.0
-                                    green:(CGFloat) 41/255.0
-                                     blue:(CGFloat) 57/255.0
-                                    alpha:(CGFloat) 1.0];
-    
-    //还没过的日子的填充颜色
-    _notPassedColor1 = [UIColor colorWithRed:(CGFloat) 254/255.0
-                                       green:(CGFloat) 203/255.0
-                                        blue:(CGFloat) 204/255.0
-                                       alpha:(CGFloat) 1.0];
-    
-    _notPassedColor2 = [UIColor colorWithRed:(CGFloat) 255/255.0
-                                       green:(CGFloat) 193/255.0
-                                        blue:(CGFloat) 199/255.0
-                                       alpha:(CGFloat) 1.0];
-    
-    _notPassedColor3 = [UIColor colorWithRed:(CGFloat) 255/255.0
-                                       green:(CGFloat) 180/255.0
-                                        blue:(CGFloat) 185/255.0
-                                       alpha:(CGFloat) 1.0];
-    
-    _notPassedColor4 = [UIColor colorWithRed:(CGFloat) 252/255.0
-                                       green:(CGFloat) 169/255.0
-                                        blue:(CGFloat) 176/255.0
-                                       alpha:(CGFloat) 1.0];
-    
-    _notPassedColor5 = [UIColor colorWithRed:(CGFloat) 215/255.0
-                                       green:(CGFloat) 164/255.0
-                                        blue:(CGFloat) 173/255.0
-                                       alpha:(CGFloat) 1.0];
+
     
 #pragma mark 随机填充
     CGContextSetStrokeColor(ref, _myColor);//设置了一下当前那个画笔的颜色。画笔啊！你记着我前面说的windows画图板吗？
+    
+    //白色背景。。。得到后面白色的间隔线
+    CGContextSetFillColorWithColor(ref,[UIColor whiteColor].CGColor);
+    CGContextFillRect(ref, CGRectMake(0,0,320,DEVICE_HEIGHT));
+    
     int sum = 0;
     MyDB *mydb = [[MyDB alloc]init];
+    ColorControl *colorControl = [[ColorControl alloc]init];
+    int colorNum = [mydb color];
     for (int j = 0; j<13; j++)
     {
         for (int i = 0; i<7; i++)
         {
             if (sum < _yearNum - [mydb year])//算出岁数
             {
-                CGContextSetFillColorWithColor(ref,[self passedYearFillColor].CGColor);
+                CGContextSetFillColorWithColor(ref,[colorControl passedDayFillColor:colorNum].CGColor);
             }
             else
             {
-                CGContextSetFillColorWithColor(ref,[self notPassedYearFillColor].CGColor);
+                CGContextSetFillColorWithColor(ref,[colorControl notPassedDayFillColor:colorNum].CGColor);
                 
             }
             if (DEVICE_IS_IPHONE5) {
@@ -126,47 +84,4 @@
     }
 
 }
--(UIColor *)passedYearFillColor
-{
-    int x = arc4random() % 100;
-    if (x < 20)
-    {
-        return  _passedColor1;
-    }
-    else if (20 <= x && x < 40) {
-        return  _passedColor2;
-    }
-    else if (40 <= x && x < 60) {
-        return  _passedColor3;
-    }
-    else if (60 <= x && x < 80) {
-        return  _passedColor4;
-    }
-    else if (80 <= x && x < 100) {
-        return  _passedColor5;
-    }
-    return  _passedColor1;
-}
--(UIColor *)notPassedYearFillColor
-{
-    int x = arc4random() % 100;
-    if (x < 20)
-    {
-        return  _notPassedColor1;
-    }
-    else if (20 <= x && x < 40) {
-        return  _notPassedColor2;
-    }
-    else if (40 <= x && x < 60) {
-        return  _notPassedColor3;
-    }
-    else if (60 <= x && x < 80) {
-        return  _notPassedColor4;
-    }
-    else if (80 <= x && x < 100) {
-        return  _notPassedColor5;
-    }
-    return  _notPassedColor1;
-}
-
 @end

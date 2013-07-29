@@ -73,12 +73,17 @@
         [_db executeUpdate:@"create table setting (Color integer,Year integer,Month integer,Day integer)"];
         
         [_db executeUpdate:@"insert into setting (Color,Year, Month, Day) values (?,?,?,?)",
-         [NSNumber numberWithInt:0],//范围0到4 代表 5种颜色主题
-         [NSNumber numberWithInt:[[formatter stringFromDate:[NSDate date]]intValue] - 25],
+         //范围0到4 代表 5种颜色主题
+         //0 红
+         //1 橙
+         //2 黄
+         //3 蓝 改为 绿
+         //4 绿 改为 蓝
+         [NSNumber numberWithInt:0],
+         [NSNumber numberWithInt:1980],
          [NSNumber numberWithInt:6],
          [NSNumber numberWithInt:15]];
         NSLog(@"setting 表 创建语句执行了！！！！");
-        NSLog(@"默认的 年 为 %d",[[formatter stringFromDate:[NSDate date]]intValue] - 25);
         
     }
 }
@@ -94,6 +99,7 @@
     [self openDB];
 
     [_db executeUpdate:@"update clock set isON = ? where id = ?",yesOrNo,[NSNumber numberWithInt:day]];
+
 }
 
 - (int)hour:(int)day

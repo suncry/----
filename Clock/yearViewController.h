@@ -11,6 +11,7 @@
 
 @interface YearViewController : UIViewController
 {
+    UIImageView *_imageView;
     YearDrawView *_yearDrawView;
 }
 

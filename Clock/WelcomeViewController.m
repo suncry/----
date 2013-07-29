@@ -41,7 +41,9 @@
     }
     else
     {
-        
+        UIImageView *backgroundImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"首页背景.png"]];
+        backgroundImageView.frame = CGRectMake(0, -70, 320, 568);
+        [self.view addSubview:backgroundImageView];
     }
     
     [self createScrollView];
@@ -62,19 +64,42 @@
     
     
     //开始按钮
-    _startBtn = [[UIButton alloc]initWithFrame:CGRectMake(65, DEVICE_HEIGHT*462/568, 200, 40)];
+    if (DEVICE_IS_IPHONE5)
+    {
+        _startBtn = [[UIButton alloc]initWithFrame:CGRectMake(50, DEVICE_HEIGHT*462/568, 220, 40)];
+    }
+    else
+    {
+        _startBtn = [[UIButton alloc]initWithFrame:CGRectMake(50, 380, 220, 40)];
+    }
+    
     [_startBtn setTitle:@"开启专属你的时光闹钟" forState:UIControlStateNormal];
-    [_startBtn.titleLabel setTextColor:[UIColor colorWithRed:(CGFloat)45/255
-                                           green:(CGFloat)171/255
-                                            blue:(CGFloat)229/255
-                                           alpha:1]];
-
-    _startBtn.titleLabel.font = [UIFont systemFontOfSize:17.0f];
-    [_startBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    _startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:21.0f];
+    [_startBtn setTitleColor:[UIColor colorWithRed:(CGFloat)45/255
+                                             green:(CGFloat)171/255
+                                              blue:(CGFloat)229/255
+                                             alpha:1] forState:UIControlStateNormal];
     _startBtn.backgroundColor = [UIColor clearColor];
     [_startBtn addTarget:self action:@selector(startClock) forControlEvents:UIControlEventTouchUpInside];
     _startBtn.hidden = YES;
     [_controlView addSubview:_startBtn];
+    if (DEVICE_IS_IPHONE5)
+    {
+        _lineBtn = [[UIButton alloc]initWithFrame:CGRectMake(50, DEVICE_HEIGHT*462/568+35, 220, 2)];
+
+    }
+    else
+    {
+        _lineBtn = [[UIButton alloc]initWithFrame:CGRectMake(50, 415, 220, 2)];
+
+    }
+    _lineBtn.backgroundColor = [UIColor colorWithRed:(CGFloat)45/255
+                                               green:(CGFloat)171/255
+                                                blue:(CGFloat)229/255
+                                               alpha:1];
+    _lineBtn.hidden = YES;
+    [_controlView addSubview:_lineBtn];
     
     [self createDots];
 
@@ -128,65 +153,74 @@
     
     //第一排 滚动文字    
 //    UILabel *lable1_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+42,234 - (DEVICE_HEIGHT/2 - 150), 270, 50)];
-    UILabel *lable1_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+42,DEVICE_HEIGHT*234/568, 270, 50)];
+    UILabel *lable1_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+42,DEVICE_HEIGHT*234/568 - 20, 270, 50)];
     lable1_1.text = @"每一天";
     [lable1_1 setTextColor:blueColor];
     lable1_1.font = [UIFont systemFontOfSize:32.0f];
     lable1_1.backgroundColor = [UIColor clearColor];
     [_headerScrollView addSubview:lable1_1];
         
-    UILabel *lable1_2 = [[UILabel alloc]initWithFrame:CGRectMake(320+42, DEVICE_HEIGHT*219/568, 270, 50)];
+    UILabel *lable1_2 = [[UILabel alloc]initWithFrame:CGRectMake(320+42, DEVICE_HEIGHT*219/568 - 10, 270, 50)];
     lable1_2.text = @"春去秋来";
     [lable1_2 setTextColor:grayColor];
     lable1_2.font = [UIFont systemFontOfSize:32.0f];
     lable1_2.backgroundColor = [UIColor clearColor];
     [_headerScrollView addSubview:lable1_2];
     
-    UILabel *lable1_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+124, DEVICE_HEIGHT*235/568, 270, 50)];
+    UILabel *lable1_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*2, DEVICE_HEIGHT*235/568 - 20, 320, 50)];
     lable1_3.text = @"也许";
+    lable1_3.textAlignment= NSTextAlignmentCenter;
     [lable1_3 setTextColor:blueColor];
     lable1_3.font = [UIFont systemFontOfSize:32.0f];
     lable1_3.backgroundColor = [UIColor clearColor];
     [_headerScrollView addSubview:lable1_3];
     
-    UILabel *lable1_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*3+91, DEVICE_HEIGHT*198/568, 270, 50)];
+    UILabel *lable1_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*3, DEVICE_HEIGHT*198/568 - 20, 320, 50)];
     lable1_4.text = @"时光闹钟";
+    lable1_4.textAlignment= NSTextAlignmentCenter;
     [lable1_4 setTextColor:blueColor];
     lable1_4.font = [UIFont systemFontOfSize:32.0f];
     lable1_4.backgroundColor = [UIColor clearColor];
     [_headerScrollView addSubview:lable1_4];
+    UILabel *lable1_5 = [[UILabel alloc]initWithFrame:CGRectMake(320*4, DEVICE_HEIGHT*198/568 - 20, 320, 50)];
+    lable1_5.text = @"时光闹钟";
+    lable1_5.textAlignment= NSTextAlignmentCenter;
+    [lable1_5 setTextColor:blueColor];
+    lable1_5.font = [UIFont systemFontOfSize:32.0f];
+    lable1_5.backgroundColor = [UIColor clearColor];
+    [_headerScrollView addSubview:lable1_5];
     
     
     //第二排 滚动文字
-    UILabel *lable2_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+91, DEVICE_HEIGHT*250/568, 270, 50)];
+    UILabel *lable2_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+91, DEVICE_HEIGHT*250/568 - 10, 270, 50)];
     lable2_1.text = @"以时间的名义";
     [lable2_1 setTextColor:grayColor];
     lable2_1.font = [UIFont systemFontOfSize:21.0f];
     lable2_1.backgroundColor = [UIColor clearColor];
     [_minScrollView addSubview:lable2_1];
     
-    UILabel *lable2_2 = [[UILabel alloc]initWithFrame:CGRectMake(320+50, DEVICE_HEIGHT*252/568, 270, 50)];
+    UILabel *lable2_2 = [[UILabel alloc]initWithFrame:CGRectMake(320+50, DEVICE_HEIGHT*252/568 - 10, 270, 50)];
     lable2_2.text = @"以岁月的名义";
     [lable2_2 setTextColor:grayColor];
     lable2_2.font = [UIFont systemFontOfSize:21.0f];
     lable2_2.backgroundColor = [UIColor clearColor];
     [_minScrollView addSubview:lable2_2];
     
-    UILabel *lable2_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+84, DEVICE_HEIGHT*287/568, 270, 50)];
+    UILabel *lable2_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+84, DEVICE_HEIGHT*287/568 - 20 - 10, 270, 50)];
     lable2_3.text = @"只有时间的消逝";
     [lable2_3 setTextColor:grayColor];
     lable2_3.font = [UIFont systemFontOfSize:20.0f];
     lable2_3.backgroundColor = [UIColor clearColor];
     [_minScrollView addSubview:lable2_3];
     
-    UILabel *lable2_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*3+161, DEVICE_HEIGHT*270/568, 270, 50)];
+    UILabel *lable2_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*3+161, DEVICE_HEIGHT*270/568 - 10, 270, 50)];
     lable2_4.text = @"花开花落";
     [lable2_4 setTextColor:blueColor];
     lable2_4.font = [UIFont systemFontOfSize:24.0f];
     lable2_4.backgroundColor = [UIColor clearColor];
     [_minScrollView addSubview:lable2_4];
     
-    UILabel *lable2_5 = [[UILabel alloc]initWithFrame:CGRectMake(320*4+42, DEVICE_HEIGHT*295/568, 270, 50)];
+    UILabel *lable2_5 = [[UILabel alloc]initWithFrame:CGRectMake(320*4+42, DEVICE_HEIGHT*295/568 - 20, 270, 50)];
     lable2_5.text = @"荏苒的时光从我们身边流过";
     [lable2_5 setTextColor:grayColor];
     lable2_5.font = [UIFont systemFontOfSize:18.0];
@@ -194,14 +228,14 @@
     [_minScrollView addSubview:lable2_5];
 
     //第三排 滚动文字
-    UILabel *lable3_1 = [[UILabel alloc]initWithFrame:CGRectMake(320+100, DEVICE_HEIGHT*314/568, 270, 50)];
+    UILabel *lable3_1 = [[UILabel alloc]initWithFrame:CGRectMake(320+100, DEVICE_HEIGHT*314/568 - 10, 270, 50)];
     lable3_1.text = @"转瞬即逝";
     [lable3_1 setTextColor:grayColor];
     lable3_1.font = [UIFont systemFontOfSize:28.0f];
     lable3_1.backgroundColor = [UIColor clearColor];
     [_FooterScrollView addSubview:lable3_1];
     
-    UILabel *lable3_2 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+50, DEVICE_HEIGHT*323/568, 270, 50)];
+    UILabel *lable3_2 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+50, DEVICE_HEIGHT*323/568 - 20, 270, 50)];
     lable3_2.text = @"才能使我们注意到时间";
     [lable3_2 setTextColor:grayColor];
     lable3_2.font = [UIFont systemFontOfSize:20.0f];
@@ -270,14 +304,15 @@
         CGPoint pointMid = _minScrollView.contentOffset;
         CGPoint pointFooter = _FooterScrollView.contentOffset;
         
-        if (pointHeader.x < 320*3)
-        {
-            _headerScrollView.contentOffset = CGPointMake(pointHeader.x+1,pointHeader.y);
-
-        }
-        _minScrollView.contentOffset = CGPointMake(pointMid.x-1,pointMid.y);
-        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+1,pointFooter.y);
-        repeatTimes = repeatTimes + 1;
+//        if (pointHeader.x < 320*3)
+//        {
+//            _headerScrollView.contentOffset = CGPointMake(pointHeader.x+0.5,pointHeader.y);
+//
+//        }
+        _headerScrollView.contentOffset = CGPointMake(pointHeader.x+0.5,pointHeader.y);
+        _minScrollView.contentOffset = CGPointMake(pointMid.x-0.5,pointMid.y);
+        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+0.5,pointFooter.y);
+        repeatTimes = repeatTimes + 0.5;
 
     }
     else
@@ -294,6 +329,7 @@
     if (_FooterScrollView.contentOffset.x > 320*3)
     {
         _startBtn.hidden = NO;
+        _lineBtn.hidden = NO;
 
     }
 }
@@ -304,14 +340,15 @@
         CGPoint pointHeader= _headerScrollView.contentOffset;
         CGPoint pointMid = _minScrollView.contentOffset;
         CGPoint pointFooter = _FooterScrollView.contentOffset;
-        if (pointFooter.x < 320*3)
-        {
-            _headerScrollView.contentOffset = CGPointMake(pointHeader.x-1,pointHeader.y);
-            
-        }
-        _minScrollView.contentOffset = CGPointMake(pointMid.x+1,pointMid.y);
-        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-1,pointFooter.y);
-        repeatTimes = repeatTimes + 1;
+//        if (pointFooter.x < 320*3)
+//        {
+//            _headerScrollView.contentOffset = CGPointMake(pointHeader.x-0.5,pointHeader.y);
+//            
+//        }
+        _headerScrollView.contentOffset = CGPointMake(pointHeader.x-0.5,pointHeader.y);
+        _minScrollView.contentOffset = CGPointMake(pointMid.x+0.5,pointMid.y);
+        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-0.5,pointFooter.y);
+        repeatTimes = repeatTimes + 0.5;
     }
     else
     {
@@ -326,6 +363,7 @@
     if (_headerScrollView.contentOffset.x < 320*4)
     {
         _startBtn.hidden = YES;
+        _lineBtn.hidden = YES;
         
     }
 
@@ -335,14 +373,35 @@
 {
 //    DayViewController *dayViewController = [[DayViewController alloc]init];
     SetYearViewController *setYearViewController = [[SetYearViewController alloc]init];
-    [self presentViewController:setYearViewController animated:YES completion:nil];
+//    [setYearViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    // typedef enum {
+    //  UIModalTransitionStyleCoverVertical = 0,
+    //  UIModalTransitionStyleFlipHorizontal,
+    //  UIModalTransitionStyleCrossDissolve,
+    //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_2
+    //  UIModalTransitionStylePartialCurl,
+    //#endif
+    // } UIModalTransitionStyle;
+    
+    //////////////////////////////////////////////////////////////////////
+//    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+//        self.view.alpha = 1.0;
+//        [self.view exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+//        self.view.alpha = 0.3;
+//    } completion:^(BOOL finished)
+//     {
+//         [self presentViewController:setYearViewController animated:YES completion:nil];
+//     }];
+//    
+    //////////////////////////////////////////////////////////////////////
+    [self presentViewController:setYearViewController animated:NO completion:nil];
 }
 
 - (void)createDots
 {
     for (int i = 0; i < 5; i++)
     {
-        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(80+16*i+20*i, DEVICE_HEIGHT - 50, 16, 16)];
+        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(80+16*i+20*i, DEVICE_HEIGHT - 50, 12, 12)];
         if ((int)_FooterScrollView.contentOffset.x/320 == i)
         {
             [btn setImage:[UIImage imageNamed:@"首页点01.png"] forState:UIControlStateNormal];

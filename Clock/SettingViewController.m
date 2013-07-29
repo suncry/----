@@ -9,6 +9,7 @@
 #import "SettingViewController.h"
 #import "DayViewController.h"
 #import "MyDB.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SettingViewController ()
 
@@ -33,7 +34,31 @@
     [self creatLable];
     [self creatTimeBtn];
     [self creatBtn];   
-    [self addGesture];
+//    [self addGesture];
+    _pickerView.frame = CGRectMake(0, DEVICE_HEIGHT, 320, DEVICE_HEIGHT);
+    [self.view addSubview:_pickerView];
+    _hourPicker.dataSource = self;
+    _hourPicker.delegate = self;
+    _hourPicker.shouldBeTransparent = YES;
+    _hourPicker.horizontalScrolling = NO;
+    _hourPicker.debugEnabled = NO;
+//    [_hourPicker selectIndex:[NSIndexPath indexPathForRow:3 inSection:0]];
+    
+    
+    _minutePicker.dataSource = self;
+    _minutePicker.delegate = self;
+    _minutePicker.shouldBeTransparent = YES;
+    _minutePicker.horizontalScrolling = NO;
+    _minutePicker.debugEnabled = NO;
+//    [_minutePicker selectIndex:[NSIndexPath indexPathForRow:3 inSection:0]];
+    
+//    _pickerView.hidden = YES;
+
+    
+    if (!DEVICE_IS_IPHONE5) {
+//        _backgroundView.frame = CGRectMake(0, -300, 320, 568);
+        NSLog(@"是 4、、、、、");
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,7 +79,6 @@
 //手势响应
 -(void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer
 {
-    
     if(recognizer.direction==UISwipeGestureRecognizerDirectionLeft)
     {
         //执行程序
@@ -66,14 +90,89 @@
 //创建 Lable
 - (void)creatLable
 {
-    for (int i = 0; i < 7; i++)
+    if (DEVICE_IS_IPHONE5)//iPhone5
     {
-        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(30, (i+1)*(DEVICE_HEIGHT/9), 60, 20)];
-        NSString *string = [[NSString alloc]initWithFormat:@"星期 %d",i+1];
-        [lable setText:string];
-        [self.view addSubview:lable];
-    }
+        //(i+1)*(DEVICE_HEIGHT/9)
+        for (int i = 0; i < 7; i++)
+        {
+            UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(22, i*22 + i*41 + 84, 150, 22)];
+            NSString *string =[[NSString alloc]init];
+            switch (i + 1) {
+                case 1:
+                    string = [[NSString alloc]initWithFormat:@"星 期 一"];
+                    break;
+                case 2:
+                    string = [[NSString alloc]initWithFormat:@"星 期 二"];
+                    break;
+                case 3:
+                    string = [[NSString alloc]initWithFormat:@"星 期 三"];
+                    break;
+                case 4:
+                    string = [[NSString alloc]initWithFormat:@"星 期 四"];
+                    break;
+                case 5:
+                    string = [[NSString alloc]initWithFormat:@"星 期 五"];
+                    break;
+                case 6:
+                    string = [[NSString alloc]initWithFormat:@"星 期 六"];
+                    break;
+                case 7:
+                    string = [[NSString alloc]initWithFormat:@"星 期 天"];
+                    break;
+                    
+                default:
+                    break;
+            }
+            [lable setTextColor:[UIColor grayColor]];
+            lable.font = [UIFont systemFontOfSize:19.0f];
+            lable.backgroundColor = [UIColor clearColor];
+            [lable setText:string];
+            [self.view addSubview:lable];
+            //        [_backgroundView addSubview:lable];
+        }
 
+    }
+    else//iPhone4
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(22, i*22 + i*41 + 38, 150, 22)];
+            NSString *string =[[NSString alloc]init];
+            switch (i + 1) {
+                case 1:
+                    string = [[NSString alloc]initWithFormat:@"星 期 一"];
+                    break;
+                case 2:
+                    string = [[NSString alloc]initWithFormat:@"星 期 二"];
+                    break;
+                case 3:
+                    string = [[NSString alloc]initWithFormat:@"星 期 三"];
+                    break;
+                case 4:
+                    string = [[NSString alloc]initWithFormat:@"星 期 四"];
+                    break;
+                case 5:
+                    string = [[NSString alloc]initWithFormat:@"星 期 五"];
+                    break;
+                case 6:
+                    string = [[NSString alloc]initWithFormat:@"星 期 六"];
+                    break;
+                case 7:
+                    string = [[NSString alloc]initWithFormat:@"星 期 天"];
+                    break;
+                    
+                default:
+                    break;
+            }
+            [lable setTextColor:[UIColor grayColor]];
+            lable.font = [UIFont systemFontOfSize:19.0f];
+            lable.backgroundColor = [UIColor clearColor];
+            [lable setText:string];
+            [self.view addSubview:lable];
+            //        [_backgroundView addSubview:lable];
+        }
+    }
+   
 }
 
 
@@ -81,260 +180,615 @@
 - (void)creatBtn
 { 
     MyDB * mydb = [[MyDB alloc]init];
-    //星期天 开关
-    _switchBtn7 = [[UIButton alloc]initWithFrame:CGRectMake(230, 7*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn7.tag = 1; //星期天 为第一天 tag 为1
-    [_switchBtn7 addTarget:self
-                    action:@selector(switchBtnClick:)
-          forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:1] isEqualToString:@"YES"])
-    {
-        _switchBtn7.backgroundColor = [UIColor redColor];
-        
-    }
-    if ([[mydb isON:1] isEqualToString:@"NO"])
-    {
-        _switchBtn7.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn7];
-
-    //星期1 开关
-    _switchBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(230, 1*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn1.tag = 2; //星期天 为第一天 tag 为1
-    [_switchBtn1 addTarget:self
-                    action:@selector(switchBtnClick:)
-          forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:2] isEqualToString:@"YES"])
-    {
-        _switchBtn1.backgroundColor = [UIColor redColor];
-        
-    }
-    if ([[mydb isON:2] isEqualToString:@"NO"])
-    {
-        _switchBtn1.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn1];
-
-    //星期2 开关
-    _switchBtn2 = [[UIButton alloc]initWithFrame:CGRectMake(230, 2*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn2.tag = 3; //星期天 为第一天 tag 为1
-    [_switchBtn2 addTarget:self
-                    action:@selector(switchBtnClick:)
-          forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:3] isEqualToString:@"YES"])
-    {
-        _switchBtn2.backgroundColor = [UIColor redColor];
-        
-    }
-    if ([[mydb isON:3] isEqualToString:@"NO"])
-    {
-        _switchBtn2.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn2];
-
-    //星期3 开关
-    _switchBtn3 = [[UIButton alloc]initWithFrame:CGRectMake(230, 3*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn3.tag = 4; //星期天 为第一天 tag 为1
-    [_switchBtn3 addTarget:self
-                    action:@selector(switchBtnClick:)
-          forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:4] isEqualToString:@"YES"])
-    {
-        _switchBtn3.backgroundColor = [UIColor redColor];
-        
-    }
-    if ([[mydb isON:4] isEqualToString:@"NO"])
-    {
-        _switchBtn3.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn3];
-
-    //星期4 开关
-    _switchBtn4 = [[UIButton alloc]initWithFrame:CGRectMake(230, 4*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn4.tag = 5; //星期天 为第一天 tag 为1
-    [_switchBtn4 addTarget:self
-                    action:@selector(switchBtnClick:)
-          forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:5] isEqualToString:@"YES"])
-    {
-        _switchBtn4.backgroundColor = [UIColor redColor];
-        
-    }
-    if ([[mydb isON:5] isEqualToString:@"NO"])
-    {
-        _switchBtn4.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn4];
-
-    //星期5 开关
-    _switchBtn5 = [[UIButton alloc]initWithFrame:CGRectMake(230, 5*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn5.tag = 6; //星期天 为第一天 tag 为1
-    [_switchBtn5 addTarget:self
-                    action:@selector(switchBtnClick:)
-          forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:6] isEqualToString:@"YES"])
-    {
-        _switchBtn5.backgroundColor = [UIColor redColor];
-        
-    }
-    if ([[mydb isON:6] isEqualToString:@"NO"])
-    {
-        _switchBtn5.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn5];
-
     
-    //星期6 开关
-    _switchBtn6 = [[UIButton alloc]initWithFrame:CGRectMake(230, 6*(DEVICE_HEIGHT/9), 40, 20)];
-    _switchBtn6.tag = 7; //星期天 为第一天 tag 为1
-    [_switchBtn6 addTarget:self
-                    action:@selector(switchBtnClick:)
+    if (DEVICE_IS_IPHONE5)//iPhone5
+    {
+        //Btn 1到6
+        for (int i = 0; i < 6; i++)
+        {
+            UIButton *onBtn = [[UIButton alloc]initWithFrame:CGRectMake(207 - 11, i*22 + i*41 + 84 - 12, 44, 44)];
+            //        [onBtn setTitle:@"on" forState:UIControlStateNormal];
+            onBtn.tag = i + 2 + 200; //星期天 为第一天 tag 为201
+            [onBtn addTarget:self
+                      action:@selector(onBtnClick:)
+            forControlEvents:UIControlEventTouchUpInside];
+            if ([[mydb isON:i + 2] isEqualToString:@"YES"])
+            {
+                [onBtn setImage:[UIImage imageNamed:@"on高亮"] forState:UIControlStateNormal];
+            }
+            if ([[mydb isON:i + 2] isEqualToString:@"NO"])
+            {
+                [onBtn setImage:[UIImage imageNamed:@"on灰"] forState:UIControlStateNormal];
+            }
+            [self.view addSubview:onBtn];
+            
+            //取消按钮的 tag 从101 开始
+            UIButton *offBtn = [[UIButton alloc]initWithFrame:CGRectMake(253 - 11, i*22 + i*41 + 84 - 12, 44, 44)];
+            //        [offBtn setTitle:@"off" forState:UIControlStateNormal];
+            offBtn.tag = i + 2+100; //星期天 为第一天 tag 为1
+            [offBtn addTarget:self
+                       action:@selector(offBtnClick:)
+             forControlEvents:UIControlEventTouchUpInside];
+            if ([[mydb isON:i + 2] isEqualToString:@"YES"])
+            {
+                [offBtn setImage:[UIImage imageNamed:@"off灰"] forState:UIControlStateNormal];
+            }
+            if ([[mydb isON:i + 2] isEqualToString:@"NO"])
+            {
+                [offBtn setImage:[UIImage imageNamed:@"off高亮"] forState:UIControlStateNormal];
+            }
+            [self.view addSubview:offBtn];
+            
+            
+        }
+        //Btn 7
+        UIButton *onBtn_7 = [[UIButton alloc]initWithFrame:CGRectMake(207-11, 6*22 + 6*41 + 84 - 12, 44, 44)];
+        //    [onBtn_7 setTitle:@"on" forState:UIControlStateNormal];
+        onBtn_7.tag = 201; //星期天 为第一天 tag 为1
+        [onBtn_7 addTarget:self
+                    action:@selector(onBtnClick:)
           forControlEvents:UIControlEventTouchUpInside];
-    if ([[mydb isON:7] isEqualToString:@"YES"])
-    {
-        _switchBtn6.backgroundColor = [UIColor redColor];
+        if ([[mydb isON:201 - 200] isEqualToString:@"YES"])
+        {
+            [onBtn_7 setImage:[UIImage imageNamed:@"on高亮"] forState:UIControlStateNormal];
+        }
+        if ([[mydb isON:201 - 200] isEqualToString:@"NO"])
+        {
+            [onBtn_7 setImage:[UIImage imageNamed:@"on灰"] forState:UIControlStateNormal];
+        }
+        [self.view addSubview:onBtn_7];
         
-    }
-    if ([[mydb isON:7] isEqualToString:@"NO"])
-    {
-        _switchBtn6.backgroundColor = [UIColor blackColor];
-    }
-    [self.view addSubview:_switchBtn6];
+        UIButton *offBtn_7 = [[UIButton alloc]initWithFrame:CGRectMake(253 - 11, 6*22 + 6*41 + 84 - 12, 44, 44)];
+        //    [offBtn_7 setTitle:@"off" forState:UIControlStateNormal];
+        offBtn_7.tag = 101; //星期天 为第一天 tag 为1
+        [offBtn_7 addTarget:self
+                     action:@selector(offBtnClick:)
+           forControlEvents:UIControlEventTouchUpInside];
+        if ([[mydb isON:101 - 100] isEqualToString:@"YES"])
+        {
+            [offBtn_7 setImage:[UIImage imageNamed:@"off灰"] forState:UIControlStateNormal];
+        }
+        if ([[mydb isON:101 - 100] isEqualToString:@"NO"])
+        {
+            [offBtn_7 setImage:[UIImage imageNamed:@"off高亮"] forState:UIControlStateNormal];
+        }
+        [self.view addSubview:offBtn_7];
 
+    }
+
+    else
+    {
+        //Btn 1到6
+        for (int i = 0; i < 6; i++)
+        {
+            UIButton *onBtn = [[UIButton alloc]initWithFrame:CGRectMake(207 - 11, i*22 + i*41 + 40 - 12, 44, 44)];
+            //        [onBtn setTitle:@"on" forState:UIControlStateNormal];
+            onBtn.tag = i + 2 + 200; //星期天 为第一天 tag 为201
+            [onBtn addTarget:self
+                      action:@selector(onBtnClick:)
+            forControlEvents:UIControlEventTouchUpInside];
+            if ([[mydb isON:i + 2] isEqualToString:@"YES"])
+            {
+                [onBtn setImage:[UIImage imageNamed:@"on高亮"] forState:UIControlStateNormal];
+            }
+            if ([[mydb isON:i + 2] isEqualToString:@"NO"])
+            {
+                [onBtn setImage:[UIImage imageNamed:@"on灰"] forState:UIControlStateNormal];
+            }
+            [self.view addSubview:onBtn];
+            
+            //取消按钮的 tag 从101 开始
+            UIButton *offBtn = [[UIButton alloc]initWithFrame:CGRectMake(253 - 11, i*22 + i*41 + 40 - 12, 44, 44)];
+            //        [offBtn setTitle:@"off" forState:UIControlStateNormal];
+            offBtn.tag = i + 2+100; //星期天 为第一天 tag 为1
+            [offBtn addTarget:self
+                       action:@selector(offBtnClick:)
+             forControlEvents:UIControlEventTouchUpInside];
+            if ([[mydb isON:i + 2] isEqualToString:@"YES"])
+            {
+                [offBtn setImage:[UIImage imageNamed:@"off灰"] forState:UIControlStateNormal];
+            }
+            if ([[mydb isON:i + 2] isEqualToString:@"NO"])
+            {
+                [offBtn setImage:[UIImage imageNamed:@"off高亮"] forState:UIControlStateNormal];
+            }
+            [self.view addSubview:offBtn];
+            
+            
+        }
+        //Btn 7
+        UIButton *onBtn_7 = [[UIButton alloc]initWithFrame:CGRectMake(207-11, 6*22 + 6*41 + 40 - 12, 44, 44)];
+        //    [onBtn_7 setTitle:@"on" forState:UIControlStateNormal];
+        onBtn_7.tag = 201; //星期天 为第一天 tag 为1
+        [onBtn_7 addTarget:self
+                    action:@selector(onBtnClick:)
+          forControlEvents:UIControlEventTouchUpInside];
+        if ([[mydb isON:201 - 200] isEqualToString:@"YES"])
+        {
+            [onBtn_7 setImage:[UIImage imageNamed:@"on高亮"] forState:UIControlStateNormal];
+        }
+        if ([[mydb isON:201 - 200] isEqualToString:@"NO"])
+        {
+            [onBtn_7 setImage:[UIImage imageNamed:@"on灰"] forState:UIControlStateNormal];
+        }
+        [self.view addSubview:onBtn_7];
+        
+        UIButton *offBtn_7 = [[UIButton alloc]initWithFrame:CGRectMake(253 - 11, 6*22 + 6*41 + 40 - 12, 44, 44)];
+        //    [offBtn_7 setTitle:@"off" forState:UIControlStateNormal];
+        offBtn_7.tag = 101; //星期天 为第一天 tag 为1
+        [offBtn_7 addTarget:self
+                     action:@selector(offBtnClick:)
+           forControlEvents:UIControlEventTouchUpInside];
+        if ([[mydb isON:101 - 100] isEqualToString:@"YES"])
+        {
+            [offBtn_7 setImage:[UIImage imageNamed:@"off灰"] forState:UIControlStateNormal];
+        }
+        if ([[mydb isON:101 - 100] isEqualToString:@"NO"])
+        {
+            [offBtn_7 setImage:[UIImage imageNamed:@"off高亮"] forState:UIControlStateNormal];
+        }
+        [self.view addSubview:offBtn_7];
+
+    }
 
 }
 //创建 显示时间的button
 - (void)creatTimeBtn
 {
 
+    UIColor *blueColor = [UIColor colorWithRed:(CGFloat)45/255
+                                         green:(CGFloat)171/255
+                                          blue:(CGFloat)229/255
+                                         alpha:1];
     MyDB * mydb = [[MyDB alloc]init];
-    
-    //星期天 第一个
-    NSString *timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:1],[mydb minute:1]];
-    _timeBtn7 = [[UIButton alloc]initWithFrame:CGRectMake(120, 7*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn7 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn7.backgroundColor = [UIColor clearColor];
-    _timeBtn7.tag = 11;
-    [_timeBtn7 addTarget:self
-                  action:@selector(timePick:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn7];
-    
-    timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:2],[mydb minute:2]];
-    _timeBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(120, 1*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn1.backgroundColor = [UIColor clearColor];
-    _timeBtn1.tag = 12;
-    [_timeBtn1 addTarget:self
+    NSString *timeString = [[NSString alloc]init];
+
+    if (DEVICE_IS_IPHONE5)//iPhone5
+    {
+        //星期天 第一个
+        
+        _timeBtn7 = [[UIButton alloc]initWithFrame:CGRectMake(110, 6*22 + 6*41 + 84, 80, 22)];
+        if ([[mydb isON:1] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:1],[mydb minute:1]];
+            [_timeBtn7 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn7 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn7.backgroundColor = [UIColor clearColor];
+        _timeBtn7.tag = 11;
+        _timeBtn7.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        [_timeBtn7 addTarget:self
                       action:@selector(timePick:)
             forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn1];
-    
-    timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:3],[mydb minute:3]];
-    _timeBtn2 = [[UIButton alloc]initWithFrame:CGRectMake(120, 2*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn2.backgroundColor = [UIColor clearColor];
-    _timeBtn2.tag = 13;
-    [_timeBtn2 addTarget:self
-                  action:@selector(timePick:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn2];
-    
-    timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:4],[mydb minute:4]];
-    _timeBtn3 = [[UIButton alloc]initWithFrame:CGRectMake(120, 3*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn3.backgroundColor = [UIColor clearColor];
-    _timeBtn3.tag = 14;
-    [_timeBtn3 addTarget:self
-                  action:@selector(timePick:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn3];
-    
-    timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:5],[mydb minute:5]];
-    _timeBtn4 = [[UIButton alloc]initWithFrame:CGRectMake(120, 4*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn4.backgroundColor = [UIColor clearColor];
-    _timeBtn4.tag = 15;
-    [_timeBtn4 addTarget:self
-                  action:@selector(timePick:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn4];
-    
-    timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:6],[mydb minute:6]];
-    _timeBtn5 = [[UIButton alloc]initWithFrame:CGRectMake(120, 5*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn5 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn5.backgroundColor = [UIColor clearColor];
-    _timeBtn5.tag = 16;
-    [_timeBtn5 addTarget:self
-                  action:@selector(timePick:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn5];
-    
-    timeString = [[NSString alloc]initWithFormat:@"%.2d:%.2d",[mydb hour:7],[mydb minute:7]];
-    _timeBtn6 = [[UIButton alloc]initWithFrame:CGRectMake(120, 6*(DEVICE_HEIGHT/9), 60, 20)];
-    [_timeBtn6 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
-    _timeBtn6.backgroundColor = [UIColor clearColor];
-    _timeBtn6.tag = 17;
-    [_timeBtn6 addTarget:self
-                  action:@selector(timePick:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_timeBtn6];
-    
+        [self.view insertSubview:_timeBtn7 belowSubview:_pickerView];
+        
+        
+        _timeBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(110, 84, 80, 22)];
+        if ([[mydb isON:2] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:2],[mydb minute:2]];
+            [_timeBtn1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn1 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn1.backgroundColor = [UIColor clearColor];
+        _timeBtn1.tag = 12;
+        _timeBtn1.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn1 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn1 belowSubview:_pickerView];
+        
+        
+        
+        _timeBtn2 = [[UIButton alloc]initWithFrame:CGRectMake(110, 1*22 + 1*41 + 84, 80, 22)];
+        if ([[mydb isON:3] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:3],[mydb minute:3]];
+            [_timeBtn2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn2 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn2.backgroundColor = [UIColor clearColor];
+        _timeBtn2.tag = 13;
+        _timeBtn2.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn2 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn2 belowSubview:_pickerView];
+        
+        
+        _timeBtn3 = [[UIButton alloc]initWithFrame:CGRectMake(110, 2*22 + 2*41 + 84, 80, 22)];
+        if ([[mydb isON:4] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:4],[mydb minute:4]];
+            [_timeBtn3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn3 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn3.backgroundColor = [UIColor clearColor];
+        _timeBtn3.tag = 14;
+        _timeBtn3.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn3 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn3 belowSubview:_pickerView];
+        
+        
+        _timeBtn4 = [[UIButton alloc]initWithFrame:CGRectMake(110, 3*22 + 3*41 + 84, 80, 22)];
+        if ([[mydb isON:5] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:5],[mydb minute:5]];
+            [_timeBtn4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn4 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn4.backgroundColor = [UIColor clearColor];
+        _timeBtn4.tag = 15;
+        _timeBtn4.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn4 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn4 belowSubview:_pickerView];
+        
+        
+        _timeBtn5 = [[UIButton alloc]initWithFrame:CGRectMake(110, 4*22 + 4*41 + 84, 80, 22)];
+        if ([[mydb isON:6] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:6],[mydb minute:6]];
+            [_timeBtn5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn5 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn5.backgroundColor = [UIColor clearColor];
+        _timeBtn5.tag = 16;
+        _timeBtn5.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn5 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn5 belowSubview:_pickerView];
+        
+        
+        _timeBtn6 = [[UIButton alloc]initWithFrame:CGRectMake(110, 5*22 + 5*41 + 84, 80, 22)];
+        if ([[mydb isON:7] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:7],[mydb minute:7]];
+            [_timeBtn6 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn6 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn6.backgroundColor = [UIColor clearColor];
+        _timeBtn6.tag = 17;
+        _timeBtn6.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn6 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn6 belowSubview:_pickerView];
 
+    }
+        
+    else//iPhone4
+    {
+        //星期天 第一个
+        
+        _timeBtn7 = [[UIButton alloc]initWithFrame:CGRectMake(110, 6*22 + 6*41 + 38, 80, 22)];
+        if ([[mydb isON:1] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:1],[mydb minute:1]];
+            [_timeBtn7 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn7 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn7.backgroundColor = [UIColor clearColor];
+        _timeBtn7.tag = 11;
+        _timeBtn7.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        [_timeBtn7 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn7 belowSubview:_pickerView];
+        
+        
+        _timeBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(110, 38, 80, 22)];
+        if ([[mydb isON:2] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:2],[mydb minute:2]];
+            [_timeBtn1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn1 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn1.backgroundColor = [UIColor clearColor];
+        _timeBtn1.tag = 12;
+        _timeBtn1.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn1 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn1 belowSubview:_pickerView];
+        
+        
+        
+        _timeBtn2 = [[UIButton alloc]initWithFrame:CGRectMake(110, 1*22 + 1*41 + 38, 80, 22)];
+        if ([[mydb isON:3] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:3],[mydb minute:3]];
+            [_timeBtn2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn2 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn2.backgroundColor = [UIColor clearColor];
+        _timeBtn2.tag = 13;
+        _timeBtn2.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn2 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn2 belowSubview:_pickerView];
+        
+        
+        _timeBtn3 = [[UIButton alloc]initWithFrame:CGRectMake(110, 2*22 + 2*41 + 38, 80, 22)];
+        if ([[mydb isON:4] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:4],[mydb minute:4]];
+            [_timeBtn3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn3 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn3.backgroundColor = [UIColor clearColor];
+        _timeBtn3.tag = 14;
+        _timeBtn3.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn3 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn3 belowSubview:_pickerView];
+        
+        
+        _timeBtn4 = [[UIButton alloc]initWithFrame:CGRectMake(110, 3*22 + 3*41 + 38, 80, 22)];
+        if ([[mydb isON:5] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:5],[mydb minute:5]];
+            [_timeBtn4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn4 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn4.backgroundColor = [UIColor clearColor];
+        _timeBtn4.tag = 15;
+        _timeBtn4.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn4 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn4 belowSubview:_pickerView];
+        
+        
+        _timeBtn5 = [[UIButton alloc]initWithFrame:CGRectMake(110, 4*22 + 4*41 + 38, 80, 22)];
+        if ([[mydb isON:6] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:6],[mydb minute:6]];
+            [_timeBtn5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn5 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn5.backgroundColor = [UIColor clearColor];
+        _timeBtn5.tag = 16;
+        _timeBtn5.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn5 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn5 belowSubview:_pickerView];
+        
+        
+        _timeBtn6 = [[UIButton alloc]initWithFrame:CGRectMake(110, 5*22 + 5*41 + 38, 80, 22)];
+        if ([[mydb isON:7] isEqualToString:@"YES"])
+        {
+            timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:7],[mydb minute:7]];
+            [_timeBtn6 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+        }
+        else
+        {
+            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            [_timeBtn6 setTitleColor:blueColor forState:UIControlStateNormal];
+            
+        }
+        [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
+        _timeBtn6.backgroundColor = [UIColor clearColor];
+        _timeBtn6.tag = 17;
+        _timeBtn6.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        
+        [_timeBtn6 addTarget:self
+                      action:@selector(timePick:)
+            forControlEvents:UIControlEventTouchUpInside];
+        [self.view insertSubview:_timeBtn6 belowSubview:_pickerView];
+
+    }
 
 }
-//创建pickerView
-- (void)creatPickerView
-{
-    MyDB *mydb = [[MyDB alloc]init];
-
-
-    _timePicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 200, 320, 60)];
-    _timePicker.delegate = self;
-    [self.view addSubview:_timePicker];
-    [_timePicker selectRow:1200+[mydb hour:dayNum] inComponent:0 animated:YES];
-    [_timePicker selectRow:3000+[mydb minute:dayNum] inComponent:1 animated:YES];
-    
-    
-    _okBtn = [[UIButton alloc]initWithFrame:CGRectMake(280, 170, 50, 30)];
-    _okBtn.backgroundColor = [UIColor blackColor];
-    [_okBtn addTarget:self
-              action:@selector(okBtnClick)
-    forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_okBtn];
-    
-    _cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 170, 50, 30)];
-    _cancelBtn.backgroundColor = [UIColor redColor];
-    [_cancelBtn addTarget:self
-              action:@selector(cancelBtnClick)
-    forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_cancelBtn];
-    
-}
-
-
-- (void)switchBtnClick:(id)sender
+- (void)onBtnClick:(id)sender
 {
     MyDB * mydb = [[MyDB alloc]init];
-    UIButton *Btn = (UIButton *)sender;    
-    if ([[mydb isON:Btn.tag] isEqualToString:@"YES"])
-    {
-        [mydb setON:@"NO" day:Btn.tag];
-        Btn.backgroundColor = [UIColor blackColor];
-    }
-    else if  ([[mydb isON:Btn.tag] isEqualToString:@"NO"])
-    {
-        [mydb setON:@"YES" day:Btn.tag];
-        Btn.backgroundColor = [UIColor redColor];
+    UIButton *onBtn = (UIButton *)sender;
+    UIButton *offBtn = (UIButton *)[self.view viewWithTag:onBtn.tag - 100];
 
+    [mydb setON:@"YES" day:onBtn.tag - 200];
+    [onBtn setImage:[UIImage imageNamed:@"on高亮"] forState:UIControlStateNormal];
+    [offBtn setImage:[UIImage imageNamed:@"off灰"] forState:UIControlStateNormal];
+
+    NSString *timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:onBtn.tag - 200],[mydb minute:onBtn.tag - 200]];
+    switch (offBtn.tag - 100) {
+
+        case 1:
+            [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn7 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 2:
+            [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 3:
+            [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 4:
+            [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 5:
+            [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 6:
+            [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 7:
+            [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn6 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
     }
+//    NSLog(@"onBtnClick %d  isON == %@",onBtn.tag - 200,[mydb isON:onBtn.tag - 200]);
+}
+
+- (void)offBtnClick:(id)sender
+{
+    UIColor *blueColor = [UIColor colorWithRed:(CGFloat)45/255
+                                         green:(CGFloat)171/255
+                                          blue:(CGFloat)229/255
+                                         alpha:1];
+    MyDB * mydb = [[MyDB alloc]init];
+    UIButton *offBtn = (UIButton *)sender;
+    UIButton *onBtn = (UIButton *)[self.view viewWithTag:offBtn.tag + 100];
+    
+    [mydb setON:@"NO" day:offBtn.tag - 100];
+    [onBtn setImage:[UIImage imageNamed:@"on灰"] forState:UIControlStateNormal];
+    [offBtn setImage:[UIImage imageNamed:@"off高亮"] forState:UIControlStateNormal];
+
+
+
+    switch (offBtn.tag - 100) {
+        case 1:
+            [_timeBtn7 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn7 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+        case 2:
+            [_timeBtn1 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn1 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+        case 3:
+            [_timeBtn2 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn2 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+        case 4:
+            [_timeBtn3 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn3 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+        case 5:
+            [_timeBtn4 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn4 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+        case 6:
+            [_timeBtn5 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn5 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+        case 7:
+            [_timeBtn6 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn6 setTitleColor:blueColor forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
+    
+//    NSLog(@"offBtnClick %d  isON == %@",onBtn.tag - 200,[mydb isON:offBtn.tag - 100]);
 
 }
 
@@ -342,112 +796,68 @@
 {
     UIButton *Btn = (UIButton *)sender;
     dayNum = Btn.tag - 10;//因为 设定的 tag 是从10开始的
-    [self creatPickerView];
-}
+//    _pickerView.hidden = NO;
+    
+    //////////////////////////////////////////////////////////////////////
+    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+        _pickerView.frame = CGRectMake(0, 568, 320, 568);
+        [_pickerView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+       _pickerView.frame = CGRectMake(0, 0, 320, 568);
+    } completion:^(BOOL finished)
+     {
+         
+     }];
+    
+    //////////////////////////////////////////////////////////////////////
 
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 2;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    //实现pickerView的循环滚动
-    if (component == 0)
-    {
-        return 2400;
-    }
-    else
-        return 6000;
-}
-
-#pragma mark UIPickerViewDelegate
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
-{
-    return 60;
-}
-- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
-{
-    return 30;
-}
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    //获取 pickerView 选择的时间 存入2个字典中
-    if (component == 0)
-    {
-        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",dayNum];
-        NSString *timeString = [[NSString alloc]initWithFormat:@"%d",(row % 24)];
-        [_hourTime setValue:timeString forKey:dayNumString];
-    }
-    if (component == 1)
-    {
-        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",dayNum];
-        NSString *timeString = [[NSString alloc]initWithFormat:@"%d",(row % 60)];
-        [_minuteTime setValue:timeString forKey:dayNumString];
-    }
-}
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    //设置 pickerView 每一行的标题
-    if (component == 0)
-    {
-        return [[NSString alloc]initWithFormat:@"%d",row%24];
-    }
-    else
-        return [[NSString alloc]initWithFormat:@"%d",row%60];
-}
-
-//确定按钮 响应事件
-- (void)okBtnClick
-{
-    MyDB *mydb = [[MyDB alloc]init];
-    //将字典中的信息 存入数据库中
-    for (int i = 0; i < 7; i++)
-    {
-        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",i+1];
-        int hour =[[_hourTime valueForKey:dayNumString]intValue];
-        [mydb setHour:hour day:i+1];
-        
-        int minute =[[_minuteTime valueForKey:dayNumString]intValue];
-        [mydb setMinute:minute day:i+1];
-    }
+    MyDB * mydb = [[MyDB alloc]init];
+    UIButton *onBtn = (UIButton *)[self.view viewWithTag:Btn.tag - 10 + 200];
+    UIButton *offBtn = (UIButton *)[self.view viewWithTag:Btn.tag - 10 + 100];
+    
+    [mydb setON:@"YES" day:onBtn.tag - 200];
+    [onBtn setImage:[UIImage imageNamed:@"on高亮"] forState:UIControlStateNormal];
+    [offBtn setImage:[UIImage imageNamed:@"off灰"] forState:UIControlStateNormal];
+    NSString *timeString = [[NSString alloc]initWithFormat:@"%.2d  :  %.2d",[mydb hour:onBtn.tag - 200],[mydb minute:onBtn.tag - 200]];
     
     
+    [self performSelector:@selector(selectSet) withObject:self afterDelay:0.0f];
 
-    _okBtn.hidden = YES;
-    _cancelBtn.hidden = YES;
-    _timePicker.hidden = YES;
     
-    [_timeBtn1 removeFromSuperview];
-    [_timeBtn2 removeFromSuperview];
-    [_timeBtn3 removeFromSuperview];
-    [_timeBtn4 removeFromSuperview];
-    [_timeBtn5 removeFromSuperview];
-    [_timeBtn6 removeFromSuperview];
-    [_timeBtn7 removeFromSuperview];
-
-    [self creatTimeBtn];
-}
-//取消按钮 响应事件
-- (void)cancelBtnClick
-{
-    //点击取消 将字典中的数据 恢复到和数据库一致
-    MyDB *mydb = [[MyDB alloc]init];
-    for (int i = 0; i < 7; i++)
-    {
-        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",i+1];
-        NSString *hourString = [[NSString alloc]initWithFormat:@"%d",[mydb hour:i+1]];
-        [_hourTime setValue:hourString forKey:dayNumString];
-        
-        NSString *minuteString = [[NSString alloc]initWithFormat:@"%d",[mydb minute:i+1]];
-        [_minuteTime setValue:minuteString forKey:dayNumString];
+    
+    switch (dayNum) {
+            
+        case 1:
+            [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn7 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 2:
+            [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 3:
+            [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 4:
+            [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 5:
+            [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 6:
+            [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+        case 7:
+            [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
+            [_timeBtn6 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
     }
-
-    _okBtn.hidden = YES;
-    _cancelBtn.hidden = YES;
-    _timePicker.hidden = YES;
 }
 //初始化 用于 储存 闹钟时间的两个字典
 - (void)initTimeDictionary
@@ -471,5 +881,156 @@
     }
     _minuteTime = [[NSMutableDictionary alloc]initWithObjects:minuteTimeArray forKeys:keysArray];
     
+}
+#pragma IZValueSelector dataSource
+- (NSInteger)numberOfRowsInSelector:(IZValueSelectorView *)valueSelector {
+    if (valueSelector == _hourPicker)
+    {
+        return 24;
+    }
+    if (valueSelector == _minutePicker)
+    {
+        return 60;
+    }
+    return 0;
+}
+
+
+- (CGFloat)rowHeightInSelector:(IZValueSelectorView *)valueSelector {
+    
+    return 198.0f/5.0f;
+}
+
+- (CGFloat)rowWidthInSelector:(IZValueSelectorView *)valueSelector {
+    return 110.0f;
+}
+
+
+- (UIView *)selector:(IZValueSelectorView *)valueSelector viewForRowAtIndex:(NSInteger)index {
+    UIColor *blueColor = [UIColor colorWithRed:(CGFloat)45/255
+                                         green:(CGFloat)171/255
+                                          blue:(CGFloat)229/255
+                                         alpha:1];
+    UILabel * label = nil;
+    
+    label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _hourPicker.frame.size.width, 202/5.0)];
+    //年
+    if (valueSelector == _hourPicker)
+    {
+        label.text = [NSString stringWithFormat:@"%d点", index ];
+        [label setTextColor:blueColor];
+        label.font = [UIFont systemFontOfSize:28.0f];
+        label.textAlignment =  NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
+    }
+    //月 日
+    else
+    {
+        label.text = [NSString stringWithFormat:@"%d分",index ];
+        [label setTextColor:blueColor];
+        label.font = [UIFont systemFontOfSize:28.0f];
+        label.textAlignment =  NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
+    }
+    
+    return label;
+}
+
+- (CGRect)rectForSelectionInSelector:(IZValueSelectorView *)valueSelector {
+    
+    // 选中框的 rect
+    return CGRectMake(0.0,_hourPicker.frame.size.height/2 - 198/5.0/2, 92.0, 198/5.0);
+}
+
+#pragma IZValueSelector delegate
+- (void)selector:(IZValueSelectorView *)valueSelector didSelectRowAtIndex:(NSInteger)index {
+//    NSLog(@"Selected index %d",index);
+    //获取 pickerView 选择的时间 存入全局变量
+
+    if (valueSelector == _hourPicker)
+    {
+        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",dayNum];
+        NSString *timeString = [[NSString alloc]initWithFormat:@"%d",(index % 24)];
+        [_hourTime setValue:timeString forKey:dayNumString];
+//        NSLog(@"dayNum == %d",dayNum);
+//        NSLog(@"index 余 24 == %d",(index % 24));
+//        NSLog(@"[_hourTime valueForKey:dayNumString] == %@",[_hourTime valueForKey:dayNumString]);
+    }
+    if (valueSelector == _minutePicker)
+    {
+        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",dayNum];
+        NSString *timeString = [[NSString alloc]initWithFormat:@"%d",(index % 60)];
+        [_minuteTime setValue:timeString forKey:dayNumString];
+    }
+
+}
+
+- (IBAction)okClick:(id)sender
+{
+    //////////////////////////////////////////////////////////////////////
+    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+        _pickerView.frame = CGRectMake(0, 0, 320, 568);
+        [_pickerView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _pickerView.frame = CGRectMake(0, 568, 320, 568);
+    } completion:^(BOOL finished)
+     {
+         
+     }];
+    
+    //////////////////////////////////////////////////////////////////////
+//    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(hidden) userInfo:nil repeats:NO];
+//    _pickerView.hidden = YES;
+    
+    
+
+    
+    MyDB *mydb = [[MyDB alloc]init];
+    //将字典中的信息 存入数据库中
+    for (int i = 0; i < 7; i++)
+    {
+        NSString *dayNumString = [[NSString alloc]initWithFormat:@"%d",i+1];
+        int hour =[[_hourTime valueForKey:dayNumString]intValue];
+        
+        
+        [mydb setHour:hour day:i+1];
+//        NSLog(@"[[_hourTime valueForKey:dayNumString]intValue] == %d",[[_hourTime valueForKey:dayNumString]intValue]);
+//        NSLog(@"[mydb hour:i+1] == %d",[mydb hour:i+1]);
+//        NSLog(@"dayNumString == %@,i+1 == %d",dayNumString,i+1);
+        int minute =[[_minuteTime valueForKey:dayNumString]intValue];
+        [mydb setMinute:minute day:i+1];
+    }
+    [_timeBtn1 removeFromSuperview];
+    [_timeBtn2 removeFromSuperview];
+    [_timeBtn3 removeFromSuperview];
+    [_timeBtn4 removeFromSuperview];
+    [_timeBtn5 removeFromSuperview];
+    [_timeBtn6 removeFromSuperview];
+    [_timeBtn7 removeFromSuperview];
+    
+    [self creatTimeBtn];
+}
+- (IBAction)cancelClick:(id)sender
+{
+    //////////////////////////////////////////////////////////////////////
+    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+        _pickerView.frame = CGRectMake(0, 0, 320, 568);
+        [_pickerView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _pickerView.frame = CGRectMake(0, 568, 320, 568);
+    } completion:^(BOOL finished)
+     {
+         
+     }];
+    
+    //////////////////////////////////////////////////////////////////////
+    
+//    _pickerView.hidden = YES;
+
+}
+
+- (void)selectSet
+{
+    MyDB *mydb = [[MyDB alloc]init];
+    [_hourPicker selectIndex:[NSIndexPath indexPathForRow:[mydb hour:dayNum] inSection:0]];
+    [_minutePicker selectIndex:[NSIndexPath indexPathForRow:[mydb minute:dayNum] inSection:0]];
 }
 @end

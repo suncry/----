@@ -17,8 +17,11 @@
     //取消通知：
     //通知完一定要取消，IOS最多允许最近本地通知数量是64个，超过限制的本地通知将被忽略。
     //1：删除应用所有通知
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"sleep"])
+    {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+
+    }
     for (int i = 0; i < 7 ; i++)
     {
         MyDB *mydb = [[MyDB alloc]init];
@@ -35,29 +38,23 @@
             //时区
             newNotification.timeZone=[NSTimeZone defaultTimeZone];
             //推送时间---根据用户设置
-            newNotification.fireDate=[[NSDate date] dateByAddingTimeInterval:10];
+//            newNotification.fireDate=[[NSDate date] dateByAddingTimeInterval:10];
             newNotification.fireDate= [self fireDate:i+1];
             //推送内容
-            newNotification.alertBody = @"这是一个闹钟！！！";
+            newNotification.alertBody = @"开心迎接新的一天吧！";
             //应用右上角红色图标数字
-//            newNotification.applicationIconBadgeNumber = 1;
-            //1:格式一定要支持播放，常用的格式caf
-            //2:音频播放时间不能大于30秒
-            //3:在Resource里要找到音频文件，倒入时最好能点项目名称右键add导入
-            //        newNotification.soundName = @"jingBao2.caf";
-            [newNotification setSoundName:UILocalNotificationDefaultSoundName];
+//            newNotification.applicationIconBadgeNumber = 0;
+            [newNotification setSoundName:@"闹钟铃声.mp3"];
             //设置按钮
             newNotification.alertAction = @"关闭";
             //设置重复
             newNotification.repeatInterval = NSWeekCalendarUnit;
             [[UIApplication sharedApplication] scheduleLocalNotification:newNotification];
-            
-//            NSLog(@"星期 %d 设置了闹钟",i);
-//            NSLog(@"newNotification == %@",newNotification);
 
         }
 //        NSLog(@"Post new localNotification:%@", newNotification);
     }
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"sleep"];
 }
 - (NSDate *)fireDate:(int)day
 {

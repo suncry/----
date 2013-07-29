@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MyDrawView.h"
+#import "YearDrawView.h"
 
 
 
@@ -15,10 +16,24 @@
 {
     //整个页面是一个scrollView
     UIScrollView *_scrollView;
+
     //上部分 用来显示格子
     MyDrawView *_drawView;
-    //下面用来显示颜色的选择
-    UIView *_colorSetView;
+    YearDrawView *_yearDrawView;
+//    //下面用来显示颜色的选择
+//    UIView *_colorSetView;
+    
+    //第一次进入时的提示画面
+    UIImageView *_imageView;
+    
+    //365天和90年切换的提示lable
+    UILabel *_alertLable;
+    
+    //控制渐变
+    NSTimer *_timerUp;
+    NSTimer *_timerDown;
+
 
 }
+@property (nonatomic,retain)UIScrollView *scrollView;
 @end

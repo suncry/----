@@ -12,29 +12,62 @@
 #import "PushNotification.h"
 #import "RingViewController.h"
 #import "WelcomeViewController.h"
+#import "MMDrawerController.h"
+#import "MMDrawerVisualState.h"
+#import "MMDrawerBarButtonItem.h"
+#import "SettingViewController.h"
+#import "InfoViewController.h"
+#import "UMSocial.h"
+#import "WXApi.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //延长 启动画面的时间   防止一闪而过
+    [NSThread sleepForTimeInterval:2.0];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
+    //设置 友盟 K
+    [UMSocialData setAppKey:@"51e4f4ca56240b2cde105d5c"];
+    //设置 微信 K
+    [WXApi registerApp:@"wx86caf90079225ab8"];
     //隐藏状态栏
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
-//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
-    if (YES)
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
+//    if (YES)
 
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
         WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc]init];
         self.window.rootViewController = welcomeViewController;
     }
     else
     {
-        DayViewController *dayViewController = [[DayViewController alloc]init];
-        self.window.rootViewController = dayViewController;
+//        DayViewController *dayViewController = [[DayViewController alloc]init];
+//        self.window.rootViewController = dayViewController;
+        SettingViewController * leftDrawer = [[SettingViewController alloc] init];
+        leftDrawer.view.backgroundColor = [UIColor blackColor];
+        DayViewController * center = [[DayViewController alloc] init];
+        center.view.backgroundColor = [UIColor yellowColor];
+        InfoViewController * rightDrawer = [[InfoViewController alloc] init];
+        rightDrawer.view.backgroundColor = [UIColor greenColor];
+        
+        MMDrawerController * drawerController = [[MMDrawerController alloc]
+                                                 initWithCenterViewController:center
+                                                 leftDrawerViewController:leftDrawer
+                                                 rightDrawerViewController:rightDrawer];
+        
+        
+        [drawerController setMaximumRightDrawerWidth:320];
+        [drawerController setMaximumLeftDrawerWidth:320];
+        
+        [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+        [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+        
+        self.window.rootViewController = drawerController;
+        
+        
     }
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -62,6 +95,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [UMSocialSnsService  applicationDidBecomeActive];
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -70,17 +105,34 @@
 }
 //推送完 执行的事件
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    //notification是发送通知时传入的字典信息
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"标题"
-//                                                    message:notification.alertBody
-//                                                   delegate:nil
-//                                          cancelButtonTitle:@"确定"
-//                                          otherButtonTitles:nil];
-//    [alert show];
+
+    application.applicationIconBadgeNumber -= 1;
 
     RingViewController *ringViewController = [[RingViewController alloc]init];
-    self.window.rootViewController = ringViewController;
     
     
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        self.window.rootViewController.view.alpha = 1.0;
+        [self.window.rootViewController.view exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        self.window.rootViewController.view.alpha = 0.3;
+    } completion:^(BOOL finished)
+     {
+         self.window.rootViewController = ringViewController;
+
+     }];
+    
+    //////////////////////////////////////////////////////////////////////
+    
+    
+}
+
+
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    return  [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
 }
 @end
