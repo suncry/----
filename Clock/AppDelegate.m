@@ -7,6 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "DayViewController.h"
+#import "YearViewController.h"
+#import "PushNotification.h"
+#import "RingViewController.h"
+#import "WelcomeViewController.h"
 
 @implementation AppDelegate
 
@@ -14,6 +19,23 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
+    //隐藏状态栏
+    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
+    if (YES)
+
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc]init];
+        self.window.rootViewController = welcomeViewController;
+    }
+    else
+    {
+        DayViewController *dayViewController = [[DayViewController alloc]init];
+        self.window.rootViewController = dayViewController;
+    }
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
@@ -27,8 +49,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    //这里设置 本地推送
+    PushNotification *pushNotification = [[PushNotification alloc]init];
+    [pushNotification setClock];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -45,5 +68,19 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+//推送完 执行的事件
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    //notification是发送通知时传入的字典信息
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"标题"
+//                                                    message:notification.alertBody
+//                                                   delegate:nil
+//                                          cancelButtonTitle:@"确定"
+//                                          otherButtonTitles:nil];
+//    [alert show];
 
+    RingViewController *ringViewController = [[RingViewController alloc]init];
+    self.window.rootViewController = ringViewController;
+    
+    
+}
 @end

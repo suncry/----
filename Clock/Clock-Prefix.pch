@@ -12,3 +12,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+//用于区别 设备的分辨率
+#define DEVICE_IS_IPHONE5 ([[UIScreen mainScreen] bounds].size.height == 568)
+
+#define DEVICE_HEIGHT [[UIScreen mainScreen] bounds].size.height
