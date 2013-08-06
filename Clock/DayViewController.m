@@ -12,7 +12,7 @@
 #import "InfoViewController.h"
 #import "YearViewController.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "MMDrawerController.h"
 
 
 @interface DayViewController ()
@@ -123,19 +123,13 @@
     shadowImg_2.frame = CGRectMake(0, DEVICE_HEIGHT*2, 320,8);
     [self.scrollView addSubview:shadowImg_2];
     
-    //添加 页面切换 提示
-    _alertLable = [[UILabel alloc]initWithFrame:CGRectMake(140, DEVICE_HEIGHT/2, 50, 50)];
-    _alertLable.backgroundColor = [UIColor clearColor];
-    _alertLable.text = @"365天";
-    _alertLable.alpha = 0.0f;
-    [self.view addSubview:_alertLable];
-    
-    
-    
     
     //默认进入365天界面
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
     {
+        
+        
+        
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
         
         self.scrollView.contentOffset = CGPointMake(0.0f, 0.0f);
@@ -145,12 +139,9 @@
         _imageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
         
         [self.view addSubview:_imageView];
-        
-//        UITapGestureRecognizer *tapRecognizer;
-//        tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
-//        [self.view addGestureRecognizer:tapRecognizer];
 
-        //添加 闪现的Lable
+        
+        //添加 第一次 进入90年的Lable
         //获取当月的天数
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
         //    [formatter setDateFormat:@"YYYY-MM-dd-hh:mm:ss"];
@@ -160,21 +151,106 @@
         [yearString intValue];
         MyDB *mydb = [[MyDB alloc]init];
         [mydb year];
-        UILabel *stringLable = [[UILabel alloc]initWithFrame:CGRectMake(40, DEVICE_HEIGHT - 80, 280, 60)];
+        UILabel *stringLable = [[UILabel alloc]initWithFrame:CGRectMake(25, DEVICE_HEIGHT - 100, 280, 60)];
         stringLable.backgroundColor = [UIColor clearColor];
-        NSString *tempString = [[NSString alloc]initWithFormat:@"你已经度过了你人生中的第 %d 年",[yearString intValue] - [mydb year]];
+        stringLable.font = [UIFont boldSystemFontOfSize:18.0f];
+        stringLable.textColor = [UIColor whiteColor];
+        NSString *tempString = [[NSString alloc]initWithFormat:@"你已经度过了你人生中的第         年"];
         stringLable.text = tempString;
-        
         [_imageView addSubview:stringLable];
+
+        UILabel *numLable = [[UILabel alloc]initWithFrame:CGRectMake(242, DEVICE_HEIGHT - 100, 280, 60)];
+        numLable.backgroundColor = [UIColor clearColor];
+        numLable.font = [UIFont boldSystemFontOfSize:40.0f];
+        numLable.textColor = [UIColor whiteColor];
+        NSString *numString = [[NSString alloc]initWithFormat:@"%d",[yearString intValue] - [mydb year]];
+        numLable.text = numString;
+        
+        [_imageView addSubview:numLable];
+        
+
+        //把滚动属性设置为NO  防止 在 我们估计页面的时候 出现动画效果
+        _scrollView.scrollEnabled = NO;
         
         //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:2.0 delay:0 options:0 animations:^(){
+        [UIView animateWithDuration:3.0 delay:1 options:0 animations:^(){
+            numLable.alpha = 0.0;
+            [numLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            numLable.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+
+
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////
+        [UIView animateWithDuration:3.0 delay:1 options:0 animations:^(){
             stringLable.alpha = 0.0;
             [stringLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
             stringLable.alpha = 1.0;
         } completion:^(BOOL finished)
          {
-             [self tap];
+             //////////////////////////////////////////////////////////////////////
+             [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
+                 numLable.alpha = 1.0;
+                 [numLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                 numLable.alpha = 0.0;
+             } completion:^(BOOL finished)
+              {
+              }];
+             
+             //////////////////////////////////////////////////////////////////////
+
+             //////////////////////////////////////////////////////////////////////
+             [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
+                 stringLable.alpha = 1.0;
+                 [stringLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                 stringLable.alpha = 0.0;
+             } completion:^(BOOL finished)
+              {
+                  //////////////////////////////////////////////////////////////////////
+                  [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
+                      _imageView.alpha = 1.0;
+                      [_imageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                      _imageView.alpha = 0.0;
+                  } completion:^(BOOL finished)
+                   {
+                       [_imageView removeFromSuperview];
+//                       [blockLable removeFromSuperview];
+                       //跳转
+                       SettingViewController * leftDrawer = [[SettingViewController alloc] init];
+                       leftDrawer.view.backgroundColor = [UIColor blackColor];
+                       DayViewController * center = [[DayViewController alloc] init];
+                       center.view.backgroundColor = [UIColor yellowColor];
+                       InfoViewController * rightDrawer = [[InfoViewController alloc] init];
+                       rightDrawer.view.backgroundColor = [UIColor greenColor];
+                       
+                       MMDrawerController * drawerController = [[MMDrawerController alloc]
+                                                                initWithCenterViewController:center
+                                                                leftDrawerViewController:leftDrawer
+                                                                rightDrawerViewController:rightDrawer];
+                       
+                       [drawerController setMaximumRightDrawerWidth:320];
+                       [drawerController setMaximumLeftDrawerWidth:320];
+                       
+                       [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+                       [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+                       
+                       
+                       
+                       [self presentViewController:drawerController animated:NO completion:nil];
+                       
+                   }];
+                  
+                  //////////////////////////////////////////////////////////////////////
+                  
+
+              }];
+             
+             //////////////////////////////////////////////////////////////////////
+
              
          }];
         
@@ -192,6 +268,14 @@
     //添加页面跳转手势
 //    [self addGesture];
     
+    
+    
+    _yearAlertImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"90.png"]];
+    _yearAlertImageView.frame = CGRectMake(55, (DEVICE_HEIGHT - 50)/2 - 50, 210, 100);
+    
+    _dayAlertImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"365.png"]];
+    _dayAlertImageView.frame = CGRectMake(66, (DEVICE_HEIGHT - 50)/2 - 50, 210, 100);
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -207,113 +291,109 @@
 
     [_drawView setNeedsDisplay];
     [_yearDrawView setNeedsDisplay];
-    
-//    _scrollView.contentOffset = CGPointMake(0, 320);
-    
 }
 
-- (void)addGesture
-{
-//    UISwipeGestureRecognizer *recognizer;
-    UITapGestureRecognizer *tapRecognizer;
-    
-//    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
-//    [recognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
-//    [_scrollView addGestureRecognizer:recognizer];
-//    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
-//    [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
-//    [_scrollView addGestureRecognizer:recognizer];
+//- (void)addGesture
+//{
+//    UITapGestureRecognizer *tapRecognizer;
 //
-//    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
-//    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-//    [[self view] addGestureRecognizer:recognizer];
-    
-    tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
-    [[self view] addGestureRecognizer:tapRecognizer];
-
-
-}
-
-//-(void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer
+//    tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
+//    [[self view] addGestureRecognizer:tapRecognizer];
+//
+//
+//}
+//
+//- (void)tap
 //{
 //
-//    if(recognizer.direction==UISwipeGestureRecognizerDirectionUp)
-//    {
-//        
-//        //执行程序
-////        InfoViewController *infoViewController = [[InfoViewController alloc]init];
-////        [self presentViewController:infoViewController animated:YES completion:nil];
-//        YearViewController *yearViewController = [[YearViewController alloc]init];
-//        [self presentViewController:yearViewController animated:YES completion:nil];
-//
-//        NSLog(@"UISwipeGestureRecognizerDirectionUp");
-//
-//    }
-//    if(recognizer.direction==UISwipeGestureRecognizerDirectionDown)
-//    {
-//        
-//        //执行程序
-//        //        InfoViewController *infoViewController = [[InfoViewController alloc]init];
-//        //        [self presentViewController:infoViewController animated:YES completion:nil];
-//        YearViewController *yearViewController = [[YearViewController alloc]init];
-//        [self presentViewController:yearViewController animated:YES completion:nil];
-//        
-//        NSLog(@"UISwipeGestureRecognizerDirectionDown");
-//        
-//    }
-//    if(recognizer.direction==UISwipeGestureRecognizerDirectionRight)
-//    {
-//        //执行程序
-////        SettingViewController *settingViewController = [[SettingViewController alloc]init];
-////        [self presentViewController:settingViewController animated:YES completion:nil];
-//
-//
-//    }
-//  
 //}
-- (void)tap
-{
-
-    //////////////////////////////////////////////////////////////////////
-    [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
-        _imageView.alpha = 1.0;
-        [_imageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        _imageView.alpha = 0.0;
-    } completion:^(BOOL finished)
-     {
-         [_imageView removeFromSuperview];
-
-     }];
-    
-    //////////////////////////////////////////////////////////////////////
-}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.contentOffset.y == 0.0f)
     {
-        _alertLable.text = @"90年";
-        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-            _alertLable.alpha = 1.0;
-            [_alertLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _alertLable.alpha = 0.0;
+
+        [self.view addSubview:_alertBackgroundView];
+        //用4个嵌套的动画 实现  提示的  渐入渐出
+        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+            _alertBackgroundView.alpha = 0.0;
+            [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _alertBackgroundView.alpha = 1.0;
         } completion:^(BOOL finished)
-        {
-            
-        }];
+         {
+             [self.view addSubview:_yearAlertImageView];
+             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                 _yearAlertImageView.alpha = 0.0;
+                 [_yearAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                 _yearAlertImageView.alpha = 1.0;
+             } completion:^(BOOL finished)
+              {
+                  [self.view addSubview:_yearAlertImageView];
+                  [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                      _yearAlertImageView.alpha = 1.0;
+                      [_yearAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                      _yearAlertImageView.alpha = 0.0;
+                  } completion:^(BOOL finished)
+                   {
+                       [_yearAlertImageView removeFromSuperview];
+                       [self.view addSubview:_alertBackgroundView];
+                       [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+                           _alertBackgroundView.alpha = 1.0;
+                           [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                           _alertBackgroundView.alpha = 0.0;
+                       } completion:^(BOOL finished)
+                        {
+                            [_alertBackgroundView removeFromSuperview];
+                        }];
+                   }];
+                  
+
+              }];
+         }];
+
 
     }
     if (scrollView.contentOffset.y == DEVICE_HEIGHT)
     {
-        _alertLable.text = @"365天";
-        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-            _alertLable.alpha = 1.0;
-            [_alertLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _alertLable.alpha = 0.0;
+        
+        [self.view addSubview:_alertBackgroundView];
+        //用4个嵌套的动画 实现  提示的  渐入渐出
+        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+            _alertBackgroundView.alpha = 0.0;
+            [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _alertBackgroundView.alpha = 1.0;
         } completion:^(BOOL finished)
          {
-             
+             [self.view addSubview:_dayAlertImageView];
+             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                 _dayAlertImageView.alpha = 0.0;
+                 [_dayAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                 _dayAlertImageView.alpha = 1.0;
+             } completion:^(BOOL finished)
+              {
+                  [self.view addSubview:_dayAlertImageView];
+                  [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                      _dayAlertImageView.alpha = 1.0;
+                      [_dayAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                      _dayAlertImageView.alpha = 0.0;
+                  } completion:^(BOOL finished)
+                   {
+                       [_yearAlertImageView removeFromSuperview];
+                       [self.view addSubview:_alertBackgroundView];
+                       [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+                           _alertBackgroundView.alpha = 1.0;
+                           [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                           _alertBackgroundView.alpha = 0.0;
+                       } completion:^(BOOL finished)
+                        {
+                            [_alertBackgroundView removeFromSuperview];
+                        }];
+                   }];
+                  
+                  
+              }];
          }];
+
     }
 }
 

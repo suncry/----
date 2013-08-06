@@ -96,19 +96,40 @@
 
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
     {
-        UIImageView *tempImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"出生年月设置过渡.jpg"]];
-        tempImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
-        [self.view addSubview:tempImageView];
-        //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-            tempImageView.alpha = 1.0;
-            [tempImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            tempImageView.alpha = 0.0;
-        } completion:^(BOOL finished)
-         {
-         }];
-        
-        //////////////////////////////////////////////////////////////////////
+        if (DEVICE_IS_IPHONE5)
+        {
+            UIImageView *tempImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"出生年月设置过渡.jpg"]];
+            tempImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
+            [self.view addSubview:tempImageView];
+            //////////////////////////////////////////////////////////////////////
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                tempImageView.alpha = 1.0;
+                [tempImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                tempImageView.alpha = 0.0;
+            } completion:^(BOOL finished)
+             {
+             }];
+            
+            //////////////////////////////////////////////////////////////////////
+
+        }
+        else
+        {
+            UIImageView *tempImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"出生年月设置过渡960.jpg"]];
+            tempImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
+            [self.view addSubview:tempImageView];
+            //////////////////////////////////////////////////////////////////////
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                tempImageView.alpha = 1.0;
+                [tempImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                tempImageView.alpha = 0.0;
+            } completion:^(BOOL finished)
+             {
+             }];
+            
+            //////////////////////////////////////////////////////////////////////
+
+        }
     }
 //    else
 //    {
@@ -254,28 +275,43 @@
     [mydb setMonth:month];
     [mydb setDay:day];
     
-    //跳转
-    SettingViewController * leftDrawer = [[SettingViewController alloc] init];
-    leftDrawer.view.backgroundColor = [UIColor blackColor];
-    DayViewController * center = [[DayViewController alloc] init];
-    center.view.backgroundColor = [UIColor yellowColor];
-    InfoViewController * rightDrawer = [[InfoViewController alloc] init];
-    rightDrawer.view.backgroundColor = [UIColor greenColor];
     
-    MMDrawerController * drawerController = [[MMDrawerController alloc]
-                                             initWithCenterViewController:center
-                                             leftDrawerViewController:leftDrawer
-                                             rightDrawerViewController:rightDrawer];
-    
-    [drawerController setMaximumRightDrawerWidth:320];
-    [drawerController setMaximumLeftDrawerWidth:320];
-    
-    [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
-    [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-    
-    [self presentViewController:drawerController animated:YES completion:nil];
-    
-    
+    //默认进入365天界面
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
+    {
+
+        DayViewController * center = [[DayViewController alloc] init];
+        
+        [self presentViewController:center animated:YES completion:nil];
+
+    }
+    else
+    {
+            //跳转
+            SettingViewController * leftDrawer = [[SettingViewController alloc] init];
+            leftDrawer.view.backgroundColor = [UIColor blackColor];
+            DayViewController * center = [[DayViewController alloc] init];
+            center.view.backgroundColor = [UIColor yellowColor];
+            InfoViewController * rightDrawer = [[InfoViewController alloc] init];
+            rightDrawer.view.backgroundColor = [UIColor greenColor];
+        
+            MMDrawerController * drawerController = [[MMDrawerController alloc]
+                                                     initWithCenterViewController:center
+                                                     leftDrawerViewController:leftDrawer
+                                                     rightDrawerViewController:rightDrawer];
+        
+            [drawerController setMaximumRightDrawerWidth:320];
+            [drawerController setMaximumLeftDrawerWidth:320];
+        
+            [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+            [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+        
+        
+        
+            [self presentViewController:drawerController animated:YES completion:nil];
+
+    }
+
 
 }
 - (IBAction)cancelBtnClick:(id)sender

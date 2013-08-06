@@ -11,6 +11,7 @@
 #import "UMSocial.h"
 #import "SetYearViewController.h"
 #import "ASIHTTPRequest.h"
+#import "SBJson.h"
 
 
 
@@ -74,12 +75,13 @@
     UMSocialIconActionSheet *iconActionSheet = [[UMSocialControllerService defaultControllerService] getSocialIconActionSheetInController:self];
     [iconActionSheet showInView:self.view];
 
-    [UMSocialData defaultData].shareImage = [UIImage imageNamed:@"Icon.png"];
-    [UMSocialData defaultData].shareText = @"我正在使用【时光闹钟】，以时光的名义，提醒我们积极向上的迎接人生中的每一天。App Store 下载地址：XXXXXX";
+    [UMSocialData defaultData].shareImage = [UIImage imageNamed:@"分享图片"];
+    [UMSocialData defaultData].shareText = @"我正在使用【时光闹钟】，以时光的名义，提醒我们积极向上的迎接人生中的每一天。App Store 下载地址：https://itunes.apple.com/us/app/shi-guang-nao-zhong/id684557922?ls=1&mt=8";
     
     //微信的分享设置
-    [UMSocialControllerService defaultControllerService].socialData.extConfig.wxMessageType = UMSocialWXMessageTypeApp;   //可以指定音乐类型或者视频类型
-    [UMSocialData defaultData].extConfig.appUrl = @"http://www.uemng.com";
+    [UMSocialControllerService defaultControllerService].socialData.extConfig.wxMessageType = UMSocialWXMessageTypeImage;   //可以指定音乐类型或者视频类型
+    [UMSocialData defaultData].extConfig.appUrl = @"https://itunes.apple.com/us/app/shi-guang-nao-zhong/id684557922?ls=1&mt=8";  //点击之后  跳转的链接
+
 }
 
 - (void)hudWasHidden:(MBProgressHUD *)hud
@@ -128,24 +130,49 @@
 }
 - (IBAction)helpBtnClick:(id)sender
 {
-    [helpView removeFromSuperview];
-    helpView.alpha = 1.0;
-    
-    helpView.frame = CGRectMake(0, 0, 320, 568);
-    //////////////////////////////////////////////////////////////////////
-    
-    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-        helpView.frame = CGRectMake(0, 568, 320, 568);
-        [helpView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+    if (DEVICE_IS_IPHONE5)
+    {
+        [helpView removeFromSuperview];
+        helpView.alpha = 1.0;
+        
         helpView.frame = CGRectMake(0, 0, 320, 568);
-    } completion:^(BOOL finished)
-     {
-         
-     }];
-    
-    //////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
+        
+        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+            helpView.frame = CGRectMake(0, 568, 320, 568);
+            [helpView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            helpView.frame = CGRectMake(0, 0, 320, 568);
+        } completion:^(BOOL finished)
+         {
+             
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+        
+        [self.view addSubview:helpView];
+    }
 
-    [self.view addSubview:helpView];
+    else
+    {
+        [helpView960 removeFromSuperview];
+        helpView960.alpha = 1.0;
+        
+        helpView960.frame = CGRectMake(0, 0, 320, 480);
+        //////////////////////////////////////////////////////////////////////
+        
+        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+            helpView960.frame = CGRectMake(0, 480, 320, 480);
+            [helpView960 exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            helpView960.frame = CGRectMake(0, 0, 320, 480);
+        } completion:^(BOOL finished)
+         {
+             
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+        
+        [self.view addSubview:helpView960];
+    }
 }
 - (IBAction)sendBtnClick:(id)sender
 {
@@ -211,18 +238,6 @@
 }
 - (IBAction)numTestBtnClick:(id)sender
 {
-    //////////////////////////////////////////////////////////////////////
-    
-    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-        settingView.alpha = 1.0;
-        [settingView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        settingView.alpha = 0.0;
-    } completion:^(BOOL finished)
-     {
-         
-     }];
-    
-    //////////////////////////////////////////////////////////////////////
     
     
     
@@ -235,9 +250,12 @@
     [sendLoading show:YES];
 
 //    [settingView addSubview:sendLoading];
-    
-    
-    NSURL *url = [NSURL URLWithString:@"http://www.ipointek.com/feedback/api/version?appid=1007&version=1&platform=ios"];
+    //获取版本号
+    NSString *buildString = [[NSString alloc]init];
+    buildString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *urlString = [[NSString alloc]initWithFormat:@"http://www.ipointek.com/feedback/api/version?appid=1007&version=%@&platform=ios",buildString];
+//    NSURL *url = [NSURL URLWithString:@"http://www.ipointek.com/feedback/api/version?appid=1007&version=1&platform=ios"];
+    NSURL *url = [NSURL URLWithString:urlString];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     
@@ -249,8 +267,19 @@
     {
         NSString *response = [request responseString];
         NSLog(@"response == %@",response);
+
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        
+        NSMutableDictionary *dict = [jsonParser objectWithString:response];
+//        NSLog(@"%@",dict);
+
+//         NSString *cross1= [dict objectForKey:@"inside_version"];
+        
+//        NSLog(@"[dict objectForKey:@\"inside_version\"] == %@",cross1);
+//        
+//        NSLog(@"[[dict objectForKey:@\"inside_version\"] isEqualToString:@\"2\"] == %d",[[dict objectForKey:@"inside_version"] isEqualToString:@"2"]);
         //有新版本
-        if ([response isEqualToString:@"{\"status\":200,\"link\":null}"])
+        if ([[dict objectForKey:@"inside_version"] isEqualToString:@"2"])
         {
             UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"新版本 时光闹钟"
                                                         message:@"时光闹钟推出新版本了，请及时更新"
@@ -270,9 +299,24 @@
         
     
     }
+    
+    [sendLoading hide:YES afterDelay:4.0];
+
 //        [settingView removeFromSuperview];
 
-     
+    //////////////////////////////////////////////////////////////////////
+    
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        settingView.alpha = 1.0;
+        [settingView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        settingView.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         
+     }];
+    
+    //////////////////////////////////////////////////////////////////////
+
 }
 - (void)requestFinished:(ASIHTTPRequest *)request
 
@@ -302,7 +346,7 @@
     //跳转到 下载页面
     if (buttonIndex == 1)
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/vovo-yu-yin-bian-qian/id606770926?mt=8"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/shi-guang-nao-zhong/id684557922?ls=1&mt=8"]];
     }
 }
 //跳转下载页面
@@ -328,19 +372,40 @@
 }
 - (IBAction)helpImageBtnClick:(id)sender
 {
-    //////////////////////////////////////////////////////////////////////
-    
-    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-        helpView.alpha = 1.0;
-        [helpView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        helpView.alpha = 0.0;
-    } completion:^(BOOL finished)
-     {
-         
-     }];
-    
-    //////////////////////////////////////////////////////////////////////
-//    [helpView removeFromSuperview];
+    if (DEVICE_IS_IPHONE5)
+    {
+        //////////////////////////////////////////////////////////////////////
+        
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            helpView.alpha = 1.0;
+            [helpView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            helpView.alpha = 0.0;
+        } completion:^(BOOL finished)
+         {
+             
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+        //    [helpView removeFromSuperview];
+
+    }
+    else
+    {
+        //////////////////////////////////////////////////////////////////////
+        
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            helpView960.alpha = 1.0;
+            [helpView960 exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            helpView960.alpha = 0.0;
+        } completion:^(BOOL finished)
+         {
+             
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+        //    [helpView removeFromSuperview];
+
+    }
 }
 - (IBAction)settingCancelBtnClick:(id)sender
 {

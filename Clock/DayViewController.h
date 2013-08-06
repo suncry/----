@@ -26,13 +26,20 @@
     //第一次进入时的提示画面
     UIImageView *_imageView;
     
-    //365天和90年切换的提示lable
-    UILabel *_alertLable;
+//    //365天和90年切换的提示lable
+//    UILabel *_alertLable;
     
     //控制渐变
     NSTimer *_timerUp;
     NSTimer *_timerDown;
 
+
+    IBOutlet UIView *_alertBackgroundView;
+
+    UIImageView *_dayAlertImageView;
+    UIImageView *_yearAlertImageView;
+
+    
 
 }
 @property (nonatomic,retain)UIScrollView *scrollView;

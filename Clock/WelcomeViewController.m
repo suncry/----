@@ -269,7 +269,7 @@
             [_controlView removeGestureRecognizer:_recognizerRight];
             [_controlView removeGestureRecognizer:_recognizerLeft];
             //执行程序
-            _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.001
+            _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.0005
                                                             target:self
                                                           selector:@selector(moveImageRight)
                                                           userInfo:nil repeats:YES];
@@ -284,7 +284,7 @@
             [_controlView removeGestureRecognizer:_recognizerRight];
             [_controlView removeGestureRecognizer:_recognizerLeft];
             //执行程序
-            _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.001
+            _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.0005
                                          target:self
                                        selector:@selector(moveImageLeft)
                                        userInfo:nil repeats:YES];
@@ -304,15 +304,10 @@
         CGPoint pointMid = _minScrollView.contentOffset;
         CGPoint pointFooter = _FooterScrollView.contentOffset;
         
-//        if (pointHeader.x < 320*3)
-//        {
-//            _headerScrollView.contentOffset = CGPointMake(pointHeader.x+0.5,pointHeader.y);
-//
-//        }
-        _headerScrollView.contentOffset = CGPointMake(pointHeader.x+0.5,pointHeader.y);
-        _minScrollView.contentOffset = CGPointMake(pointMid.x-0.5,pointMid.y);
-        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+0.5,pointFooter.y);
-        repeatTimes = repeatTimes + 0.5;
+        _headerScrollView.contentOffset = CGPointMake(pointHeader.x+1.0,pointHeader.y);
+        _minScrollView.contentOffset = CGPointMake(pointMid.x-1.0,pointMid.y);
+        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+1.0,pointFooter.y);
+        repeatTimes = repeatTimes + 1.0;
 
     }
     else
@@ -331,6 +326,28 @@
         _startBtn.hidden = NO;
         _lineBtn.hidden = NO;
 
+        //////////////////////////////////////////////////////////////////////
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _startBtn.alpha = 0.0;
+            [_startBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _startBtn.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {             
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _lineBtn.alpha = 0.0;
+            [_lineBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _lineBtn.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+
+
     }
 }
 - (void)moveImageLeft
@@ -340,15 +357,10 @@
         CGPoint pointHeader= _headerScrollView.contentOffset;
         CGPoint pointMid = _minScrollView.contentOffset;
         CGPoint pointFooter = _FooterScrollView.contentOffset;
-//        if (pointFooter.x < 320*3)
-//        {
-//            _headerScrollView.contentOffset = CGPointMake(pointHeader.x-0.5,pointHeader.y);
-//            
-//        }
-        _headerScrollView.contentOffset = CGPointMake(pointHeader.x-0.5,pointHeader.y);
-        _minScrollView.contentOffset = CGPointMake(pointMid.x+0.5,pointMid.y);
-        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-0.5,pointFooter.y);
-        repeatTimes = repeatTimes + 0.5;
+        _headerScrollView.contentOffset = CGPointMake(pointHeader.x-1.0,pointHeader.y);
+        _minScrollView.contentOffset = CGPointMake(pointMid.x+1.0,pointMid.y);
+        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-1.0,pointFooter.y);
+        repeatTimes = repeatTimes + 1.0;
     }
     else
     {
@@ -362,38 +374,37 @@
     }
     if (_headerScrollView.contentOffset.x < 320*4)
     {
-        _startBtn.hidden = YES;
-        _lineBtn.hidden = YES;
+        //////////////////////////////////////////////////////////////////////
+        [UIView animateWithDuration:2.0 delay:0 options:0 animations:^(){
+            _startBtn.alpha = 1.0;
+            [_startBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _startBtn.alpha = 0.0;
+        } completion:^(BOOL finished)
+         {
+         }];
         
+        //////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
+        [UIView animateWithDuration:2.0 delay:0 options:0 animations:^(){
+            _lineBtn.alpha = 1.0;
+            [_lineBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _lineBtn.alpha = 0.0;
+        } completion:^(BOOL finished)
+         {
+//             _startBtn.hidden = YES;
+//             _lineBtn.hidden = YES;
+
+         }];
+        
+        //////////////////////////////////////////////////////////////////////
+
     }
 
 }
 
 - (void)startClock
 {
-//    DayViewController *dayViewController = [[DayViewController alloc]init];
     SetYearViewController *setYearViewController = [[SetYearViewController alloc]init];
-//    [setYearViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    // typedef enum {
-    //  UIModalTransitionStyleCoverVertical = 0,
-    //  UIModalTransitionStyleFlipHorizontal,
-    //  UIModalTransitionStyleCrossDissolve,
-    //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_2
-    //  UIModalTransitionStylePartialCurl,
-    //#endif
-    // } UIModalTransitionStyle;
-    
-    //////////////////////////////////////////////////////////////////////
-//    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-//        self.view.alpha = 1.0;
-//        [self.view exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-//        self.view.alpha = 0.3;
-//    } completion:^(BOOL finished)
-//     {
-//         [self presentViewController:setYearViewController animated:YES completion:nil];
-//     }];
-//    
-    //////////////////////////////////////////////////////////////////////
     [self presentViewController:setYearViewController animated:NO completion:nil];
 }
 

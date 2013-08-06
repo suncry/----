@@ -66,7 +66,7 @@
         [yearString intValue];
         MyDB *mydb = [[MyDB alloc]init];
         [mydb year];
-        UILabel *stringLable = [[UILabel alloc]initWithFrame:CGRectMake(280, 40, 200, 60)];
+        UILabel *stringLable = [[UILabel alloc]initWithFrame:CGRectMake(282, 40, 200, 60)];
         NSString *tempString = [[NSString alloc]initWithFormat:@"你已经度过了你人生中的第 %d 年",[yearString intValue] - [mydb year]];
         stringLable.text = tempString;
         

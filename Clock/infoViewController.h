@@ -15,6 +15,8 @@
     IBOutlet UIView *settingView;
     IBOutlet UITextView *textView;
     IBOutlet UIView *helpView;
+    IBOutlet UIView *helpView960;
+
     
 
 }

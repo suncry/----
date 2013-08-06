@@ -14,7 +14,6 @@
 #import "MMDrawerController.h"
 #import "MMDrawerVisualState.h"
 #import "MMDrawerBarButtonItem.h"
-
 @interface RingViewController ()
 
 @end
@@ -54,6 +53,25 @@
     //获取当月的天数
         
     [dayNumLable setText:[NSString stringWithFormat:@"%d",[self dayNum]]];
+    
+//    //背景音乐
+//    NSString *soundFilePath =
+//    [[NSBundle mainBundle] pathForResource: @"闹钟铃声"
+//                                    ofType: @"mp3"];
+//    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
+//    AVAudioPlayer *newPlayer =
+//    [[AVAudioPlayer alloc] initWithContentsOfURL: fileURL
+//                                           error: nil];
+//    newPlayer.delegate = self;
+////    self.player = newPlayer;
+////    [self.player prepareToPlay];
+////    
+////    [self.player setDelegate: self];
+////    self.player.numberOfLoops = -1;    // Loop playback until invoke stop method
+////    [self.player play];
+//     [newPlayer setVolume:1]; 
+//    newPlayer.numberOfLoops = -1;
+//    [newPlayer play];
 }
 
 - (void)didReceiveMemoryWarning

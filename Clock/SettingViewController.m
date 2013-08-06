@@ -10,6 +10,7 @@
 #import "DayViewController.h"
 #import "MyDB.h"
 #import <QuartzCore/QuartzCore.h>
+#import "PushNotification.h"
 
 @interface SettingViewController ()
 
@@ -977,13 +978,6 @@
          
      }];
     
-    //////////////////////////////////////////////////////////////////////
-//    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(hidden) userInfo:nil repeats:NO];
-//    _pickerView.hidden = YES;
-    
-    
-
-    
     MyDB *mydb = [[MyDB alloc]init];
     //将字典中的信息 存入数据库中
     for (int i = 0; i < 7; i++)
@@ -1008,6 +1002,10 @@
     [_timeBtn7 removeFromSuperview];
     
     [self creatTimeBtn];
+    
+    //这里设置 本地推送
+    PushNotification *pushNotification = [[PushNotification alloc]init];
+    [pushNotification setClock];
 }
 - (IBAction)cancelClick:(id)sender
 {
@@ -1020,10 +1018,6 @@
      {
          
      }];
-    
-    //////////////////////////////////////////////////////////////////////
-    
-//    _pickerView.hidden = YES;
 
 }
 
