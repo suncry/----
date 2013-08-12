@@ -51,7 +51,7 @@
     //在控制视图上加上手势
     _controlView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _controlView.backgroundColor = [UIColor clearColor];
-    //手势
+    //添加手势
     _recognizerRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
     [_recognizerRight setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [_controlView addGestureRecognizer:_recognizerRight];
@@ -266,6 +266,10 @@
     
     if(recognizer.direction==UISwipeGestureRecognizerDirectionLeft)
     {
+        //先移除手势  避免 欢迎界面的快速移动
+        [_controlView removeGestureRecognizer:_recognizerLeft];
+        [_controlView removeGestureRecognizer:_recognizerRight];
+
         if (_headerScrollView.contentOffset.x < 320*4)
         {
             CGPoint pointHeader= _headerScrollView.contentOffset;
@@ -285,6 +289,15 @@
                 _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+320.0f,pointHeader.y);
             } completion:^(BOOL finished)
              {
+                 //添加手势
+                 _recognizerRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
+                 [_recognizerRight setDirection:(UISwipeGestureRecognizerDirectionRight)];
+                 [_controlView addGestureRecognizer:_recognizerRight];
+                 
+                 _recognizerLeft = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
+                 [_recognizerLeft setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+                 [_controlView addGestureRecognizer:_recognizerLeft];
+
              }];
             
             //////////////////////////////////////////////////////////////////////
@@ -303,15 +316,21 @@
                         _lineBtn.alpha = 1.0;
                     } completion:^(BOOL finished)
                      {
+
                      }];
                 }   
         
         }
+        
         [self createDots];
     }
 
     if(recognizer.direction==UISwipeGestureRecognizerDirectionRight)
     {
+        //先移除手势  避免 欢迎界面的快速移动
+        [_controlView removeGestureRecognizer:_recognizerLeft];
+        [_controlView removeGestureRecognizer:_recognizerRight];
+
          if (_headerScrollView.contentOffset.x > 0)
          {
              //////////////////////////////////////////////////////////////////////
@@ -333,6 +352,15 @@
                  _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-320.0f,pointHeader.y);
              } completion:^(BOOL finished)
               {
+                  //添加手势
+                  _recognizerRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
+                  [_recognizerRight setDirection:(UISwipeGestureRecognizerDirectionRight)];
+                  [_controlView addGestureRecognizer:_recognizerRight];
+                  
+                  _recognizerLeft = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
+                  [_recognizerLeft setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+                  [_controlView addGestureRecognizer:_recognizerLeft];
+
               }];
              //////////////////////////////////////////////////////////////////////
              if (pointHeader.x+320.0f != 320.0f*4)
@@ -351,12 +379,10 @@
                  } completion:^(BOOL finished)
                   {
                       _lineBtn.hidden = YES;
-
                   }];
              }
          }
         [self createDots];
-
     }
 }
 
