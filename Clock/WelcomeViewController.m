@@ -83,6 +83,7 @@
     _startBtn.backgroundColor = [UIColor clearColor];
     [_startBtn addTarget:self action:@selector(startClock) forControlEvents:UIControlEventTouchUpInside];
     _startBtn.hidden = YES;
+    _startBtn.alpha = 0.0f;
     [_controlView addSubview:_startBtn];
     if (DEVICE_IS_IPHONE5)
     {
@@ -98,6 +99,7 @@
                                                green:(CGFloat)171/255
                                                 blue:(CGFloat)229/255
                                                alpha:1];
+    _lineBtn.hidden = YES;
     _lineBtn.hidden = YES;
     [_controlView addSubview:_lineBtn];
     
@@ -264,143 +266,100 @@
     
     if(recognizer.direction==UISwipeGestureRecognizerDirectionLeft)
     {
-        if (_FooterScrollView.contentOffset.x < 320*4)
+        if (_headerScrollView.contentOffset.x < 320*4)
         {
-            [_controlView removeGestureRecognizer:_recognizerRight];
-            [_controlView removeGestureRecognizer:_recognizerLeft];
-            //执行程序
-            _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.0005
-                                                            target:self
-                                                          selector:@selector(moveImageRight)
-                                                          userInfo:nil repeats:YES];
+            CGPoint pointHeader= _headerScrollView.contentOffset;
+            CGPoint pointMid = _minScrollView.contentOffset;
+            CGPoint pointFooter = _FooterScrollView.contentOffset;
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                _headerScrollView.contentOffset = CGPointMake(pointHeader.x+320.0f,pointHeader.y);
+            } completion:^(BOOL finished)
+             {
+             }];
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                _minScrollView.contentOffset = CGPointMake(pointMid.x-320.0f,pointHeader.y);
+            } completion:^(BOOL finished)
+             {
+             }];
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+320.0f,pointHeader.y);
+            } completion:^(BOOL finished)
+             {
+             }];
+            
+            //////////////////////////////////////////////////////////////////////
+            if (pointHeader.x+320.0f > 320.0f*3)
+                {
+                    _startBtn.hidden = NO;
+                    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                        _startBtn.alpha = 0.0;
+                        _startBtn.alpha = 1.0;
+                    } completion:^(BOOL finished)
+                     {
+                     }];
+                    _lineBtn.hidden = NO;
+                    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                        _lineBtn.alpha = 0.0;
+                        _lineBtn.alpha = 1.0;
+                    } completion:^(BOOL finished)
+                     {
+                     }];
+                }   
+        
         }
-
+        [self createDots];
     }
-    
+
     if(recognizer.direction==UISwipeGestureRecognizerDirectionRight)
     {
-        if (_FooterScrollView.contentOffset.x > 0)
-        {
-            [_controlView removeGestureRecognizer:_recognizerRight];
-            [_controlView removeGestureRecognizer:_recognizerLeft];
-            //执行程序
-            _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.0005
-                                         target:self
-                                       selector:@selector(moveImageLeft)
-                                       userInfo:nil repeats:YES];
-        }
-    }
-}
-//scrollView 代理
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    //用 offset 判断 屏幕下方显示小点的位置
-}
-- (void)moveImageRight
-{
-    if (repeatTimes < 320)
-    {
-        CGPoint pointHeader= _headerScrollView.contentOffset;
-        CGPoint pointMid = _minScrollView.contentOffset;
-        CGPoint pointFooter = _FooterScrollView.contentOffset;
-        
-        _headerScrollView.contentOffset = CGPointMake(pointHeader.x+1.0,pointHeader.y);
-        _minScrollView.contentOffset = CGPointMake(pointMid.x-1.0,pointMid.y);
-        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x+1.0,pointFooter.y);
-        repeatTimes = repeatTimes + 1.0;
+         if (_headerScrollView.contentOffset.x > 0)
+         {
+             //////////////////////////////////////////////////////////////////////
+             
+             CGPoint pointHeader= _headerScrollView.contentOffset;
+             CGPoint pointMid = _minScrollView.contentOffset;
+             CGPoint pointFooter = _FooterScrollView.contentOffset;
+             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                 _headerScrollView.contentOffset = CGPointMake(pointHeader.x-320.0f,pointHeader.y);
+             } completion:^(BOOL finished)
+              {
+              }];
+             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                 _minScrollView.contentOffset = CGPointMake(pointMid.x+320.0f,pointHeader.y);
+             } completion:^(BOOL finished)
+              {
+              }];
+             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                 _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-320.0f,pointHeader.y);
+             } completion:^(BOOL finished)
+              {
+              }];
+             //////////////////////////////////////////////////////////////////////
+             if (pointHeader.x+320.0f != 320.0f*4)
+             {
+                 [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                     _startBtn.alpha = 1.0;
+                     _startBtn.alpha = 0.0;
+                 } completion:^(BOOL finished)
+                  {
+                      _startBtn.hidden = YES;
 
-    }
-    else
-    {
-        repeatTimes = 0;
-        [_scrollTimer invalidate];
-        //手势
-        [_controlView addGestureRecognizer:_recognizerLeft];
-        [_controlView addGestureRecognizer:_recognizerRight];
+                  }];
+                 [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                     _lineBtn.alpha = 1.0;
+                     _lineBtn.alpha = 0.0;
+                 } completion:^(BOOL finished)
+                  {
+                      _lineBtn.hidden = YES;
+
+                  }];
+             }
+         }
         [self createDots];
 
     }
-
-    if (_FooterScrollView.contentOffset.x > 320*3)
-    {
-        _startBtn.hidden = NO;
-        _lineBtn.hidden = NO;
-
-        //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-            _startBtn.alpha = 0.0;
-            [_startBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _startBtn.alpha = 1.0;
-        } completion:^(BOOL finished)
-         {             
-         }];
-        
-        //////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-            _lineBtn.alpha = 0.0;
-            [_lineBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _lineBtn.alpha = 1.0;
-        } completion:^(BOOL finished)
-         {
-         }];
-        
-        //////////////////////////////////////////////////////////////////////
-
-
-    }
 }
-- (void)moveImageLeft
-{
-    if (repeatTimes < 320)
-    {
-        CGPoint pointHeader= _headerScrollView.contentOffset;
-        CGPoint pointMid = _minScrollView.contentOffset;
-        CGPoint pointFooter = _FooterScrollView.contentOffset;
-        _headerScrollView.contentOffset = CGPointMake(pointHeader.x-1.0,pointHeader.y);
-        _minScrollView.contentOffset = CGPointMake(pointMid.x+1.0,pointMid.y);
-        _FooterScrollView.contentOffset = CGPointMake(pointFooter.x-1.0,pointFooter.y);
-        repeatTimes = repeatTimes + 1.0;
-    }
-    else
-    {
-        repeatTimes = 0;
-        [_scrollTimer invalidate];
-        //手势
-        [_controlView addGestureRecognizer:_recognizerLeft];
-        [_controlView addGestureRecognizer:_recognizerRight];
-        [self createDots];
 
-    }
-    if (_headerScrollView.contentOffset.x < 320*4)
-    {
-        //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:2.0 delay:0 options:0 animations:^(){
-            _startBtn.alpha = 1.0;
-            [_startBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _startBtn.alpha = 0.0;
-        } completion:^(BOOL finished)
-         {
-         }];
-        
-        //////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:2.0 delay:0 options:0 animations:^(){
-            _lineBtn.alpha = 1.0;
-            [_lineBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _lineBtn.alpha = 0.0;
-        } completion:^(BOOL finished)
-         {
-//             _startBtn.hidden = YES;
-//             _lineBtn.hidden = YES;
-
-         }];
-        
-        //////////////////////////////////////////////////////////////////////
-
-    }
-
-}
 
 - (void)startClock
 {

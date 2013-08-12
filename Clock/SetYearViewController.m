@@ -48,20 +48,6 @@
     NSString *yearSring = [[NSString alloc]init];
     yearSring = [formatter stringFromDate:[NSDate date]];
     yearNow = [yearSring intValue];
-
-
-    //创建 确认 按钮
-//    UIButton *okBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, DEVICE_HEIGHT-50, 320, 50)];
-//    [okBtn setTitle:@"确  认" forState:UIControlStateNormal];
-//    okBtn.titleLabel.font = [UIFont systemFontOfSize:26.0f];
-//    [okBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    okBtn.backgroundColor =[UIColor colorWithRed:(CGFloat)45/255
-//                                           green:(CGFloat)171/255
-//                                            blue:(CGFloat)229/255
-//                                           alpha:1];
-//    [okBtn addTarget:self action:@selector(okBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:okBtn];
-    
     
     yearPickerView.backgroundColor = [UIColor clearColor];
     monthPickerView.backgroundColor = [UIColor clearColor];
