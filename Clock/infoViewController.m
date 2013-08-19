@@ -279,7 +279,7 @@
 //        
 //        NSLog(@"[[dict objectForKey:@\"inside_version\"] isEqualToString:@\"2\"] == %d",[[dict objectForKey:@"inside_version"] isEqualToString:@"2"]);
         //有新版本
-        if ([[dict objectForKey:@"inside_version"] isEqualToString:@"2"])
+        if ([[dict objectForKey:@"inside_version"] isEqualToString:@"4"])
         {
             UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"新版本 时光闹钟"
                                                         message:@"时光闹钟推出新版本了，请及时更新"

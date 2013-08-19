@@ -19,6 +19,7 @@
 #import "InfoViewController.h"
 #import "UMSocial.h"
 #import "WXApi.h"
+#import "MobClick.h"
 
 @implementation AppDelegate
 
@@ -30,6 +31,9 @@
     // Override point for customization after application launch.
     //设置 友盟 K
     [UMSocialData setAppKey:@"51e4f4ca56240b2cde105d5c"];
+    
+    [MobClick startWithAppkey:@"51e4f4ca56240b2cde105d5c"];
+
     //设置 微信 K
     [WXApi registerApp:@"wx86caf90079225ab8"];
     //隐藏状态栏

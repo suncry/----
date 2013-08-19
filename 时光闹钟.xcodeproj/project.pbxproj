@@ -13,6 +13,8 @@
 		CC2A6E561782B05F00A332CC /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2A6E541782B05F00A332CC /* WelcomeViewController.m */; };
 		CC2A6E571782B05F00A332CC /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC2A6E551782B05F00A332CC /* WelcomeViewController.xib */; };
 		CC2C232717AA3EA200518591 /* 闹钟铃声.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CC2C232617AA3EA200518591 /* 闹钟铃声.mp3 */; };
+		CC7120F817C1B0410004331D /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7120F617C1B0410004331D /* libMobClickLibrary.a */; };
+		CC7120FA17C1B06B0004331D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7120F917C1B06B0004331D /* libz.dylib */; };
 		CCAFBD1C178577D6007F36C3 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAFBD1A178577D6007F36C3 /* Icon.png */; };
 		CCAFBD1D178577D6007F36C3 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAFBD1B178577D6007F36C3 /* Icon@2x.png */; };
 		CCB04927178D2FC400E67859 /* 天气背景.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB04926178D2FC400E67859 /* 天气背景.png */; };
@@ -196,6 +198,9 @@
 		CC2A6E541782B05F00A332CC /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		CC2A6E551782B05F00A332CC /* WelcomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
 		CC2C232617AA3EA200518591 /* 闹钟铃声.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "闹钟铃声.mp3"; sourceTree = "<group>"; };
+		CC7120F617C1B0410004331D /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
+		CC7120F717C1B0410004331D /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
+		CC7120F917C1B06B0004331D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CCAFBD1A178577D6007F36C3 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		CCAFBD1B178577D6007F36C3 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		CCB04926178D2FC400E67859 /* 天气背景.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "天气背景.png"; sourceTree = "<group>"; };
@@ -436,6 +441,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC7120FA17C1B06B0004331D /* libz.dylib in Frameworks */,
 				CCBA83F71796611600569F2E /* libxml2.2.dylib in Frameworks */,
 				CCBA83F51796610800569F2E /* libz.1.2.5.dylib in Frameworks */,
 				CCBA83F3179660D600569F2E /* MobileCoreServices.framework in Frameworks */,
@@ -449,6 +455,7 @@
 				CCB221401795344B00011E65 /* libWeChatSDK_armv7_armv7s.a in Frameworks */,
 				CCB221411795344B00011E65 /* libUMSocial_Sdk_2.2.1.a in Frameworks */,
 				CCB221421795344B00011E65 /* libUMSocial_Sdk_Comment_2.2.1.a in Frameworks */,
+				CC7120F817C1B0410004331D /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +484,15 @@
 				CCB294851783CEA900B2ACC5 /* 首页文字05_11.png */,
 			);
 			name = "welcome text";
+			sourceTree = "<group>";
+		};
+		CC7120F517C1B00C0004331D /* Analytics_iOS_SDK */ = {
+			isa = PBXGroup;
+			children = (
+				CC7120F617C1B0410004331D /* libMobClickLibrary.a */,
+				CC7120F717C1B0410004331D /* MobClick.h */,
+			);
+			name = Analytics_iOS_SDK;
 			sourceTree = "<group>";
 		};
 		CC94AECE1793D47C00E32D29 /* yearView */ = {
@@ -752,6 +768,7 @@
 		CCB5A2621778117F00A94C11 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CC7120F917C1B06B0004331D /* libz.dylib */,
 				CCBA83F61796611600569F2E /* libxml2.2.dylib */,
 				CCBA83F41796610800569F2E /* libz.1.2.5.dylib */,
 				CCBA83F2179660D600569F2E /* MobileCoreServices.framework */,
@@ -795,6 +812,7 @@
 		CCB5A2801778122400A94C11 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CC7120F517C1B00C0004331D /* Analytics_iOS_SDK */,
 				CCBC2CCA17B0D900006BEA39 /* SBJson */,
 				CCBA83D017965FE400569F2E /* ASIHTTPRequest */,
 				CCB2214C1795495500011E65 /* MBProgressHUD.h */,
@@ -1285,6 +1303,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Clock/UMSocial_Sdk_2.2.1/frameworks/Wechat\"",
 					"\"$(SRCROOT)/Clock/UMSocial_Sdk_2.2.1\"",
+					"\"$(SRCROOT)/Clock\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "84DD7CA9-7617-43A5-88A8-99E8F08CED76";
@@ -1305,6 +1324,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Clock/UMSocial_Sdk_2.2.1/frameworks/Wechat\"",
 					"\"$(SRCROOT)/Clock/UMSocial_Sdk_2.2.1\"",
+					"\"$(SRCROOT)/Clock\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "5C2DFD7E-2650-4173-ADB4-9B1164C9693B";

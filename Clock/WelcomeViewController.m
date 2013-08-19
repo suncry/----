@@ -266,12 +266,13 @@
     
     if(recognizer.direction==UISwipeGestureRecognizerDirectionLeft)
     {
-        //先移除手势  避免 欢迎界面的快速移动
-        [_controlView removeGestureRecognizer:_recognizerLeft];
-        [_controlView removeGestureRecognizer:_recognizerRight];
 
         if (_headerScrollView.contentOffset.x < 320*4)
         {
+            //先移除手势  避免 欢迎界面的快速移动
+            [_controlView removeGestureRecognizer:_recognizerLeft];
+            [_controlView removeGestureRecognizer:_recognizerRight];
+
             CGPoint pointHeader= _headerScrollView.contentOffset;
             CGPoint pointMid = _minScrollView.contentOffset;
             CGPoint pointFooter = _FooterScrollView.contentOffset;
@@ -318,21 +319,22 @@
                      {
 
                      }];
-                }   
+                }
         
         }
-        
+
         [self createDots];
     }
 
     if(recognizer.direction==UISwipeGestureRecognizerDirectionRight)
     {
-        //先移除手势  避免 欢迎界面的快速移动
-        [_controlView removeGestureRecognizer:_recognizerLeft];
-        [_controlView removeGestureRecognizer:_recognizerRight];
 
          if (_headerScrollView.contentOffset.x > 0)
          {
+             //先移除手势  避免 欢迎界面的快速移动
+             [_controlView removeGestureRecognizer:_recognizerLeft];
+             [_controlView removeGestureRecognizer:_recognizerRight];
+
              //////////////////////////////////////////////////////////////////////
              
              CGPoint pointHeader= _headerScrollView.contentOffset;
@@ -381,7 +383,9 @@
                       _lineBtn.hidden = YES;
                   }];
              }
+
          }
+
         [self createDots];
     }
 }
