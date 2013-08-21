@@ -15,6 +15,10 @@
 		CC2C232717AA3EA200518591 /* 闹钟铃声.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CC2C232617AA3EA200518591 /* 闹钟铃声.mp3 */; };
 		CC7120F817C1B0410004331D /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7120F617C1B0410004331D /* libMobClickLibrary.a */; };
 		CC7120FA17C1B06B0004331D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7120F917C1B06B0004331D /* libz.dylib */; };
+		CCAE491917C34B1B00719022 /* 90年.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAE490F17C34B1B00719022 /* 90年.png */; };
+		CCAE491A17C34B1B00719022 /* 90年_4.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAE491017C34B1B00719022 /* 90年_4.png */; };
+		CCAE491C17C34B1B00719022 /* 365天.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAE491217C34B1B00719022 /* 365天.png */; };
+		CCAE491D17C34B1B00719022 /* 365天_4.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAE491317C34B1B00719022 /* 365天_4.png */; };
 		CCAFBD1C178577D6007F36C3 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAFBD1A178577D6007F36C3 /* Icon.png */; };
 		CCAFBD1D178577D6007F36C3 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAFBD1B178577D6007F36C3 /* Icon@2x.png */; };
 		CCB04927178D2FC400E67859 /* 天气背景.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB04926178D2FC400E67859 /* 天气背景.png */; };
@@ -22,9 +26,6 @@
 		CCB0492C178D436E00E67859 /* on高亮.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0492A178D436E00E67859 /* on高亮.png */; };
 		CCB0492E178D43E900E67859 /* off高亮.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0492D178D43E900E67859 /* off高亮.png */; };
 		CCB04930178D43F800E67859 /* on灰.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0492F178D43F800E67859 /* on灰.png */; };
-		CCB0E43417A762370027CD1D /* 90.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0E43117A762370027CD1D /* 90.png */; };
-		CCB0E43517A762370027CD1D /* 365.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0E43217A762370027CD1D /* 365.png */; };
-		CCB0E43617A762370027CD1D /* 年月闪现1.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0E43317A762370027CD1D /* 年月闪现1.png */; };
 		CCB0E44117A787DA0027CD1D /* 0_0.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0E43717A787DA0027CD1D /* 0_0.png */; };
 		CCB0E44217A787DA0027CD1D /* 1_0.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0E43817A787DA0027CD1D /* 1_0.png */; };
 		CCB0E44317A787DA0027CD1D /* 2_0.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB0E43917A787DA0027CD1D /* 2_0.png */; };
@@ -162,6 +163,8 @@
 		CCBA83F51796610800569F2E /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBA83F41796610800569F2E /* libz.1.2.5.dylib */; };
 		CCBA83F71796611600569F2E /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBA83F61796611600569F2E /* libxml2.2.dylib */; };
 		CCBA83F9179692C700569F2E /* 透明.png in Resources */ = {isa = PBXBuildFile; fileRef = CCBA83F8179692C700569F2E /* 透明.png */; };
+		CCBAA42217C45F9800B57483 /* 闹钟提示.png in Resources */ = {isa = PBXBuildFile; fileRef = CCBAA42017C45F9800B57483 /* 闹钟提示.png */; };
+		CCBAA42317C45F9800B57483 /* 闹钟提示_4.png in Resources */ = {isa = PBXBuildFile; fileRef = CCBAA42117C45F9800B57483 /* 闹钟提示_4.png */; };
 		CCBC2CC917B095AB006BEA39 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB4BC921797E62400DB5C84 /* Default.png */; };
 		CCBC2CE017B0D942006BEA39 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2CCD17B0D942006BEA39 /* SBJsonParser.m */; };
 		CCBC2CE117B0D942006BEA39 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2CCF17B0D942006BEA39 /* SBJsonStreamParser.m */; };
@@ -201,6 +204,10 @@
 		CC7120F617C1B0410004331D /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		CC7120F717C1B0410004331D /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		CC7120F917C1B06B0004331D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		CCAE490F17C34B1B00719022 /* 90年.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "90年.png"; sourceTree = "<group>"; };
+		CCAE491017C34B1B00719022 /* 90年_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "90年_4.png"; sourceTree = "<group>"; };
+		CCAE491217C34B1B00719022 /* 365天.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "365天.png"; sourceTree = "<group>"; };
+		CCAE491317C34B1B00719022 /* 365天_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "365天_4.png"; sourceTree = "<group>"; };
 		CCAFBD1A178577D6007F36C3 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		CCAFBD1B178577D6007F36C3 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		CCB04926178D2FC400E67859 /* 天气背景.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "天气背景.png"; sourceTree = "<group>"; };
@@ -208,9 +215,6 @@
 		CCB0492A178D436E00E67859 /* on高亮.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "on高亮.png"; sourceTree = "<group>"; };
 		CCB0492D178D43E900E67859 /* off高亮.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "off高亮.png"; sourceTree = "<group>"; };
 		CCB0492F178D43F800E67859 /* on灰.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "on灰.png"; sourceTree = "<group>"; };
-		CCB0E43117A762370027CD1D /* 90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 90.png; sourceTree = "<group>"; };
-		CCB0E43217A762370027CD1D /* 365.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 365.png; sourceTree = "<group>"; };
-		CCB0E43317A762370027CD1D /* 年月闪现1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "年月闪现1.png"; sourceTree = "<group>"; };
 		CCB0E43717A787DA0027CD1D /* 0_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0_0.png; sourceTree = "<group>"; };
 		CCB0E43817A787DA0027CD1D /* 1_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_0.png; sourceTree = "<group>"; };
 		CCB0E43917A787DA0027CD1D /* 2_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_0.png; sourceTree = "<group>"; };
@@ -400,6 +404,8 @@
 		CCBA83F41796610800569F2E /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		CCBA83F61796611600569F2E /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		CCBA83F8179692C700569F2E /* 透明.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "透明.png"; sourceTree = "<group>"; };
+		CCBAA42017C45F9800B57483 /* 闹钟提示.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "闹钟提示.png"; sourceTree = "<group>"; };
+		CCBAA42117C45F9800B57483 /* 闹钟提示_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "闹钟提示_4.png"; sourceTree = "<group>"; };
 		CCBC2CCB17B0D942006BEA39 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
 		CCBC2CCC17B0D942006BEA39 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
 		CCBC2CCD17B0D942006BEA39 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
@@ -503,6 +509,19 @@
 			name = yearView;
 			sourceTree = "<group>";
 		};
+		CCAE490E17C34AFB00719022 /* 闪现提示 */ = {
+			isa = PBXGroup;
+			children = (
+				CCBAA42017C45F9800B57483 /* 闹钟提示.png */,
+				CCBAA42117C45F9800B57483 /* 闹钟提示_4.png */,
+				CCAE490F17C34B1B00719022 /* 90年.png */,
+				CCAE491017C34B1B00719022 /* 90年_4.png */,
+				CCAE491217C34B1B00719022 /* 365天.png */,
+				CCAE491317C34B1B00719022 /* 365天_4.png */,
+			);
+			name = "闪现提示";
+			sourceTree = "<group>";
+		};
 		CCB04925178D2FB200E67859 /* ringView */ = {
 			isa = PBXGroup;
 			children = (
@@ -533,16 +552,6 @@
 				CCB221151795328300011E65 /* icon */,
 			);
 			name = infoView;
-			sourceTree = "<group>";
-		};
-		CCB0E43017A75F2E0027CD1D /* 闪现 */ = {
-			isa = PBXGroup;
-			children = (
-				CCB0E43117A762370027CD1D /* 90.png */,
-				CCB0E43217A762370027CD1D /* 365.png */,
-				CCB0E43317A762370027CD1D /* 年月闪现1.png */,
-			);
-			name = "闪现";
 			sourceTree = "<group>";
 		};
 		CCB220BE179519AC00011E65 /* 红 */ = {
@@ -734,7 +743,6 @@
 			isa = PBXGroup;
 			children = (
 				CCB521C9178FF48C0039EA98 /* 更改颜色_阴影.png */,
-				CCB0E43017A75F2E0027CD1D /* 闪现 */,
 				CCB220C2179519E500011E65 /* 蓝 */,
 				CCB220C1179519DA00011E65 /* 绿 */,
 				CCB220C0179519D300011E65 /* 黄 */,
@@ -874,6 +882,7 @@
 				CCC813FC17A8B8BF00E3095A /* 分享图片.png */,
 				CCB0E45317A7A1E70027CD1D /* 出生年月设置过渡.jpg */,
 				CCB0E44F17A79FAB0027CD1D /* 出生年月设置过渡960.jpg */,
+				CCAE490E17C34AFB00719022 /* 闪现提示 */,
 				CC94AECE1793D47C00E32D29 /* yearView */,
 				CCB521C8178FF47A0039EA98 /* dayView */,
 				CCB04931178D4D9400E67859 /* infoView */,
@@ -1127,9 +1136,6 @@
 				CCCD901617A116B0005AA204 /* 7_4.png in Resources */,
 				CCCD901717A116B0005AA204 /* 8_4.png in Resources */,
 				CCCD901817A116B0005AA204 /* 9_4.png in Resources */,
-				CCB0E43417A762370027CD1D /* 90.png in Resources */,
-				CCB0E43517A762370027CD1D /* 365.png in Resources */,
-				CCB0E43617A762370027CD1D /* 年月闪现1.png in Resources */,
 				CCB0E44117A787DA0027CD1D /* 0_0.png in Resources */,
 				CCB0E44217A787DA0027CD1D /* 1_0.png in Resources */,
 				CCB0E44317A787DA0027CD1D /* 2_0.png in Resources */,
@@ -1148,6 +1154,12 @@
 				CCC813FD17A8B8BF00E3095A /* 分享图片.png in Resources */,
 				CC2C232717AA3EA200518591 /* 闹钟铃声.mp3 in Resources */,
 				CCBC2CC917B095AB006BEA39 /* Default.png in Resources */,
+				CCAE491917C34B1B00719022 /* 90年.png in Resources */,
+				CCAE491A17C34B1B00719022 /* 90年_4.png in Resources */,
+				CCAE491C17C34B1B00719022 /* 365天.png in Resources */,
+				CCAE491D17C34B1B00719022 /* 365天_4.png in Resources */,
+				CCBAA42217C45F9800B57483 /* 闹钟提示.png in Resources */,
+				CCBAA42317C45F9800B57483 /* 闹钟提示_4.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

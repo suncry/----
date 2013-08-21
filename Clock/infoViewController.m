@@ -253,8 +253,8 @@
     //获取版本号
     NSString *buildString = [[NSString alloc]init];
     buildString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    NSString *urlString = [[NSString alloc]initWithFormat:@"http://www.ipointek.com/feedback/api/version?appid=1007&version=%@&platform=ios",buildString];
-//    NSURL *url = [NSURL URLWithString:@"http://www.ipointek.com/feedback/api/version?appid=1007&version=1&platform=ios"];
+    NSString *urlString = [[NSString alloc]initWithFormat:@"http://www.ipointek.com/feedback/api/version?appid=1007&version=0&platform=ios"];
+//    http://www.ipointek.com/feedback/api/version?appid=1007&version=0&platform=ios
     NSURL *url = [NSURL URLWithString:urlString];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
@@ -271,15 +271,13 @@
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         
         NSMutableDictionary *dict = [jsonParser objectWithString:response];
-//        NSLog(@"%@",dict);
 
-//         NSString *cross1= [dict objectForKey:@"inside_version"];
+        NSLog(@"inside_version == %d",[[dict objectForKey:@"inside_version"]intValue]);
+        NSLog(@"[buildString intValue] == %d",[buildString intValue]);
         
-//        NSLog(@"[dict objectForKey:@\"inside_version\"] == %@",cross1);
-//        
-//        NSLog(@"[[dict objectForKey:@\"inside_version\"] isEqualToString:@\"2\"] == %d",[[dict objectForKey:@"inside_version"] isEqualToString:@"2"]);
+        
         //有新版本
-        if ([[dict objectForKey:@"inside_version"] isEqualToString:@"4"])
+        if ([[dict objectForKey:@"inside_version"]intValue] > [buildString intValue])
         {
             UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"新版本 时光闹钟"
                                                         message:@"时光闹钟推出新版本了，请及时更新"

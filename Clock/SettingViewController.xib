@@ -1674,7 +1674,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">672</int>
+			<int key="maxID">691</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1726,14 +1726,14 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="_backgroundView">UIView</string>
+						<string key="_alertImageView">UIView</string>
 						<string key="_hourPicker">IZValueSelectorView</string>
 						<string key="_minutePicker">IZValueSelectorView</string>
 						<string key="_pickerView">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="_backgroundView">
-							<string key="name">_backgroundView</string>
+						<object class="IBToOneOutletInfo" key="_alertImageView">
+							<string key="name">_alertImageView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="_hourPicker">

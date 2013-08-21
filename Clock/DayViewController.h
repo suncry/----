@@ -36,10 +36,13 @@
 
     IBOutlet UIView *_alertBackgroundView;
 
-    UIImageView *_dayAlertImageView;
-    UIImageView *_yearAlertImageView;
+    UIImageView *_alertImageView;
 
-    
+    UIButton *_iKnowBtnYear;
+    UIButton *_iKnowBtnDay;
+    UIButton *_lineBtnYear;
+    UIButton *_lineBtnDay;
+
 
 }
 @property (nonatomic,retain)UIScrollView *scrollView;

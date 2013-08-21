@@ -36,6 +36,9 @@
     // Do any additional setup after loading the view from its nib.
 
     
+    _alertImageView = [[UIImageView alloc]init];
+    _alertImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
+
     
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -48,6 +51,7 @@
     self.scrollView.scrollsToTop = NO;
     self.scrollView.delegate = self;
     self.scrollView.bounces = NO;
+//    _scrollView.scrollEnabled = YES;
 
     [self.view addSubview:self.scrollView];
     //绘制365天格子
@@ -127,18 +131,24 @@
     //默认进入365天界面
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
     {
-        
-        
-        
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
-        
+
         self.scrollView.contentOffset = CGPointMake(0.0f, 0.0f);
         
-        
+        self.scrollView.scrollEnabled = NO;
         _imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"我们估计"]];
-        _imageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
-        
+        _imageView.frame = CGRectMake(0, DEVICE_HEIGHT, 320, DEVICE_HEIGHT);
         [self.view addSubview:_imageView];
+
+        [UIView animateWithDuration:1.5 delay:0 options:0 animations:^(){
+            _imageView.frame = CGRectMake(0, DEVICE_HEIGHT, 320, DEVICE_HEIGHT);
+            [_imageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _imageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
+        } completion:^(BOOL finished)
+         {
+        
+
+        
 
         
         //添加 第一次 进入90年的Lable
@@ -155,11 +165,11 @@
         stringLable.backgroundColor = [UIColor clearColor];
         stringLable.font = [UIFont boldSystemFontOfSize:18.0f];
         stringLable.textColor = [UIColor whiteColor];
-        NSString *tempString = [[NSString alloc]initWithFormat:@"你已经度过了你人生中的第         年"];
+        NSString *tempString = [[NSString alloc]initWithFormat:@"你已经度过了你人生中的         年"];
         stringLable.text = tempString;
         [_imageView addSubview:stringLable];
 
-        UILabel *numLable = [[UILabel alloc]initWithFrame:CGRectMake(242, DEVICE_HEIGHT - 100, 280, 60)];
+        UILabel *numLable = [[UILabel alloc]initWithFrame:CGRectMake(222, DEVICE_HEIGHT - 100, 280, 60)];
         numLable.backgroundColor = [UIColor clearColor];
         numLable.font = [UIFont boldSystemFontOfSize:40.0f];
         numLable.textColor = [UIColor whiteColor];
@@ -173,7 +183,7 @@
         _scrollView.scrollEnabled = NO;
         
         //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:3.0 delay:1 options:0 animations:^(){
+        [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
             numLable.alpha = 0.0;
             [numLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
             numLable.alpha = 1.0;
@@ -186,7 +196,7 @@
         //////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////
-        [UIView animateWithDuration:3.0 delay:1 options:0 animations:^(){
+        [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
             stringLable.alpha = 0.0;
             [stringLable exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
             stringLable.alpha = 1.0;
@@ -211,7 +221,7 @@
              } completion:^(BOOL finished)
               {
                   //////////////////////////////////////////////////////////////////////
-                  [UIView animateWithDuration:3.0 delay:0 options:0 animations:^(){
+                  [UIView animateWithDuration:1.5 delay:0 options:0 animations:^(){
                       _imageView.alpha = 1.0;
                       [_imageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
                       _imageView.alpha = 0.0;
@@ -237,10 +247,9 @@
                        
                        [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
                        [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-                       
-                       
-                       
                        [self presentViewController:drawerController animated:NO completion:nil];
+                       
+
                        
                    }];
                   
@@ -256,27 +265,79 @@
         
         //////////////////////////////////////////////////////////////////////
 
-
+ }];
     }
     else
     {
-        self.scrollView.contentOffset = CGPointMake(0.0f, DEVICE_HEIGHT);
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"90yearEverLaunched"])
+        {
+            //第一次 默认 90年页面
+            self.scrollView.contentOffset = CGPointMake(0.0f, 0);
 
+        }
+        else
+        {
+            //不是第一次 默认365天页面
+            self.scrollView.contentOffset = CGPointMake(0.0f, DEVICE_HEIGHT);
+
+        }
+/////////////
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"90yearEverLaunched"])
+        {
+        //进入提示后  _scrollView  不能滚动
+        _scrollView.scrollEnabled = NO;
+        
+        //        [self.view addSubview:_alertBackgroundView];
+        //用2个嵌套的动画 实现  提示的  渐入渐出
+        if (DEVICE_IS_IPHONE5)
+        {
+            _alertImageView.image = [UIImage imageNamed:@"90年"];
+        }
+        else
+        {
+            _alertImageView.image = [UIImage imageNamed:@"90年_4"];
+            
+        }
+        
+        [self.view addSubview:_alertImageView];
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _alertImageView.alpha = 0.0;
+            [_alertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _alertImageView.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
+        _iKnowBtnYear = [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4, 100, 50)];
+        _iKnowBtnYear.backgroundColor = [UIColor clearColor];
+        [_iKnowBtnYear setTitle:@"我知道了" forState:UIControlStateNormal];
+        _iKnowBtnYear.titleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+        _iKnowBtnYear.titleLabel.textColor = [UIColor whiteColor];
+        [_iKnowBtnYear addTarget:self action:@selector(iKnowBtnYearClick) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:_iKnowBtnYear];
+        
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _iKnowBtnYear.alpha = 0.0;
+            [_iKnowBtnYear exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _iKnowBtnYear.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
+        
+        _lineBtnYear =  [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4 + 37, 100, 3)];
+        _lineBtnYear.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_lineBtnYear];
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _lineBtnYear.alpha = 0.0;
+            [_lineBtnYear exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _lineBtnYear.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
+
+        }
     }
-    
-    
-    //添加页面跳转手势
-//    [self addGesture];
-    
-    
-    
-    _yearAlertImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"90.png"]];
-    _yearAlertImageView.frame = CGRectMake(55, (DEVICE_HEIGHT - 50)/2 - 50, 210, 100);
-    
-    _dayAlertImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"365.png"]];
-    _dayAlertImageView.frame = CGRectMake(66, (DEVICE_HEIGHT - 50)/2 - 50, 210, 100);
-    
-}
+   }
 
 - (void)didReceiveMemoryWarning
 {
@@ -292,109 +353,138 @@
     [_drawView setNeedsDisplay];
     [_yearDrawView setNeedsDisplay];
 }
-
-//- (void)addGesture
-//{
-//    UITapGestureRecognizer *tapRecognizer;
-//
-//    tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
-//    [[self view] addGestureRecognizer:tapRecognizer];
-//
-//
-//}
-//
-//- (void)tap
-//{
-//
-//}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y == 0.0f)
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"365dayEverLaunched"])
     {
-
-        [self.view addSubview:_alertBackgroundView];
-        //用4个嵌套的动画 实现  提示的  渐入渐出
-        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-            _alertBackgroundView.alpha = 0.0;
-            [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _alertBackgroundView.alpha = 1.0;
-        } completion:^(BOOL finished)
-         {
-             [self.view addSubview:_yearAlertImageView];
-             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-                 _yearAlertImageView.alpha = 0.0;
-                 [_yearAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                 _yearAlertImageView.alpha = 1.0;
-             } completion:^(BOOL finished)
-              {
-                  [self.view addSubview:_yearAlertImageView];
-                  [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-                      _yearAlertImageView.alpha = 1.0;
-                      [_yearAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                      _yearAlertImageView.alpha = 0.0;
-                  } completion:^(BOOL finished)
-                   {
-                       [_yearAlertImageView removeFromSuperview];
-                       [self.view addSubview:_alertBackgroundView];
-                       [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-                           _alertBackgroundView.alpha = 1.0;
-                           [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                           _alertBackgroundView.alpha = 0.0;
-                       } completion:^(BOOL finished)
-                        {
-                            [_alertBackgroundView removeFromSuperview];
-                        }];
-                   }];
-                  
-
-              }];
-         }];
-
-
-    }
-    if (scrollView.contentOffset.y == DEVICE_HEIGHT)
-    {
+        if (scrollView.contentOffset.y == DEVICE_HEIGHT)
+        {
+            //进入提示后  _scrollView  不能滚动
+            _scrollView.scrollEnabled = NO;
+            
+            //用2个嵌套的动画 实现  提示的  渐入渐出
+            if (DEVICE_IS_IPHONE5)
+            {
+                _alertImageView.image = [UIImage imageNamed:@"365天"];
+            }
+            else
+            {
+                _alertImageView.image = [UIImage imageNamed:@"365天_4"];
+                
+            }
+            [self.view addSubview:_alertImageView];
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                _alertImageView.alpha = 0.0;
+                [_alertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                _alertImageView.alpha = 1.0;
+            } completion:^(BOOL finished)
+             {
+             }];
+            _iKnowBtnDay = [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4, 100, 50)];
+            _iKnowBtnDay.backgroundColor = [UIColor clearColor];
+            [_iKnowBtnDay setTitle:@"我知道了" forState:UIControlStateNormal];
+            _iKnowBtnDay.titleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+            _iKnowBtnDay.titleLabel.textColor = [UIColor whiteColor];
+            [_iKnowBtnDay addTarget:self action:@selector(iKnowBtnDayClick) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self.view addSubview:_iKnowBtnDay];
+            
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                _iKnowBtnDay.alpha = 0.0;
+                [_iKnowBtnDay exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                _iKnowBtnDay.alpha = 1.0;
+            } completion:^(BOOL finished)
+             {
+             }];
+            
+            
+            
+            _lineBtnDay =  [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4 + 37, 100, 3)];
+            _lineBtnDay.backgroundColor = [UIColor whiteColor];
+            [self.view addSubview:_lineBtnDay];
+            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                _lineBtnDay.alpha = 0.0;
+                [_lineBtnDay exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                _lineBtnDay.alpha = 1.0;
+            } completion:^(BOOL finished)
+             {
+             }];
+            
+        }
         
-        [self.view addSubview:_alertBackgroundView];
-        //用4个嵌套的动画 实现  提示的  渐入渐出
-        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-            _alertBackgroundView.alpha = 0.0;
-            [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _alertBackgroundView.alpha = 1.0;
-        } completion:^(BOOL finished)
-         {
-             [self.view addSubview:_dayAlertImageView];
-             [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-                 _dayAlertImageView.alpha = 0.0;
-                 [_dayAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                 _dayAlertImageView.alpha = 1.0;
-             } completion:^(BOOL finished)
-              {
-                  [self.view addSubview:_dayAlertImageView];
-                  [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-                      _dayAlertImageView.alpha = 1.0;
-                      [_dayAlertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                      _dayAlertImageView.alpha = 0.0;
-                  } completion:^(BOOL finished)
-                   {
-                       [_yearAlertImageView removeFromSuperview];
-                       [self.view addSubview:_alertBackgroundView];
-                       [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-                           _alertBackgroundView.alpha = 1.0;
-                           [_alertBackgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                           _alertBackgroundView.alpha = 0.0;
-                       } completion:^(BOOL finished)
-                        {
-                            [_alertBackgroundView removeFromSuperview];
-                        }];
-                   }];
-                  
-                  
-              }];
-         }];
+        
+        
+        
 
     }
-}
+   }
+- (void)iKnowBtnYearClick
+{
+//    NSLog(@"iKnowBtnYearClick!!!");
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+                              _alertImageView.alpha = 1.0;
+                              [_alertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+                              _alertImageView.alpha = 0.0;
+                         } completion:^(BOOL finished)
+                        {
+                            [_alertImageView removeFromSuperview];
+                        }];
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _iKnowBtnYear.alpha = 1.0;
+        [_iKnowBtnYear exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _iKnowBtnYear.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_iKnowBtnYear removeFromSuperview];
+         //提示结束后  _scrollView  能滚动
+         _scrollView.scrollEnabled = YES;
 
+     }];
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _lineBtnYear.alpha = 1.0;
+        [_lineBtnYear exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _lineBtnYear.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_lineBtnYear removeFromSuperview];
+         
+     }];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"90yearEverLaunched"];
+
+}
+- (void)iKnowBtnDayClick
+{
+//    NSLog(@"iKnowBtnDayClick!!!");
+
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _alertImageView.alpha = 1.0;
+        [_alertImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _alertImageView.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_alertImageView removeFromSuperview];
+     }];
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _iKnowBtnDay.alpha = 1.0;
+        [_iKnowBtnDay exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _iKnowBtnDay.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_iKnowBtnDay removeFromSuperview];
+         //提示结束后  _scrollView  能滚动
+         _scrollView.scrollEnabled = YES;
+         
+     }];
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _lineBtnDay.alpha = 1.0;
+        [_lineBtnDay exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _lineBtnDay.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_lineBtnDay removeFromSuperview];
+         
+     }];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"365dayEverLaunched"];
+    
+}
 @end

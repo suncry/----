@@ -30,6 +30,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _backgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, DEVICE_HEIGHT)];
+    _backgroundView.backgroundColor = [UIColor clearColor];
+    _alertImageView = [[UIImageView alloc]init];
+    _alertImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
+    [_backgroundView addSubview:_alertImageView];
+    
+    
     dayNum = 0;
     [self initTimeDictionary];
     [self creatLable];
@@ -56,10 +63,58 @@
 //    _pickerView.hidden = YES;
 
     
-    if (!DEVICE_IS_IPHONE5) {
-//        _backgroundView.frame = CGRectMake(0, -300, 320, 568);
-        NSLog(@"是 4、、、、、");
+//    if (!DEVICE_IS_IPHONE5) {
+////        _backgroundView.frame = CGRectMake(0, -300, 320, 568);
+//        NSLog(@"是 4、、、、、");
+//    }
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"settingEverLaunched"])
+    {
+        //用2个嵌套的动画 实现  提示的  渐入渐出
+        if (DEVICE_IS_IPHONE5)
+        {
+            _alertImageView.image = [UIImage imageNamed:@"闹钟提示"];
+        }
+        else
+        {
+            _alertImageView.image = [UIImage imageNamed:@"闹钟提示_4"];
+        }
+        [self.view addSubview:_backgroundView];
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _backgroundView.alpha = 0.0;
+            [_backgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _backgroundView.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
+        _iKnowBtn = [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4, 100, 50)];
+        _iKnowBtn.backgroundColor = [UIColor clearColor];
+        [_iKnowBtn setTitle:@"我知道了" forState:UIControlStateNormal];
+        _iKnowBtn.titleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+        _iKnowBtn.titleLabel.textColor = [UIColor whiteColor];
+        [_iKnowBtn addTarget:self action:@selector(iKnowBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:_iKnowBtn];
+        
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _iKnowBtn.alpha = 0.0;
+            [_iKnowBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _iKnowBtn.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
+        _lineBtn =  [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4 + 37, 100, 3)];
+        _lineBtn.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_lineBtn];
+        [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+            _lineBtn.alpha = 0.0;
+            [_lineBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+            _lineBtn.alpha = 1.0;
+        } completion:^(BOOL finished)
+         {
+         }];
     }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -737,6 +792,9 @@
             break;
     }
 //    NSLog(@"onBtnClick %d  isON == %@",onBtn.tag - 200,[mydb isON:onBtn.tag - 200]);
+    PushNotification *pushNotification = [[PushNotification alloc]init];
+    [pushNotification setClock];
+
 }
 
 - (void)offBtnClick:(id)sender
@@ -788,8 +846,13 @@
         default:
             break;
     }
+
+    
     
 //    NSLog(@"offBtnClick %d  isON == %@",onBtn.tag - 200,[mydb isON:offBtn.tag - 100]);
+    PushNotification *pushNotification = [[PushNotification alloc]init];
+    [pushNotification setClock];
+
 
 }
 
@@ -1026,5 +1089,37 @@
     MyDB *mydb = [[MyDB alloc]init];
     [_hourPicker selectIndex:[NSIndexPath indexPathForRow:[mydb hour:dayNum] inSection:0]];
     [_minutePicker selectIndex:[NSIndexPath indexPathForRow:[mydb minute:dayNum] inSection:0]];
+}
+
+- (void)iKnowBtnClick
+{
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _backgroundView.alpha = 1.0;
+        [_backgroundView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _backgroundView.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_backgroundView removeFromSuperview];
+     }];
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _iKnowBtn.alpha = 1.0;
+        [_iKnowBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _iKnowBtn.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_iKnowBtn removeFromSuperview];
+         
+     }];
+    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
+        _lineBtn.alpha = 1.0;
+        [_lineBtn exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+        _lineBtn.alpha = 0.0;
+    } completion:^(BOOL finished)
+     {
+         [_lineBtn removeFromSuperview];
+         
+     }];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"settingEverLaunched"];
+    
 }
 @end

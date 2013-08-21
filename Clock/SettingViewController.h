@@ -15,9 +15,7 @@
     IBOutlet IZValueSelectorView *_minutePicker;
     IBOutlet UIView *_pickerView;
     
-    
-    IBOutlet UIView *_backgroundView;
-    
+        
     UIButton *_timeBtn1;
     UIButton *_timeBtn2;
     UIButton *_timeBtn3;
@@ -31,6 +29,11 @@
     NSMutableDictionary *_hourTime;
     NSMutableDictionary *_minuteTime;
 
+    UIButton *_iKnowBtn;
+    UIImageView *_alertImageView;
+    UIButton *_lineBtn;
+    
+    UIView *_backgroundView;
 
 }
 - (IBAction)okClick:(id)sender;

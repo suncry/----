@@ -114,6 +114,10 @@
     [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
     [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
     
+    //起床之后就把 小睡通知 设为空
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"sleep"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"sleepNotificationTime"];
+
     
     [self presentViewController:drawerController animated:YES completion:nil];
 }
@@ -132,27 +136,34 @@
     
     //////////////////////////////////////////////////////////////////////
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"sleep"];
+    UILocalNotification *sleepNotification = [[UILocalNotification alloc] init];
+    
     //发送通知：
-    UILocalNotification *newNotification = [[UILocalNotification alloc] init];
-    if (newNotification)
+    if (sleepNotification)
     {
         //时区
-        newNotification.timeZone=[NSTimeZone defaultTimeZone];
+        sleepNotification.timeZone=[NSTimeZone defaultTimeZone];
+        
         //推送时间---根据用户设置
         //点击了  小睡之后   5分钟之后再响
-        newNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:5*60];
+//        sleepNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:5*60];
+        sleepNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:15];
+
         //推送内容
-        newNotification.alertBody = @"开心迎接新的一天吧！";
-        [newNotification setSoundName:@"闹钟铃声.mp3"];
+        sleepNotification.alertBody = @"开心迎接新的一天吧！";
+        [sleepNotification setSoundName:@"闹钟铃声.mp3"];
 //        //设置按钮
-//        newNotification.alertAction = @"关闭";
+        sleepNotification.alertAction = @"关闭";
         //设置重复
-        newNotification.repeatInterval = kCFCalendarUnitDay;
-        [[UIApplication sharedApplication] scheduleLocalNotification:newNotification];
+        sleepNotification.repeatInterval = kCFCalendarUnitDay;
+        [[UIApplication sharedApplication] scheduleLocalNotification:sleepNotification];
         
            NSLog(@"小睡5分钟");
-        NSLog(@"newNotification == %@",newNotification);
-        
+        NSLog(@"sleepNotification == %@",sleepNotification);
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:5*60] forKey:@"sleepNotificationTime"];
+
+        NSLog(@"设定的 [[NSUserDefaults standardUserDefaults]valueForKey:@\"sleepNotificationTime\"] == %@",(NSDate *)[[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"]);
+
     }
 
     
