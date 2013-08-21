@@ -137,16 +137,8 @@
         
         self.scrollView.scrollEnabled = NO;
         _imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"我们估计"]];
-        _imageView.frame = CGRectMake(0, DEVICE_HEIGHT, 320, DEVICE_HEIGHT);
+        _imageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
         [self.view addSubview:_imageView];
-
-        [UIView animateWithDuration:1.5 delay:0 options:0 animations:^(){
-            _imageView.frame = CGRectMake(0, DEVICE_HEIGHT, 320, DEVICE_HEIGHT);
-            [_imageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-            _imageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
-        } completion:^(BOOL finished)
-         {
-        
 
         
 
@@ -265,7 +257,6 @@
         
         //////////////////////////////////////////////////////////////////////
 
- }];
     }
     else
     {

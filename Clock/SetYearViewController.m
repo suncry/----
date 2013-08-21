@@ -267,8 +267,7 @@
     {
 
         DayViewController * center = [[DayViewController alloc] init];
-        
-        [self presentViewController:center animated:NO completion:nil];
+        [self presentViewController:center animated:YES completion:nil];
 
     }
     else
