@@ -1,0 +1,46 @@
+/* 
+  Localizable.strings
+  时光闹钟
+
+  Created by Suncry on 13-9-13.
+  Copyright (c) 2013年 ipointek. All rights reserved.
+*/
+CFBundleDisplayName="Time Alarm";
+
+"lable1_1" = "How";
+"lable1_2" = "How";
+"lable1_3" = "Only";
+"lable1_4" = "Time Alarm";
+"lable1_5" = "Time Alarm";
+
+"lable2_1" = "records your daily progress";
+"lable2_2" = "records time in the name of time";
+"lable2_3" = "time is noticed with passage of time";
+"lable2_4" = "seasons change each year";
+"lable2_5" = "time flies each day";
+
+"lable3_1" = "";
+"lable3_2" = "";
+"lable3_3" = "";
+"lable3_4" = "";
+
+//欢迎界面的开始按钮
+"welcome_startBtn" = "Enjoy Time Alarm just for you";
+//我知道了
+"know" = "OK";
+//闹钟设置页面 自然醒
+//"wakeup" = "Natural wake-up";
+"wakeup" = "OFF";
+
+//星期
+"1" = "  Mon";
+"2" = "  Tue";
+"3" = "  Wed";
+"4" = "  Thu";
+"5" = "  Fri";
+"6" = "  Sat";
+"7" = "  Sun";
+//下载地址
+"downloadAdd" = "Time Alarm records your daily progress，Try it. Download Time Alarm at：https://itunes.apple.com/us/app/shi-guang-nao-zhong/id684557922?ls=1&mt=8";
+//闹钟响起
+"ringText" = "Happy to meet a new day!";

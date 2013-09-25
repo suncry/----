@@ -14,12 +14,14 @@
 #import "MMDrawerController.h"
 #import "MMDrawerVisualState.h"
 #import "MMDrawerBarButtonItem.h"
+
+
 @interface RingViewController ()
 
 @end
 
 @implementation RingViewController
-
+@synthesize ring = _ring;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -32,14 +34,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-//    UIColor *blueColor = [UIColor colorWithRed:(CGFloat)45/255
-//                                         green:(CGFloat)171/255
-//                                          blue:(CGFloat)229/255
-//                                         alpha:1];
-//    self.view.backgroundColor = [UIColor blueColor];
-    //////////////////////////////////////////////////////////////////////
-    
     [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
         self.view.alpha = 0.3;
         [self.view exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
@@ -55,23 +49,23 @@
     [dayNumLable setText:[NSString stringWithFormat:@"%d",[self dayNum]]];
     
 //    //背景音乐
-//    NSString *soundFilePath =
-//    [[NSBundle mainBundle] pathForResource: @"闹钟铃声"
-//                                    ofType: @"mp3"];
-//    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
-//    AVAudioPlayer *newPlayer =
-//    [[AVAudioPlayer alloc] initWithContentsOfURL: fileURL
-//                                           error: nil];
-//    newPlayer.delegate = self;
-////    self.player = newPlayer;
-////    [self.player prepareToPlay];
-////    
-////    [self.player setDelegate: self];
-////    self.player.numberOfLoops = -1;    // Loop playback until invoke stop method
-////    [self.player play];
-//     [newPlayer setVolume:1]; 
-//    newPlayer.numberOfLoops = -1;
-//    [newPlayer play];
+    //后台播放 设置
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setActive:YES error:nil];
+    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+
+    
+    //播放音乐设置
+    NSString *musicFilePath = [[NSBundle mainBundle] pathForResource:@"闹钟铃声" ofType:@"mp3"];       //创建音乐文件路径
+    NSURL *musicURL = [[NSURL alloc] initFileURLWithPath:musicFilePath];
+    
+    AVAudioPlayer *thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicURL error:nil];
+    self.ring = thePlayer;
+    //创建播放器
+//    [thePlayer prepareToPlay];
+    [self.ring setVolume:1];   //设置音量大小
+    self.ring.numberOfLoops = -1;//设置音乐播放次数  -1为一直循环
+    [self.ring play];   //播放
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,6 +75,8 @@
 }
 - (IBAction)getUpBtnClick:(id)sender
 {
+    [self.ring stop];   //
+
     //////////////////////////////////////////////////////////////////////
     
     [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
@@ -123,6 +119,8 @@
 }
 - (IBAction)sleepBtnClick:(id)sender
 {
+    [self.ring stop];   //
+
     //////////////////////////////////////////////////////////////////////
     
     [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
@@ -136,35 +134,38 @@
     
     //////////////////////////////////////////////////////////////////////
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"sleep"];
-    UILocalNotification *sleepNotification = [[UILocalNotification alloc] init];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:5*60] forKey:@"sleepNotificationTime"];
+
     
-    //发送通知：
-    if (sleepNotification)
-    {
-        //时区
-        sleepNotification.timeZone=[NSTimeZone defaultTimeZone];
-        
-        //推送时间---根据用户设置
-        //点击了  小睡之后   5分钟之后再响
-//        sleepNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:5*60];
-        sleepNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:15];
-
-        //推送内容
-        sleepNotification.alertBody = @"开心迎接新的一天吧！";
-        [sleepNotification setSoundName:@"闹钟铃声.mp3"];
-//        //设置按钮
-        sleepNotification.alertAction = @"关闭";
-        //设置重复
-        sleepNotification.repeatInterval = kCFCalendarUnitDay;
-        [[UIApplication sharedApplication] scheduleLocalNotification:sleepNotification];
-        
-           NSLog(@"小睡5分钟");
-        NSLog(@"sleepNotification == %@",sleepNotification);
-        [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:5*60] forKey:@"sleepNotificationTime"];
-
-        NSLog(@"设定的 [[NSUserDefaults standardUserDefaults]valueForKey:@\"sleepNotificationTime\"] == %@",(NSDate *)[[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"]);
-
-    }
+    
+//    UILocalNotification *sleepNotification = [[UILocalNotification alloc] init];
+//    //发送通知：
+//    if (sleepNotification)
+//    {
+//        //时区
+//        sleepNotification.timeZone=[NSTimeZone defaultTimeZone];
+//        
+//        //推送时间---根据用户设置
+//        //点击了  小睡之后   5分钟之后再响
+////        sleepNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:5*60];
+//        sleepNotification.fireDate=[NSDate dateWithTimeIntervalSinceNow:15];
+//
+//        //推送内容
+//        sleepNotification.alertBody = @"开心迎接新的一天吧！";
+//        [sleepNotification setSoundName:@"闹钟铃声.mp3"];
+////        //设置按钮
+//        sleepNotification.alertAction = @"关闭";
+//        //设置重复
+//        sleepNotification.repeatInterval = kCFCalendarUnitDay;
+//        [[UIApplication sharedApplication] scheduleLocalNotification:sleepNotification];
+//        
+//           NSLog(@"小睡5分钟");
+//        NSLog(@"sleepNotification == %@",sleepNotification);
+//        [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:5*60] forKey:@"sleepNotificationTime"];
+//
+//        NSLog(@"设定的 [[NSUserDefaults standardUserDefaults]valueForKey:@\"sleepNotificationTime\"] == %@",(NSDate *)[[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"]);
+//
+//    }
 
     
     

@@ -1,0 +1,44 @@
+/* 
+  Localizable.strings
+  时光闹钟
+
+  Created by Suncry on 13-9-13.
+  Copyright (c) 2013年 ipointek. All rights reserved.
+*/
+CFBundleDisplayName="时光闹钟";
+
+"lable1_1" = "每一天";
+"lable1_2" = "春去秋来";
+"lable1_3" = "也许";
+"lable1_4" = "时光闹钟";
+"lable1_5" = "时光闹钟";
+
+"lable2_1" = "以时间的名义";
+"lable2_2" = "以岁月的名义";
+"lable2_3" = "只有时间的消逝";
+"lable2_4" = "花开花落";
+"lable2_5" = "荏苒的时光从我们身边流过";
+
+"lable3_1" = "转瞬即逝";
+"lable3_2" = "才能使我们注意到时间";
+"lable3_3" = "来记录时间";
+"lable3_4" = "记录你积极向上的每一天";
+
+//欢迎界面的开始按钮
+"welcome_startBtn" = "开启专属于你的时光闹钟";
+//我知道了
+"know" = "我知道了";
+//闹钟设置页面 自然醒
+"wakeup" = "自然醒";
+//星期
+"1" = "星 期 一";
+"2" = "星 期 二";
+"3" = "星 期 三";
+"4" = "星 期 四";
+"5" = "星 期 五";
+"6" = "星 期 六";
+"7" = "星 期 天";
+//下载地址
+"downloadAdd" = "我正在使用【时光闹钟】，以时光的名义，提醒我们积极向上的迎接人生中的每一天。App Store 下载地址：https://itunes.apple.com/us/app/shi-guang-nao-zhong/id684557922?ls=1&mt=8";
+//闹钟响起
+"ringText" = "开心迎接新的一天吧！";

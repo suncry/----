@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface FeedbackViewController : UIViewController
+{
+    IBOutlet UITextView *textView;
+
+}
+- (IBAction)sendBtnClick:(id)sender;
+- (IBAction)cancelSendBtnClick:(id)sender;
 
 @end

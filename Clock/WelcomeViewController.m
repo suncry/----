@@ -70,12 +70,24 @@
     }
     else
     {
-        _startBtn = [[UIButton alloc]initWithFrame:CGRectMake(50, 380, 220, 40)];
+        _startBtn = [[UIButton alloc]initWithFrame:CGRectMake(45, 380, 230, 40)];
     }
     
-    [_startBtn setTitle:@"开启专属你的时光闹钟" forState:UIControlStateNormal];
-    
-    _startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:21.0f];
+    [_startBtn setTitle:NSLocalizedString(@"welcome_startBtn", @"") forState:UIControlStateNormal];
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    NSLog ( @"%@" , currentLanguage);
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        NSLog(@"current Language:en");
+        _startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+
+    }
+    else
+    {
+        _startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+
+    }
     [_startBtn setTitleColor:[UIColor colorWithRed:(CGFloat)45/255
                                              green:(CGFloat)171/255
                                               blue:(CGFloat)229/255
@@ -152,25 +164,33 @@
                                           blue:(CGFloat)121/255
                                          alpha:1];
     
-    
-    //第一排 滚动文字    
+    //获取 用于判断当前语言
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+
+    //第一排 滚动文字
 //    UILabel *lable1_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+42,234 - (DEVICE_HEIGHT/2 - 150), 270, 50)];
     UILabel *lable1_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+42,DEVICE_HEIGHT*234/568 - 20, 270, 50)];
-    lable1_1.text = @"每一天";
+//    lable1_1.text = @"每一天";
+    lable1_1.text = NSLocalizedString(@"lable1_1", @"");
     [lable1_1 setTextColor:blueColor];
     lable1_1.font = [UIFont systemFontOfSize:32.0f];
     lable1_1.backgroundColor = [UIColor clearColor];
     [_headerScrollView addSubview:lable1_1];
         
     UILabel *lable1_2 = [[UILabel alloc]initWithFrame:CGRectMake(320+42, DEVICE_HEIGHT*219/568 - 10, 270, 50)];
-    lable1_2.text = @"春去秋来";
+//    lable1_2.text = @"春去秋来";
+    lable1_2.text = NSLocalizedString(@"lable1_2", @"");
+
     [lable1_2 setTextColor:grayColor];
     lable1_2.font = [UIFont systemFontOfSize:32.0f];
     lable1_2.backgroundColor = [UIColor clearColor];
     [_headerScrollView addSubview:lable1_2];
     
     UILabel *lable1_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*2, DEVICE_HEIGHT*235/568 - 20, 320, 50)];
-    lable1_3.text = @"也许";
+//    lable1_3.text = @"也许";
+    lable1_3.text = NSLocalizedString(@"lable1_3", @"");
+
     lable1_3.textAlignment= NSTextAlignmentCenter;
     [lable1_3 setTextColor:blueColor];
     lable1_3.font = [UIFont systemFontOfSize:32.0f];
@@ -178,85 +198,156 @@
     [_headerScrollView addSubview:lable1_3];
     
     UILabel *lable1_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*3, DEVICE_HEIGHT*198/568 - 20, 320, 50)];
-    lable1_4.text = @"时光闹钟";
+//    lable1_4.text = @"时光闹钟";
+    lable1_4.text = NSLocalizedString(@"lable1_4", @"");
+
     lable1_4.textAlignment= NSTextAlignmentCenter;
     [lable1_4 setTextColor:blueColor];
     lable1_4.font = [UIFont systemFontOfSize:32.0f];
     lable1_4.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+//        lable1_4.font = [UIFont systemFontOfSize:19.0f];
+        lable1_4.frame = CGRectMake(320*3, DEVICE_HEIGHT*198/568 + 30, 320, 50);
+        
+    }
+
     [_headerScrollView addSubview:lable1_4];
     UILabel *lable1_5 = [[UILabel alloc]initWithFrame:CGRectMake(320*4, DEVICE_HEIGHT*198/568 - 20, 320, 50)];
-    lable1_5.text = @"时光闹钟";
+//    lable1_5.text = @"时光闹钟";
+    lable1_5.text = NSLocalizedString(@"lable1_5", @"");
+
     lable1_5.textAlignment= NSTextAlignmentCenter;
     [lable1_5 setTextColor:blueColor];
     lable1_5.font = [UIFont systemFontOfSize:32.0f];
     lable1_5.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        //        lable1_5.font = [UIFont systemFontOfSize:19.0f];
+        lable1_5.frame = CGRectMake(320*4, DEVICE_HEIGHT*198/568 + 30, 320, 50);
+        
+    }
+
     [_headerScrollView addSubview:lable1_5];
     
     
     //第二排 滚动文字
     UILabel *lable2_1 = [[UILabel alloc]initWithFrame:CGRectMake(0+91, DEVICE_HEIGHT*250/568 - 10, 270, 50)];
-    lable2_1.text = @"以时间的名义";
+//    lable2_1.text = @"以时间的名义";
+    lable2_1.text = NSLocalizedString(@"lable2_1", @"");
+
     [lable2_1 setTextColor:grayColor];
     lable2_1.font = [UIFont systemFontOfSize:21.0f];
     lable2_1.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        lable2_1.font = [UIFont systemFontOfSize:19.0f];
+        lable2_1.frame = CGRectMake(0, DEVICE_HEIGHT*252/568 +20, 320, 50);
+        lable2_1.textAlignment = NSTextAlignmentCenter;
+
+    }
+
     [_minScrollView addSubview:lable2_1];
     
     UILabel *lable2_2 = [[UILabel alloc]initWithFrame:CGRectMake(320+50, DEVICE_HEIGHT*252/568 - 10, 270, 50)];
-    lable2_2.text = @"以岁月的名义";
+//    lable2_2.text = @"以岁月的名义";
+    lable2_2.text = NSLocalizedString(@"lable2_2", @"");
+
     [lable2_2 setTextColor:grayColor];
     lable2_2.font = [UIFont systemFontOfSize:21.0f];
     lable2_2.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        lable2_2.font = [UIFont systemFontOfSize:19.0f];
+        lable2_2.frame = CGRectMake(320, DEVICE_HEIGHT*252/568 +20, 320, 50);
+        lable2_2.textAlignment = NSTextAlignmentCenter;
+
+    }
+
     [_minScrollView addSubview:lable2_2];
     
     UILabel *lable2_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+84, DEVICE_HEIGHT*287/568 - 20 - 10, 270, 50)];
-    lable2_3.text = @"只有时间的消逝";
+//    lable2_3.text = @"只有时间的消逝";
+    lable2_3.text = NSLocalizedString(@"lable2_3", @"");
+
     [lable2_3 setTextColor:grayColor];
     lable2_3.font = [UIFont systemFontOfSize:20.0f];
     lable2_3.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        lable2_3.font = [UIFont systemFontOfSize:18.0f];
+        lable2_3.frame = CGRectMake(320*2, DEVICE_HEIGHT*287/568 - 20 - 10, 320, 50);
+        lable2_3.textAlignment = NSTextAlignmentCenter;
+        
+    }
+
     [_minScrollView addSubview:lable2_3];
     
     UILabel *lable2_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*3+161, DEVICE_HEIGHT*270/568 - 10, 270, 50)];
-    lable2_4.text = @"花开花落";
+//    lable2_4.text = @"花开花落";
+    lable2_4.text = NSLocalizedString(@"lable2_4", @"");
+
     [lable2_4 setTextColor:blueColor];
     lable2_4.font = [UIFont systemFontOfSize:24.0f];
     lable2_4.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        lable2_4.font = [UIFont systemFontOfSize:22.0f];
+        lable2_4.frame = CGRectMake(320*3+35, DEVICE_HEIGHT*270/568 - 20, 270, 50);
+        
+    }
     [_minScrollView addSubview:lable2_4];
     
     UILabel *lable2_5 = [[UILabel alloc]initWithFrame:CGRectMake(320*4+42, DEVICE_HEIGHT*295/568 - 20, 270, 50)];
-    lable2_5.text = @"荏苒的时光从我们身边流过";
+//    lable2_5.text = @"荏苒的时光从我们身边流过";
+    lable2_5.text = NSLocalizedString(@"lable2_5", @"");
+
     [lable2_5 setTextColor:grayColor];
-    lable2_5.font = [UIFont systemFontOfSize:18.0];
+    lable2_5.font = [UIFont systemFontOfSize:18.0f];
     lable2_5.backgroundColor = [UIColor clearColor];
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        lable2_5.font = [UIFont systemFontOfSize:22.0f];
+        lable2_5.frame = CGRectMake(320*4+90, DEVICE_HEIGHT*270/568 - 10, 270, 50);
+        
+    }
     [_minScrollView addSubview:lable2_5];
 
     //第三排 滚动文字
     UILabel *lable3_1 = [[UILabel alloc]initWithFrame:CGRectMake(320+100, DEVICE_HEIGHT*314/568 - 10, 270, 50)];
-    lable3_1.text = @"转瞬即逝";
+//    lable3_1.text = @"转瞬即逝";
+    lable3_1.text = NSLocalizedString(@"lable3_1", @"");
+
     [lable3_1 setTextColor:grayColor];
     lable3_1.font = [UIFont systemFontOfSize:28.0f];
     lable3_1.backgroundColor = [UIColor clearColor];
     [_FooterScrollView addSubview:lable3_1];
     
     UILabel *lable3_2 = [[UILabel alloc]initWithFrame:CGRectMake(320*2+50, DEVICE_HEIGHT*323/568 - 20, 270, 50)];
-    lable3_2.text = @"才能使我们注意到时间";
+//    lable3_2.text = @"才能使我们注意到时间";
+    lable3_2.text = NSLocalizedString(@"lable3_2", @"");
+
     [lable3_2 setTextColor:grayColor];
     lable3_2.font = [UIFont systemFontOfSize:20.0f];
     lable3_2.backgroundColor = [UIColor clearColor];
     [_FooterScrollView addSubview:lable3_2];
     
     UILabel *lable3_3 = [[UILabel alloc]initWithFrame:CGRectMake(320*3+160, DEVICE_HEIGHT*295/568, 270, 50)];
-    lable3_3.text = @"来记录时间";
+//    lable3_3.text = @"来记录时间";
+    lable3_3.text = NSLocalizedString(@"lable3_3", @"");
     [lable3_3 setTextColor:grayColor];
     lable3_3.font = [UIFont systemFontOfSize:21.0f];
     lable3_3.backgroundColor = [UIColor clearColor];
     [_FooterScrollView addSubview:lable3_3];
     
-    UILabel *lable4_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*4+42, DEVICE_HEIGHT*294/568, 270, 50)];
-    lable4_4.text = @"记录你积极向上的每一天";
-    [lable4_4 setTextColor:grayColor];
-    lable4_4.font = [UIFont systemFontOfSize:21.0f];
-    lable4_4.backgroundColor = [UIColor clearColor];
-    [_FooterScrollView addSubview:lable4_4];
+    UILabel *lable3_4 = [[UILabel alloc]initWithFrame:CGRectMake(320*4+42, DEVICE_HEIGHT*294/568, 270, 50)];
+//    lable3_4.text = @"记录你积极向上的每一天";
+    lable3_4.text = NSLocalizedString(@"lable3_4", @"");
+
+    [lable3_4 setTextColor:grayColor];
+    lable3_4.font = [UIFont systemFontOfSize:21.0f];
+    lable3_4.backgroundColor = [UIColor clearColor];
+    [_FooterScrollView addSubview:lable3_4];
 
     
 }
@@ -392,11 +483,33 @@
 
 
 - (void)startClock
+{    
+
+    //动画
+    [UIView beginAnimations:@"渐变" context:nil];
+    //动画持续时间
+    [UIView setAnimationDuration:0.7f];
+    //设置动画的回调函数，设置后可以使用回调方法
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(presentToSetYearView)];
+    //设置动画曲线，控制动画速度
+    [UIView  setAnimationCurve: UIViewAnimationCurveEaseInOut];
+    //设置动画方式，并指出动画发生的位置
+//    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view  cache:YES];
+    
+    self.view.alpha = 0.3f;
+
+    //提交UIView动画
+    [UIView commitAnimations];
+    
+
+}
+- (void)presentToSetYearView
 {
     SetYearViewController *setYearViewController = [[SetYearViewController alloc]init];
+    
     [self presentViewController:setYearViewController animated:NO completion:nil];
 }
-
 - (void)createDots
 {
     for (int i = 0; i < 5; i++)

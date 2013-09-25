@@ -189,6 +189,7 @@
         CGAffineTransform rotateTable = CGAffineTransformMakeRotation(M_PI_2);
         cell.transform = rotateTable;
     }
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 

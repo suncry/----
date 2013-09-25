@@ -12,8 +12,9 @@
 #import "SetYearViewController.h"
 #import "ASIHTTPRequest.h"
 #import "SBJson.h"
-
-
+#import "FeedbackViewController.h"
+#import "RecommendationAPPCell.h"
+#import "DataCenter.h"
 
 @interface InfoViewController ()
 
@@ -29,13 +30,81 @@
     }
     return self;
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    _appDatas = [[NSMutableArray alloc]initWithCapacity:3];
+    NSString *urlString = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1003&platform=ios";
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [[DataCenter sharedCenter] commandWith:url onCompletion:^(NSDictionary *json){
+        //添加数据s
+        if (json && [[json objectForKey:@"status"] integerValue] == 200) {
+            NSArray *appsArray = [NSArray arrayWithArray:[json objectForKey:@"data"]];
+            NSMutableString *appsUrl = [[NSMutableString alloc]initWithCapacity:0];
+            [appsUrl appendString:@"https://itunes.apple.com/cn/lookup?id="];
+            int count = [appsArray count];
+            if (count > 0) {
+                for (int i = 0; i < count; i++) {
+                    [appsUrl appendString:[[appsArray objectAtIndex:i] objectForKey:@"ios_appid"]];
+                    if (i!= count-1) {
+                        [appsUrl appendString:@","];
+                    }
+                }
+                NSLog(@"appsUrl == %@",appsUrl);
+                [[DataCenter sharedCenter] commandWith:[NSURL URLWithString:appsUrl] onCompletion:^(NSDictionary *json2){
+                    //添加数据s
+                    if (json2 && [[json2 objectForKey:@"resultCount"] integerValue] != 0) {
+                        [_appDatas addObjectsFromArray:[json2 objectForKey:@"results"]];
+                        [_recommendationAppTable reloadData];
+                        
+                        NSLog(@"_recommendationAppTable 刷新了");
+                    }
+                    
+                }];
+                
+            }
+        }
+        
+    }];
+
+    [super viewWillAppear:animated];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    NSString *urlString = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1003&platform=ios";
+//    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    [[DataCenter sharedCenter] commandWith:url onCompletion:^(NSDictionary *json){
+//        //添加数据s
+//        if (json && [[json objectForKey:@"status"] integerValue] == 200) {
+//            NSArray *appsArray = [NSArray arrayWithArray:[json objectForKey:@"data"]];
+//            NSMutableString *appsUrl = [[NSMutableString alloc]initWithCapacity:0];
+//            [appsUrl appendString:@"https://itunes.apple.com/cn/lookup?id="];
+//            int count = [appsArray count];
+//            if (count > 0) {
+//                for (int i = 0; i < count; i++) {
+//                    [appsUrl appendString:[[appsArray objectAtIndex:i] objectForKey:@"ios_appid"]];
+//                    if (i!= count-1) {
+//                        [appsUrl appendString:@","];
+//                    }
+//                }
+//                NSLog(@"appsUrl == %@",appsUrl);
+//                [[DataCenter sharedCenter] commandWith:[NSURL URLWithString:appsUrl] onCompletion:^(NSDictionary *json2){
+//                    //添加数据s
+//                    if (json2 && [[json2 objectForKey:@"resultCount"] integerValue] != 0) {
+//                        [_appDatas addObjectsFromArray:[json2 objectForKey:@"results"]];
+//                        [_recommendationAppTable reloadData];
+//                        
+//                        NSLog(@"_recommendationAppTable 刷新了");
+//                    }
+//                    
+//                }];
+//                
+//            }
+//        }
+//        
+//    }];
 
-    
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,7 +145,7 @@
     [iconActionSheet showInView:self.view];
 
     [UMSocialData defaultData].shareImage = [UIImage imageNamed:@"分享图片"];
-    [UMSocialData defaultData].shareText = @"我正在使用【时光闹钟】，以时光的名义，提醒我们积极向上的迎接人生中的每一天。App Store 下载地址：https://itunes.apple.com/us/app/shi-guang-nao-zhong/id684557922?ls=1&mt=8";
+    [UMSocialData defaultData].shareText = NSLocalizedString(@"downloadAdd", @"");
     
     //微信的分享设置
     [UMSocialControllerService defaultControllerService].socialData.extConfig.wxMessageType = UMSocialWXMessageTypeImage;   //可以指定音乐类型或者视频类型
@@ -93,21 +162,42 @@
 {
     [feedbackView removeFromSuperview];
     textView.text = @"";
-    [self.view addSubview:feedbackView];
+    
     
     //////////////////////////////////////////////////////////////////////
 
-    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-        feedbackView.frame = CGRectMake(0, 568, 320, 568);
-        [feedbackView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        feedbackView.frame = CGRectMake(0, 0, 320, 568);
-    } completion:^(BOOL finished)
-     {
-         
-     }];
+//    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+//        feedbackView.frame = CGRectMake(0, 568, 320, 568);
+//        [feedbackView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+//        feedbackView.frame = CGRectMake(0, 0, 320, 568);
+//    } completion:^(BOOL finished)
+//     {
+//         
+//     }];
     
     //////////////////////////////////////////////////////////////////////
-    [textView becomeFirstResponder];
+    
+    
+//    [UIView beginAnimations:@"animationID" context:nil];
+//    [UIView setAnimationDuration:0.7f];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    [UIView setAnimationRepeatAutoreverses:NO];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:YES];
+////    [self.view removeFromSuperview];
+//    [self.view addSubview:feedbackView];
+//    
+//    
+//    [UIView commitAnimations];
+    
+    
+    FeedbackViewController *feedView = [[FeedbackViewController alloc]init];
+    [self presentViewController:feedView animated:YES completion:nil];
+    
+    
+    
+    
+//    [textView becomeFirstResponder];
+    
 }
 - (IBAction)settingBtnClick:(id)sender
 {
@@ -176,19 +266,40 @@
 }
 - (IBAction)sendBtnClick:(id)sender
 {
-    //////////////////////////////////////////////////////////////////////
-    
-    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-        feedbackView.frame = CGRectMake(0, 0, 320, 568);
-        [feedbackView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        feedbackView.frame = CGRectMake(0, 568, 320, 568);
-    } completion:^(BOOL finished)
-     {
-         
-     }];
-    
-    //////////////////////////////////////////////////////////////////////
+//    //////////////////////////////////////////////////////////////////////
+//    
+//    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+//        feedbackView.frame = CGRectMake(0, 0, 320, 568);
+//        [feedbackView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+//        feedbackView.frame = CGRectMake(0, 568, 320, 568);
+//    } completion:^(BOOL finished)
+//     {
+//         
+//     }];
+//    
+//    //////////////////////////////////////////////////////////////////////
 
+    
+    [UIView beginAnimations:@"animationIDUp" context:nil];
+    [UIView setAnimationDuration:0.7f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationRepeatAutoreverses:NO];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+    [feedbackView removeFromSuperview];
+    //    [self.view addSubview:feedbackView];
+    [UIView commitAnimations];
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 //    [feedbackView removeFromSuperview];
     [textView resignFirstResponder];
 
@@ -217,17 +328,31 @@
 {
     //////////////////////////////////////////////////////////////////////
     
-    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
-        feedbackView.frame = CGRectMake(0, 0, 320, 568);
-        [feedbackView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        feedbackView.frame = CGRectMake(0, 568, 320, 568);
-    } completion:^(BOOL finished)
-     {
-         
-     }];
+//    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^(){
+//        feedbackView.frame = CGRectMake(0, 0, 320, 568);
+//        [feedbackView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
+//        feedbackView.frame = CGRectMake(0, 568, 320, 568);
+//    } completion:^(BOOL finished)
+//     {
+//         
+//     }];
     
     //////////////////////////////////////////////////////////////////////
     //    [feedbackView removeFromSuperview];
+    
+    
+    [UIView beginAnimations:@"animationIDUp" context:nil];
+    [UIView setAnimationDuration:0.7f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationRepeatAutoreverses:NO];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+    [feedbackView removeFromSuperview];
+//    [self.view addSubview:feedbackView];
+    [UIView commitAnimations];
+    
+    
+    
+    
     [textView resignFirstResponder];
 }
 
@@ -238,7 +363,11 @@
 }
 - (IBAction)numTestBtnClick:(id)sender
 {
+    //用于判断语言
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
     
+
     
     
     MBProgressHUD *sendLoading = [[MBProgressHUD alloc] initWithView:self.view];
@@ -247,6 +376,11 @@
 
     [self.view bringSubviewToFront:sendLoading];
     sendLoading.labelText = @"正在检测新版本";
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        sendLoading.labelText = @"checking...";
+
+    }
     [sendLoading show:YES];
 
 //    [settingView addSubview:sendLoading];
@@ -279,11 +413,26 @@
         //有新版本
         if ([[dict objectForKey:@"inside_version"]intValue] > [buildString intValue])
         {
-            UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"新版本 时光闹钟"
-                                                        message:@"时光闹钟推出新版本了，请及时更新"
-                                                       delegate:self
-                                              cancelButtonTitle:@"下次提醒"
-                                              otherButtonTitles:@"前往更新", nil];
+            UIAlertView *av;
+            if([currentLanguage isEqualToString:@"en"])
+            {
+                av = [[UIAlertView alloc]initWithTitle:@"Time Alarm"
+                                                            message:@"have a new version to download"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Not now"
+                                                  otherButtonTitles:@"Download", nil];
+                
+            }
+            else
+            {
+                av = [[UIAlertView alloc]initWithTitle:@"新版本 时光闹钟"
+                                                            message:@"时光闹钟推出新版本了，请及时更新"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"下次提醒"
+                                                  otherButtonTitles:@"前往更新", nil];
+
+            }
+
             [av show];
 
         }
@@ -292,6 +441,11 @@
         {
 
             sendLoading.labelText = @"暂无更新";
+            if([currentLanguage isEqualToString:@"en"])
+            {
+                sendLoading.labelText = @"No update";
+
+            }
             [sendLoading hide:YES afterDelay:4.0];
         }
         
@@ -421,5 +575,65 @@
     
     //////////////////////////////////////////////////////////////////////
 }
+#pragma mark - Table view data source
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+//    if ([_appDatas retainCount] == 1) {
+//        [_appDatas retain];
+//    }
+    return [_appDatas count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"RecommendationAPPCell";
+    RecommendationAPPCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[RecommendationAPPCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    //config the cell
+    NSDictionary *appdata = [_appDatas objectAtIndex:indexPath.row];
+    cell.appNameLable.text = [appdata objectForKey:@"trackName"];
+    if ([[appdata objectForKey:@"trackName"] isEqualToString:@"示范"]) {
+        cell.appInfoLable.text = @"以\"全球视野，示范天下\"为目标，寻找示范，关注示范，解读示范，成就示范\u2014\u2014重庆市北部新区管委会。";
+    }
+    else
+    {
+        cell.appInfoLable.text = [appdata objectForKey:@"description"];
+
+    }
+    NSLog(@"cell.appInfoLable.text == %@",cell.appInfoLable.text);
+    [cell.downloadBtn addTarget:self action:@selector(downloadApp:) forControlEvents:UIControlEventTouchUpInside];
+//    [cell.downloadBtn setTitle:[appdata objectForKey:@"formattedPrice"] forState:UIControlStateNormal];
+    
+    cell.appImageView.layer.masksToBounds = YES; //没这句话它圆不起来
+    cell.appImageView.layer.cornerRadius = 5.0; //设置图片圆角的尺度。
+    [cell.appImageView setImageWithURL:[NSURL URLWithString:[appdata objectForKey:@"artworkUrl60"]] placeholderImage:[UIImage imageNamed:@"defineAPPImage.png"]];
+
+    
+    cell.backgroundColor = [UIColor clearColor];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 80;
+}
+- (void)downloadApp:(id)sender
+{
+    UITableViewCell *cell = (UITableViewCell*)[[sender superview]superview];
+    NSInteger index = [_recommendationAppTable indexPathForCell:cell].row;
+    NSString *_idStr = [NSString stringWithFormat:@"%@",[[_appDatas objectAtIndex:index] objectForKey:@"trackViewUrl"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_idStr]];
+    
+    
+}
 @end

@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface RingViewController : UIViewController
+@interface RingViewController : UIViewController<AVAudioPlayerDelegate>
 {
     IBOutlet UILabel *dayNumLable;
+    AVAudioPlayer *_ring;
 }
+
+@property(nonatomic,retain)AVAudioPlayer *ring;
+
 - (IBAction)getUpBtnClick:(id)sender;
 - (IBAction)sleepBtnClick:(id)sender;
 

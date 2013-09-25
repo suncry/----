@@ -34,7 +34,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
     
     _alertImageView = [[UIImageView alloc]init];
     _alertImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
@@ -153,7 +152,7 @@
         [yearString intValue];
         MyDB *mydb = [[MyDB alloc]init];
         [mydb year];
-        UILabel *stringLable = [[UILabel alloc]initWithFrame:CGRectMake(25, DEVICE_HEIGHT - 100, 280, 60)];
+        UILabel *stringLable = [[UILabel alloc]initWithFrame:CGRectMake(25, DEVICE_HEIGHT - 100, 320, 60)];
         stringLable.backgroundColor = [UIColor clearColor];
         stringLable.font = [UIFont boldSystemFontOfSize:18.0f];
         stringLable.textColor = [UIColor whiteColor];
@@ -169,6 +168,26 @@
         numLable.text = numString;
         
         [_imageView addSubview:numLable];
+        
+        
+        //用于判断语言
+        //如果是 英文的话  改变 显示的文字
+        NSArray *languages = [NSLocale preferredLanguages];
+        NSString *currentLanguage = [languages objectAtIndex:0];
+        
+        if([currentLanguage isEqualToString:@"en"])
+        {
+            numLable.frame = CGRectMake(35, DEVICE_HEIGHT - 100, 280, 60);
+            stringLable.font = [UIFont boldSystemFontOfSize:15.0f];
+
+            stringLable.text = @"If           years passed in your 90-year life";
+        }
+        
+        
+        
+        
+        
+        
         
 
         //把滚动属性设置为NO  防止 在 我们估计页面的时候 出现动画效果
@@ -241,8 +260,6 @@
                        [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
                        [self presentViewController:drawerController animated:NO completion:nil];
                        
-
-                       
                    }];
                   
                   //////////////////////////////////////////////////////////////////////
@@ -300,7 +317,7 @@
          }];
         _iKnowBtnYear = [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4, 100, 50)];
         _iKnowBtnYear.backgroundColor = [UIColor clearColor];
-        [_iKnowBtnYear setTitle:@"我知道了" forState:UIControlStateNormal];
+        [_iKnowBtnYear setTitle:NSLocalizedString(@"know", @"") forState:UIControlStateNormal];
         _iKnowBtnYear.titleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
         _iKnowBtnYear.titleLabel.textColor = [UIColor whiteColor];
         [_iKnowBtnYear addTarget:self action:@selector(iKnowBtnYearClick) forControlEvents:UIControlEventTouchUpInside];
@@ -373,7 +390,7 @@
              }];
             _iKnowBtnDay = [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4, 100, 50)];
             _iKnowBtnDay.backgroundColor = [UIColor clearColor];
-            [_iKnowBtnDay setTitle:@"我知道了" forState:UIControlStateNormal];
+            [_iKnowBtnDay setTitle:NSLocalizedString(@"know", @"") forState:UIControlStateNormal];
             _iKnowBtnDay.titleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
             _iKnowBtnDay.titleLabel.textColor = [UIColor whiteColor];
             [_iKnowBtnDay addTarget:self action:@selector(iKnowBtnDayClick) forControlEvents:UIControlEventTouchUpInside];

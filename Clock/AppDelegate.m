@@ -20,13 +20,13 @@
 #import "UMSocial.h"
 #import "WXApi.h"
 #import "MobClick.h"
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //延长 启动画面的时间   防止一闪而过
     [NSThread sleepForTimeInterval:1.0];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     //设置 友盟 K
@@ -48,8 +48,6 @@
     }
     else
     {
-//        DayViewController *dayViewController = [[DayViewController alloc]init];
-//        self.window.rootViewController = dayViewController;
         SettingViewController * leftDrawer = [[SettingViewController alloc] init];
         leftDrawer.view.backgroundColor = [UIColor blackColor];
         DayViewController * center = [[DayViewController alloc] init];
@@ -109,29 +107,17 @@
 }
 //推送完 执行的事件
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    
+    //这里设置 本地推送
+    PushNotification *pushNotification = [[PushNotification alloc]init];
+    [pushNotification setClock];
 
+    
     application.applicationIconBadgeNumber -= 1;
-
     RingViewController *ringViewController = [[RingViewController alloc]init];
-    
-    
-    [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-        self.window.rootViewController.view.alpha = 1.0;
-        [self.window.rootViewController.view exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-        self.window.rootViewController.view.alpha = 0.3;
-    } completion:^(BOOL finished)
-     {
-         self.window.rootViewController = ringViewController;
-
-     }];
-    
-    //////////////////////////////////////////////////////////////////////
-    
+    self.window.rootViewController = ringViewController;
     
 }
-
-
-
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication

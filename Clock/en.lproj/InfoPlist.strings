@@ -1,2 +1,8 @@
-/* Localized versions of Info.plist keys */
+/* 
+  InfoPlist.strings
+  时光闹钟
 
+  Created by Suncry on 13-9-17.
+  Copyright (c) 2013年 ipointek. All rights reserved.
+*/
+CFBundleDisplayName="Time Alarm";

@@ -9,17 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface InfoViewController : UIViewController<MBProgressHUDDelegate,UIAlertViewDelegate>
+@interface InfoViewController : UIViewController<MBProgressHUDDelegate,UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     IBOutlet UIView *feedbackView;
     IBOutlet UIView *settingView;
     IBOutlet UITextView *textView;
     IBOutlet UIView *helpView;
     IBOutlet UIView *helpView960;
-
+    IBOutlet UITableView *_recommendationAppTable;
     
 
 }
+
+@property (nonatomic, retain) NSMutableArray *appDatas;
+
 - (IBAction)shareBtnClick:(id)sender;
 - (IBAction)feedbackBtnClick:(id)sender;
 - (IBAction)settingBtnClick:(id)sender;

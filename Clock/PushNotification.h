@@ -11,7 +11,6 @@
 
 @interface PushNotification : NSObject
 {
-
 }
 - (void)setClock;
 - (NSDate *)fireDate:(int)day;

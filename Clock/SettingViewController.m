@@ -89,7 +89,7 @@
          }];
         _iKnowBtn = [[UIButton alloc]initWithFrame:CGRectMake(115, (DEVICE_HEIGHT/5)*4, 100, 50)];
         _iKnowBtn.backgroundColor = [UIColor clearColor];
-        [_iKnowBtn setTitle:@"我知道了" forState:UIControlStateNormal];
+        [_iKnowBtn setTitle:NSLocalizedString(@"know", @"") forState:UIControlStateNormal];
         _iKnowBtn.titleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
         _iKnowBtn.titleLabel.textColor = [UIColor whiteColor];
         [_iKnowBtn addTarget:self action:@selector(iKnowBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -155,25 +155,25 @@
             NSString *string =[[NSString alloc]init];
             switch (i + 1) {
                 case 1:
-                    string = [[NSString alloc]initWithFormat:@"星 期 一"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"1", @"")];
                     break;
                 case 2:
-                    string = [[NSString alloc]initWithFormat:@"星 期 二"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"2", @"")];
                     break;
                 case 3:
-                    string = [[NSString alloc]initWithFormat:@"星 期 三"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"3", @"")];
                     break;
                 case 4:
-                    string = [[NSString alloc]initWithFormat:@"星 期 四"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"4", @"")];
                     break;
                 case 5:
-                    string = [[NSString alloc]initWithFormat:@"星 期 五"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"5", @"")];
                     break;
                 case 6:
-                    string = [[NSString alloc]initWithFormat:@"星 期 六"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"6", @"")];
                     break;
                 case 7:
-                    string = [[NSString alloc]initWithFormat:@"星 期 天"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"7", @"")];
                     break;
                     
                 default:
@@ -196,26 +196,27 @@
             NSString *string =[[NSString alloc]init];
             switch (i + 1) {
                 case 1:
-                    string = [[NSString alloc]initWithFormat:@"星 期 一"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"1", @"")];
                     break;
                 case 2:
-                    string = [[NSString alloc]initWithFormat:@"星 期 二"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"2", @"")];
                     break;
                 case 3:
-                    string = [[NSString alloc]initWithFormat:@"星 期 三"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"3", @"")];
                     break;
                 case 4:
-                    string = [[NSString alloc]initWithFormat:@"星 期 四"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"4", @"")];
                     break;
                 case 5:
-                    string = [[NSString alloc]initWithFormat:@"星 期 五"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"5", @"")];
                     break;
                 case 6:
-                    string = [[NSString alloc]initWithFormat:@"星 期 六"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"6", @"")];
                     break;
                 case 7:
-                    string = [[NSString alloc]initWithFormat:@"星 期 天"];
+                    string = [[NSString alloc]initWithFormat:NSLocalizedString(@"7", @"")];
                     break;
+
                     
                 default:
                     break;
@@ -399,6 +400,19 @@
     MyDB * mydb = [[MyDB alloc]init];
     NSString *timeString = [[NSString alloc]init];
 
+    //用于判断语言
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    
+    float textSize = 19.0f;
+    if([currentLanguage isEqualToString:@"en"])
+    {
+        textSize = 19.0f;
+    }
+
+    
+    
+    
     if (DEVICE_IS_IPHONE5)//iPhone5
     {
         //星期天 第一个
@@ -412,14 +426,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn7 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn7.backgroundColor = [UIColor clearColor];
         _timeBtn7.tag = 11;
-        _timeBtn7.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn7.titleLabel.font = [UIFont systemFontOfSize:textSize];
         [_timeBtn7 addTarget:self
                       action:@selector(timePick:)
             forControlEvents:UIControlEventTouchUpInside];
@@ -435,14 +449,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn1 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn1.backgroundColor = [UIColor clearColor];
         _timeBtn1.tag = 12;
-        _timeBtn1.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn1.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn1 addTarget:self
                       action:@selector(timePick:)
@@ -460,14 +474,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn2 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn2.backgroundColor = [UIColor clearColor];
         _timeBtn2.tag = 13;
-        _timeBtn2.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn2.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn2 addTarget:self
                       action:@selector(timePick:)
@@ -484,14 +498,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn3 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn3.backgroundColor = [UIColor clearColor];
         _timeBtn3.tag = 14;
-        _timeBtn3.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn3.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn3 addTarget:self
                       action:@selector(timePick:)
@@ -508,14 +522,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn4 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn4.backgroundColor = [UIColor clearColor];
         _timeBtn4.tag = 15;
-        _timeBtn4.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn4.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn4 addTarget:self
                       action:@selector(timePick:)
@@ -532,14 +546,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn5 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn5.backgroundColor = [UIColor clearColor];
         _timeBtn5.tag = 16;
-        _timeBtn5.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn5.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn5 addTarget:self
                       action:@selector(timePick:)
@@ -556,14 +570,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn6 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn6.backgroundColor = [UIColor clearColor];
         _timeBtn6.tag = 17;
-        _timeBtn6.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn6.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn6 addTarget:self
                       action:@selector(timePick:)
@@ -585,14 +599,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn7 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn7 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn7.backgroundColor = [UIColor clearColor];
         _timeBtn7.tag = 11;
-        _timeBtn7.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn7.titleLabel.font = [UIFont systemFontOfSize:textSize];
         [_timeBtn7 addTarget:self
                       action:@selector(timePick:)
             forControlEvents:UIControlEventTouchUpInside];
@@ -608,14 +622,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn1 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn1 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn1.backgroundColor = [UIColor clearColor];
         _timeBtn1.tag = 12;
-        _timeBtn1.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn1.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn1 addTarget:self
                       action:@selector(timePick:)
@@ -633,14 +647,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn2 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn2 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn2.backgroundColor = [UIColor clearColor];
         _timeBtn2.tag = 13;
-        _timeBtn2.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn2.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn2 addTarget:self
                       action:@selector(timePick:)
@@ -657,14 +671,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn3 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn3 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn3.backgroundColor = [UIColor clearColor];
         _timeBtn3.tag = 14;
-        _timeBtn3.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn3.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn3 addTarget:self
                       action:@selector(timePick:)
@@ -681,14 +695,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn4 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn4 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn4.backgroundColor = [UIColor clearColor];
         _timeBtn4.tag = 15;
-        _timeBtn4.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn4.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn4 addTarget:self
                       action:@selector(timePick:)
@@ -705,14 +719,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn5 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn5 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn5.backgroundColor = [UIColor clearColor];
         _timeBtn5.tag = 16;
-        _timeBtn5.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn5.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn5 addTarget:self
                       action:@selector(timePick:)
@@ -729,14 +743,14 @@
         }
         else
         {
-            timeString = [[NSString alloc]initWithFormat:@"自然醒"];
+            timeString = [[NSString alloc]initWithFormat:NSLocalizedString(@"wakeup", @"")];
             [_timeBtn6 setTitleColor:blueColor forState:UIControlStateNormal];
             
         }
         [_timeBtn6 setTitle:timeString forState:UIControlStateNormal];
         _timeBtn6.backgroundColor = [UIColor clearColor];
         _timeBtn6.tag = 17;
-        _timeBtn6.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+        _timeBtn6.titleLabel.font = [UIFont systemFontOfSize:textSize];
         
         [_timeBtn6 addTarget:self
                       action:@selector(timePick:)
@@ -815,31 +829,31 @@
 
     switch (offBtn.tag - 100) {
         case 1:
-            [_timeBtn7 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn7 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn7 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
         case 2:
-            [_timeBtn1 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn1 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn1 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
         case 3:
-            [_timeBtn2 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn2 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn2 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
         case 4:
-            [_timeBtn3 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn3 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn3 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
         case 5:
-            [_timeBtn4 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn4 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn4 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
         case 6:
-            [_timeBtn5 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn5 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn5 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
         case 7:
-            [_timeBtn6 setTitle:@"自然醒" forState:UIControlStateNormal];
+            [_timeBtn6 setTitle:NSLocalizedString(@"wakeup", @"") forState:UIControlStateNormal];
             [_timeBtn6 setTitleColor:blueColor forState:UIControlStateNormal];
             break;
             
@@ -978,10 +992,20 @@
     UILabel * label = nil;
     
     label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _hourPicker.frame.size.width, 202/5.0)];
+    
+    //用于判断语言
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+
     //年
     if (valueSelector == _hourPicker)
     {
+        
         label.text = [NSString stringWithFormat:@"%d点", index ];
+        if([currentLanguage isEqualToString:@"en"])
+        {
+            label.text = [NSString stringWithFormat:@"%d",index];
+        }
         [label setTextColor:blueColor];
         label.font = [UIFont systemFontOfSize:28.0f];
         label.textAlignment =  NSTextAlignmentCenter;
@@ -991,6 +1015,10 @@
     else
     {
         label.text = [NSString stringWithFormat:@"%d分",index ];
+        if([currentLanguage isEqualToString:@"en"])
+        {
+            label.text = [NSString stringWithFormat:@"%d",index ];
+        }
         [label setTextColor:blueColor];
         label.font = [UIFont systemFontOfSize:28.0f];
         label.textAlignment =  NSTextAlignmentCenter;

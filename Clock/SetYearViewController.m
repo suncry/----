@@ -79,53 +79,26 @@
     
     
     [self performSelector:@selector(selectSet) withObject:self afterDelay:0];
-
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
-    {
-        if (DEVICE_IS_IPHONE5)
-        {
-            UIImageView *tempImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"出生年月设置过渡.jpg"]];
-            tempImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
-            [self.view addSubview:tempImageView];
-            //////////////////////////////////////////////////////////////////////
-            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-                tempImageView.alpha = 1.0;
-                [tempImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                tempImageView.alpha = 0.0;
-            } completion:^(BOOL finished)
-             {
-             }];
-            
-            //////////////////////////////////////////////////////////////////////
-
-        }
-        else
-        {
-            UIImageView *tempImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"出生年月设置过渡960.jpg"]];
-            tempImageView.frame = CGRectMake(0, 0, 320, DEVICE_HEIGHT);
-            [self.view addSubview:tempImageView];
-            //////////////////////////////////////////////////////////////////////
-            [UIView animateWithDuration:1.0 delay:0 options:0 animations:^(){
-                tempImageView.alpha = 1.0;
-                [tempImageView exchangeSubviewAtIndex:1 withSubviewAtIndex:0];
-                tempImageView.alpha = 0.0;
-            } completion:^(BOOL finished)
-             {
-             }];
-            
-            //////////////////////////////////////////////////////////////////////
-
-        }
-    }
-//    else
-//    {
-//        
-//    }
-
     //如果是第一次启动  隐藏  取消按钮
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"])
     {
+        self.view.alpha = 0.3f;
+        //动画
+        [UIView beginAnimations:@"渐变" context:nil];
+        //动画持续时间
+        [UIView setAnimationDuration:0.7f];
+        //设置动画的回调函数，设置后可以使用回调方法
+//        [UIView setAnimationDelegate:self];
+        //设置动画曲线，控制动画速度
+        [UIView  setAnimationCurve: UIViewAnimationCurveEaseInOut];
+        //设置动画方式，并指出动画发生的位置
+        //    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view  cache:YES];
         
+        self.view.alpha = 1.0f;
+        
+        //提交UIView动画
+        [UIView commitAnimations];
+
         _cancelBtn.hidden = YES;
         _cancelBtn2.hidden = YES;
 
@@ -185,10 +158,19 @@
     UILabel * label = nil;
 
     label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, yearPickerView.frame.size.width, 202/5.0)];
+    //用于判断语言
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    
     //年
     if (valueSelector == yearPickerView)
     {
         label.text = [NSString stringWithFormat:@"%d年",yearNow - 90 + index + 1 ];
+        if([currentLanguage isEqualToString:@"en"])
+        {
+            label.text = [NSString stringWithFormat:@"%d",yearNow - 90 + index + 1 ];            
+        }
+
         [label setTextColor:blueColor];
         label.font = [UIFont boldSystemFontOfSize:21.0f];
         label.textAlignment =  NSTextAlignmentCenter;
@@ -198,6 +180,10 @@
     else if (valueSelector == monthPickerView)
     {
         label.text = [NSString stringWithFormat:@"%d月",index + 1];
+        if([currentLanguage isEqualToString:@"en"])
+        {
+            label.text = [NSString stringWithFormat:@"%d",index + 1];
+        }
         [label setTextColor:blueColor];
         label.font = [UIFont boldSystemFontOfSize:21.0f];
         label.textAlignment =  NSTextAlignmentCenter;
@@ -206,6 +192,11 @@
     else if (valueSelector == dayPickerView)
     {
         label.text = [NSString stringWithFormat:@"%d日",index + 1];
+        if([currentLanguage isEqualToString:@"en"])
+        {
+            label.text = [NSString stringWithFormat:@"%d",index + 1];
+        }
+
         [label setTextColor:blueColor];
         label.font = [UIFont boldSystemFontOfSize:21.0f];
         label.textAlignment =  NSTextAlignmentCenter;
