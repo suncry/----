@@ -17,8 +17,8 @@
     //取消通知：
     //通知完一定要取消，IOS最多允许最近本地通知数量是64个，超过限制的本地通知将被忽略。
     //1：删除应用所有通知
-    NSLog(@"/////////////////////////////////////////////////////////////////////////////////////");
-    NSLog(@"/////////////////////////////////////////////////////////////////////////////////////");
+//    NSLog(@"/////////////////////////////////////////////////////////////////////////////////////");
+//    NSLog(@"/////////////////////////////////////////////////////////////////////////////////////");
 
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
@@ -28,25 +28,23 @@
     NSDateComponents *comp = [calendar components:(NSWeekdayCalendarUnit) fromDate:date];
     int weekDayNow=[comp weekday];//今天星期几
 //    NSLog(@"[mydb isON:weekDay] == %@",[mydb isON:weekDayNow]);
-    for (int i = 0; i < 7 ; i++)
-    {
-        if ([[mydb isON:i+1] isEqualToString:@"YES"])
-        {
-            NSLog(@"星期 %d 闹钟是打开的！",i);
-        }
-    }
+//    for (int i = 0; i < 7 ; i++)
+//    {
+//        if ([[mydb isON:i+1] isEqualToString:@"YES"])
+//        {
+//            NSLog(@"星期 %d 闹钟是打开的！",i);
+//        }
+//    }
 //    NSLog(@"[[NSUserDefaults standardUserDefaults] boolForKey:@\"sleep\"] == %d",[[NSUserDefaults standardUserDefaults] boolForKey:@"sleep"]);
     NSLog(@"点击了小睡吗？ == %d",[[NSUserDefaults standardUserDefaults] boolForKey:@"sleep"]);
 
-    //如果现在的时候 已经比小睡提醒的时间晚了   就不设置小睡闹钟了
+    //如果现在的时候 已经比小睡的时间晚了   就不设置小睡的闹钟了
     NSDate *nowDate = [NSDate date];
     if ([[nowDate earlierDate:[[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"]] isEqualToDate:nowDate])
     {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sleep"] && [[mydb isON:weekDayNow] isEqualToString:@"YES"])
         {
-        //如果现在的时候 已经比小睡提醒的时间晚了   就不设置小睡闹钟了
-
-        NSLog(@"weekDayNow == %d 设置了 小睡闹钟",weekDayNow - 1);
+//        NSLog(@"weekDayNow == %d 设置了 小睡闹钟",weekDayNow - 1);
         UILocalNotification *sleepNotification = [[UILocalNotification alloc] init];
         if (sleepNotification)
             {
@@ -54,7 +52,7 @@
             sleepNotification.timeZone=[NSTimeZone defaultTimeZone];
             //推送时间---根据用户设置
             sleepNotification.fireDate= [[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"];
-            NSLog(@"-->sleepNotificationTime == %@",(NSDate *)[[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"]);
+//            NSLog(@"-->sleepNotificationTime == %@",(NSDate *)[[NSUserDefaults standardUserDefaults]valueForKey:@"sleepNotificationTime"]);
             //推送内容
             sleepNotification.alertBody = NSLocalizedString(@"ringText", @"");
             //应用右上角红色图标数字
@@ -150,10 +148,10 @@
             [[UIApplication sharedApplication] scheduleLocalNotification:sleepNotification8];
             [[UIApplication sharedApplication] scheduleLocalNotification:sleepNotification9];
 
-            NSLog(@"-->sleepNotification == %@",sleepNotification);
-            NSLog(@"-->sleepNotification1 == %@",sleepNotification1);
-            NSLog(@"-->sleepNotification2 == %@",sleepNotification2);
-            NSLog(@"-->sleepNotification9 == %@",sleepNotification9);
+//            NSLog(@"-->sleepNotification == %@",sleepNotification);
+//            NSLog(@"-->sleepNotification1 == %@",sleepNotification1);
+//            NSLog(@"-->sleepNotification2 == %@",sleepNotification2);
+//            NSLog(@"-->sleepNotification9 == %@",sleepNotification9);
 
             }
         }
@@ -166,7 +164,7 @@
     {
         if ([[mydb isON:i+1] isEqualToString:@"NO"])
         {
-            NSLog(@"星期 %d 闹钟是关闭的！",i);
+//            NSLog(@"星期 %d 闹钟是关闭的！",i);
             continue; //闹钟关闭那天不设置通知
         }
         //发送通知：
@@ -291,10 +289,10 @@
 
 
         }
-        NSLog(@"-->提醒 ==%@", newNotification);
-        NSLog(@"-->提醒1 ==%@", newNotification1);
-        NSLog(@"-->提醒2 ==%@", newNotification2);
-        NSLog(@"-->提醒9 ==%@", newNotification9);
+//        NSLog(@"-->提醒 ==%@", newNotification);
+//        NSLog(@"-->提醒1 ==%@", newNotification1);
+//        NSLog(@"-->提醒2 ==%@", newNotification2);
+//        NSLog(@"-->提醒9 ==%@", newNotification9);
 
     }
     NSLog(@"闹钟设定了！");

@@ -1093,7 +1093,10 @@
     [_timeBtn7 removeFromSuperview];
     
     [self creatTimeBtn];
-    
+    //////////////////////////////////////////////////////////////////////
+    //更改了 闹钟时间 就取消小睡闹钟
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"sleep"];
+
     //这里设置 本地推送
     PushNotification *pushNotification = [[PushNotification alloc]init];
     [pushNotification setClock];

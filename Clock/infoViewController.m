@@ -92,7 +92,7 @@
 //                [[DataCenter sharedCenter] commandWith:[NSURL URLWithString:appsUrl] onCompletion:^(NSDictionary *json2){
 //                    //添加数据s
 //                    if (json2 && [[json2 objectForKey:@"resultCount"] integerValue] != 0) {
-//                        [_appDatas addObjectsFromArray:[json2 objectForKey:@"results"]];
+//                        [_appDatas addObjectsFromArray:[json2 objectForKey:@"results"]]/Volumes/work/Clock/时光闹钟.xcodeproj;
 //                        [_recommendationAppTable reloadData];
 //                        
 //                        NSLog(@"_recommendationAppTable 刷新了");
@@ -409,7 +409,7 @@
         NSLog(@"inside_version == %d",[[dict objectForKey:@"inside_version"]intValue]);
         NSLog(@"[buildString intValue] == %d",[buildString intValue]);
         
-        
+
         //有新版本
         if ([[dict objectForKey:@"inside_version"]intValue] > [buildString intValue])
         {
@@ -610,7 +610,7 @@
         cell.appInfoLable.text = [appdata objectForKey:@"description"];
 
     }
-    NSLog(@"cell.appInfoLable.text == %@",cell.appInfoLable.text);
+//    NSLog(@"cell.appInfoLable.text == %@",cell.appInfoLable.text);
     [cell.downloadBtn addTarget:self action:@selector(downloadApp:) forControlEvents:UIControlEventTouchUpInside];
 //    [cell.downloadBtn setTitle:[appdata objectForKey:@"formattedPrice"] forState:UIControlStateNormal];
     

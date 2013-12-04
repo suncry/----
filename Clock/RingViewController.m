@@ -14,6 +14,7 @@
 #import "MMDrawerController.h"
 #import "MMDrawerVisualState.h"
 #import "MMDrawerBarButtonItem.h"
+#import "PushNotification.h"
 
 
 @interface RingViewController ()
@@ -30,7 +31,15 @@
     }
     return self;
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+//    //这里设置 本地推送
+//    PushNotification *pushNotification = [[PushNotification alloc]init];
+//    [pushNotification setClock];
+//    NSLog(@"从通知中启动！！！");
+//    //    application.applicationIconBadgeNumber -= 1;
 
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

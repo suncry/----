@@ -27,7 +27,6 @@
 		CC6E2F1017F16FBA006ECEF2 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6E2F0517F16FBA006ECEF2 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CC7120F817C1B0410004331D /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7120F617C1B0410004331D /* libMobClickLibrary.a */; };
 		CC7120FA17C1B06B0004331D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7120F917C1B06B0004331D /* libz.dylib */; };
-		CC7142BE17E83AAF0053D310 /* Clock-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC7142BD17E83AAF0053D310 /* Clock-Info.plist */; };
 		CC7142C117E83E2B0053D310 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC7142C317E83E2B0053D310 /* InfoPlist.strings */; };
 		CCA8028917E2E16F00BFC202 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCA8028B17E2E16F00BFC202 /* Localizable.strings */; };
 		CCA8028D17E2F57900BFC202 /* SetYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA8028F17E2F57900BFC202 /* SetYearViewController.xib */; };
@@ -1109,8 +1108,13 @@
 		CCB5A2581778117F00A94C11 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = ipointek;
+				TargetAttributes = {
+					CCB5A25F1778117F00A94C11 = {
+						DevelopmentTeam = JYDP63YT25;
+					};
+				};
 			};
 			buildConfigurationList = CCB5A25B1778117F00A94C11 /* Build configuration list for PBXProject "时光闹钟" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1254,7 +1258,6 @@
 				CCC5132117E6E705005A45F7 /* 帮助页面(1136).png in Resources */,
 				CCA8028917E2E16F00BFC202 /* Localizable.strings in Resources */,
 				CCC5130517E6DA26005A45F7 /* Default@2x.png in Resources */,
-				CC7142BE17E83AAF0053D310 /* Clock-Info.plist in Resources */,
 				CC7142C117E83E2B0053D310 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1586,8 +1589,8 @@
 		CCB5A27E1778117F00A94C11 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 杨 蔡 (V9TKVN5RZL)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 杨 蔡 (V9TKVN5RZL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thinew JE (ZZ6C3ZS9B3)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Clock/Clock-Prefix.pch";
 				INFOPLIST_FILE = "Clock/Clock-Info.plist";
@@ -1598,8 +1601,8 @@
 					"\"$(SRCROOT)/Clock\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "84DD7CA9-7617-43A5-88A8-99E8F08CED76";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "84DD7CA9-7617-43A5-88A8-99E8F08CED76";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "925C6D31-2047-48DE-930C-D43ECCD3B527";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1607,8 +1610,8 @@
 		CCB5A27F1778117F00A94C11 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: JIANYU ZHANG";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thinew JE (ZZ6C3ZS9B3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thinew JE (ZZ6C3ZS9B3)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Clock/Clock-Prefix.pch";
 				INFOPLIST_FILE = "Clock/Clock-Info.plist";

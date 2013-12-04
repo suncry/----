@@ -25,7 +25,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //延长 启动画面的时间   防止一闪而过
-    [NSThread sleepForTimeInterval:1.0];
+//    [NSThread sleepForTimeInterval:1.0];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -75,48 +75,44 @@
     [self.window makeKeyAndVisible];
     return YES;
 }
-
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
-
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     //这里设置 本地推送
     PushNotification *pushNotification = [[PushNotification alloc]init];
     [pushNotification setClock];
-}
+    NSLog(@"进入 后台 设置了闹钟");
 
+}
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
-
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [UMSocialSnsService  applicationDidBecomeActive];
 
 }
-
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 //推送完 执行的事件
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    
     //这里设置 本地推送
     PushNotification *pushNotification = [[PushNotification alloc]init];
     [pushNotification setClock];
-
-    
-    application.applicationIconBadgeNumber -= 1;
+    NSLog(@"从通知中启动！！！");
+//    application.applicationIconBadgeNumber -= 1;
     RingViewController *ringViewController = [[RingViewController alloc]init];
     self.window.rootViewController = ringViewController;
-    
+    [self.window makeKeyAndVisible];
+
 }
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
