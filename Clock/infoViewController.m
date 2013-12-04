@@ -33,15 +33,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     _appDatas = [[NSMutableArray alloc]initWithCapacity:3];
-    NSString *urlString = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1003&platform=ios";
+    NSString *urlString = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1007&platform=ios";
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [[DataCenter sharedCenter] commandWith:url onCompletion:^(NSDictionary *json){
+        NSLog(@"应用推荐 json =%@",json);
         //添加数据s
         if (json && [[json objectForKey:@"status"] integerValue] == 200) {
+            NSLog(@"应用推荐 获取到了应用信息！");
             NSArray *appsArray = [NSArray arrayWithArray:[json objectForKey:@"data"]];
             NSMutableString *appsUrl = [[NSMutableString alloc]initWithCapacity:0];
             [appsUrl appendString:@"https://itunes.apple.com/cn/lookup?id="];
             int count = [appsArray count];
+            NSLog(@"count == %d",count);
             if (count > 0) {
                 for (int i = 0; i < count; i++) {
                     [appsUrl appendString:[[appsArray objectAtIndex:i] objectForKey:@"ios_appid"]];
