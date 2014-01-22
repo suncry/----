@@ -15,13 +15,19 @@
 #import "FeedbackViewController.h"
 #import "RecommendationAPPCell.h"
 #import "DataCenter.h"
-
+#import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
+#import "SBJson.h"
+#import "KK_JsonValueTransformed.h"
+//#import "AFNetworking.h"
+//#import "AFHTTPRequestOperation.h"
+//#import "DataCenter.h"
 @interface InfoViewController ()
 
 @end
 
 @implementation InfoViewController
-
+@synthesize appDatas;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -32,19 +38,22 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    _appDatas = [[NSMutableArray alloc]initWithCapacity:3];
-    NSString *urlString = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1007&platform=ios";
-    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [[DataCenter sharedCenter] commandWith:url onCompletion:^(NSDictionary *json){
-        NSLog(@"应用推荐 json =%@",json);
-        //添加数据s
-        if (json && [[json objectForKey:@"status"] integerValue] == 200) {
-            NSLog(@"应用推荐 获取到了应用信息！");
-            NSArray *appsArray = [NSArray arrayWithArray:[json objectForKey:@"data"]];
+    self.appDatas = [[NSMutableArray alloc]initWithCapacity:3];
+    NSString *urlString2 = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1007&platform=ios";
+    NSURL *url2 = [NSURL URLWithString:[urlString2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url2];
+    __block ASIHTTPRequest *requestBlock = request;
+    [request setCompletionBlock :^{
+        NSString *appString = [requestBlock responseString];
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSMutableDictionary *appDict = [jsonParser objectWithString:appString];
+        if (appDict && [[appDict objectForKey:@"status"] integerValue] == 200) {
+            //            NSLog(@"应用推荐 获取到了应用信息！");
+            NSArray *appsArray = [NSArray arrayWithArray:[appDict objectForKey:@"data"]];
             NSMutableString *appsUrl = [[NSMutableString alloc]initWithCapacity:0];
             [appsUrl appendString:@"https://itunes.apple.com/cn/lookup?id="];
             int count = [appsArray count];
-            NSLog(@"count == %d",count);
+            //            NSLog(@"count == %d",count);
             if (count > 0) {
                 for (int i = 0; i < count; i++) {
                     [appsUrl appendString:[[appsArray objectAtIndex:i] objectForKey:@"ios_appid"]];
@@ -52,62 +61,54 @@
                         [appsUrl appendString:@","];
                     }
                 }
-                NSLog(@"appsUrl == %@",appsUrl);
-                [[DataCenter sharedCenter] commandWith:[NSURL URLWithString:appsUrl] onCompletion:^(NSDictionary *json2){
-                    //添加数据s
-                    if (json2 && [[json2 objectForKey:@"resultCount"] integerValue] != 0) {
-                        [_appDatas addObjectsFromArray:[json2 objectForKey:@"results"]];
+                NSURL *appUrl = [NSURL URLWithString:[appsUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                NSLog(@"要搜去APP信息的地址为appUrl === %@",appUrl);
+                ASIHTTPRequest *request2 = [ASIHTTPRequest requestWithURL:appUrl];
+                __block ASIHTTPRequest *requestBlock2 = request2;
+                [request2 setCompletionBlock :^{
+//                    NSData *appInfoData = [requestBlock2 responseData];
+                    NSString *appInfoString = [requestBlock2 responseString];
+                    NSLog(@"appInfoString == %@",appInfoString);
+//                    [appInfoString dataUsingEncoding:NSASCIIStringEncoding];
+//                    NSLog(@"[appInfoString dataUsingEncoding:NSASCIIStringEncoding] == %@",[appInfoString dataUsingEncoding:NSASCIIStringEncoding]);
+                    SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                    NSMutableDictionary *appInfoDict = [jsonParser objectWithString:appInfoString];
+
+                    
+                    NSLog(@"appInfoDict == %@",appInfoDict);
+
+                    if (appInfoDict && [[appInfoDict objectForKey:@"resultCount"] integerValue] != 0)
+                    {
+                        [self.appDatas addObjectsFromArray:[appInfoDict objectForKey:@"results"]];
                         [_recommendationAppTable reloadData];
                         
                         NSLog(@"_recommendationAppTable 刷新了");
                     }
-                    
+
                 }];
-                
+                [request2 setFailedBlock :^{
+                    // 请求响应失败，返回错误信息
+                    NSError *error = [requestBlock error ];
+                    NSLog ( @"appinfo出错:%@" ,[error userInfo ]);
+                }];
+                [request2 startAsynchronous];
             }
         }
-        
     }];
+    [request setFailedBlock :^{
+        // 请求响应失败，返回错误信息
+        NSError *error = [requestBlock error ];
+        NSLog ( @"推荐app信息下载出错:%@" ,[error userInfo ]);
+    }];
+    [request startAsynchronous];
 
     [super viewWillAppear:animated];
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    NSString *urlString = @"http://www.ipointek.com/feedback/api/apps/recommend?appid=1003&platform=ios";
-//    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//    [[DataCenter sharedCenter] commandWith:url onCompletion:^(NSDictionary *json){
-//        //添加数据s
-//        if (json && [[json objectForKey:@"status"] integerValue] == 200) {
-//            NSArray *appsArray = [NSArray arrayWithArray:[json objectForKey:@"data"]];
-//            NSMutableString *appsUrl = [[NSMutableString alloc]initWithCapacity:0];
-//            [appsUrl appendString:@"https://itunes.apple.com/cn/lookup?id="];
-//            int count = [appsArray count];
-//            if (count > 0) {
-//                for (int i = 0; i < count; i++) {
-//                    [appsUrl appendString:[[appsArray objectAtIndex:i] objectForKey:@"ios_appid"]];
-//                    if (i!= count-1) {
-//                        [appsUrl appendString:@","];
-//                    }
-//                }
-//                NSLog(@"appsUrl == %@",appsUrl);
-//                [[DataCenter sharedCenter] commandWith:[NSURL URLWithString:appsUrl] onCompletion:^(NSDictionary *json2){
-//                    //添加数据s
-//                    if (json2 && [[json2 objectForKey:@"resultCount"] integerValue] != 0) {
-//                        [_appDatas addObjectsFromArray:[json2 objectForKey:@"results"]]/Volumes/work/Clock/时光闹钟.xcodeproj;
-//                        [_recommendationAppTable reloadData];
-//                        
-//                        NSLog(@"_recommendationAppTable 刷新了");
-//                    }
-//                    
-//                }];
-//                
-//            }
-//        }
-//        
-//    }];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -592,7 +593,8 @@
 //    if ([_appDatas retainCount] == 1) {
 //        [_appDatas retain];
 //    }
-    return [_appDatas count];
+//    NSLog(@"self.appDatas == %@",self.appDatas);
+    return [self.appDatas count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -603,16 +605,22 @@
         cell = [[RecommendationAPPCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     //config the cell
-    NSDictionary *appdata = [_appDatas objectAtIndex:indexPath.row];
+    NSDictionary *appdata = [self.appDatas objectAtIndex:indexPath.row];
+//    NSLog(@"appdata == %@",appdata);
     cell.appNameLable.text = [appdata objectForKey:@"trackName"];
-    if ([[appdata objectForKey:@"trackName"] isEqualToString:@"示范"]) {
-        cell.appInfoLable.text = @"以\"全球视野，示范天下\"为目标，寻找示范，关注示范，解读示范，成就示范\u2014\u2014重庆市北部新区管委会。";
-    }
-    else
-    {
+//    if ([[appdata objectForKey:@"trackName"] isEqualToString:@"示范"]) {
+//        cell.appInfoLable.text = @"以\"全球视野，示范天下\"为目标，寻找示范，关注示范，解读示范，成就示范\u2014\u2014重庆市北部新区管委会。";
+//    }
+//    else
+//    {
+    //string为乱码字符
+//    const char *c = [[appdata objectForKey:@"description"] cStringUsingEncoding:NSISOLatin1StringEncoding];
+//    cell.appInfoLable.text = [[NSString alloc] initWithCString:c encoding:NSUTF8StringEncoding];
+
         cell.appInfoLable.text = [appdata objectForKey:@"description"];
 
-    }
+
+//    }
 //    NSLog(@"cell.appInfoLable.text == %@",cell.appInfoLable.text);
     [cell.downloadBtn addTarget:self action:@selector(downloadApp:) forControlEvents:UIControlEventTouchUpInside];
 //    [cell.downloadBtn setTitle:[appdata objectForKey:@"formattedPrice"] forState:UIControlStateNormal];
@@ -634,9 +642,29 @@
 {
     UITableViewCell *cell = (UITableViewCell*)[[sender superview]superview];
     NSInteger index = [_recommendationAppTable indexPathForCell:cell].row;
-    NSString *_idStr = [NSString stringWithFormat:@"%@",[[_appDatas objectAtIndex:index] objectForKey:@"trackViewUrl"]];
+    NSString *_idStr = [NSString stringWithFormat:@"%@",[[self.appDatas objectAtIndex:index] objectForKey:@"trackViewUrl"]];
+    
+//    NSLog(@"_idStr == %@",_idStr);
+    //跳转到应用页面
+//    NSString *str = [NSString stringWithFormat:@"http://itunes.apple.com/us/app/id%d",appid];
+
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_idStr]];
     
     
 }
+- (id)toArrayOrNSDictionary:(NSData *)jsonData{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&error];
+    
+    if (jsonObject != nil && error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+        return nil;
+    }
+    
+}
+
 @end
