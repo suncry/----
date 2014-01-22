@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DMSplashAdController.h"
+#import "DMRTSplashAdController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,DMSplashAdControllerDelegate>
+{
+    DMSplashAdController *_splashAd;
 
+}
 @property (strong, nonatomic) UIWindow *window;
 
 @end
