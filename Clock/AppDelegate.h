@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "DMSplashAdController.h"
 #import "DMRTSplashAdController.h"
+#import "DMInterstitialAdController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,DMSplashAdControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,DMSplashAdControllerDelegate,DMInterstitialAdControllerDelegate>
 {
     DMSplashAdController *_splashAd;
+    //插屏广告
+    DMInterstitialAdController *_dmInterstitial;
 
 }
 @property (strong, nonatomic) UIWindow *window;

@@ -24,8 +24,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //延长 启动画面的时间   防止一闪而过
-//    [NSThread sleepForTimeInterval:1.0];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -85,12 +83,14 @@
         defaultImgName = @"Default-Portrait";
         offset = 374.0f;
     } else {
-        adSize = DOMOB_AD_SIZE_320x400;
+//        adSize = DOMOB_AD_SIZE_320x400;
+        adSize = CGSizeMake(320, [self.window bounds].size.height);
+
         if ([UIScreen mainScreen].bounds.size.height > 480.0f) {
             defaultImgName = @"Default-568h";
-            offset = 233.0f;
+//            offset = 233.0f;
         } else {
-            offset = 168.0f;
+//            offset = 168.0f;
         }
     }
     
@@ -115,13 +115,14 @@
         {
             [_splashAd present];
         }
-//        [_splashAd release];
-    } else {
+    }
+    else
+    {
         DMRTSplashAdController* rtsplashAd = nil;
         rtsplashAd = [[DMRTSplashAdController alloc] initWithPublisherId:testPubID
                                                              placementId:testSplashPlacementID
                                                                     size:adSize
-                                                                  offset:233.5f
+                                                                  offset:offset
                                                                   window:self.window
                                                               background:bgColor
                                                                animation:YES];
@@ -131,6 +132,28 @@
         [rtsplashAd present];
 //        [rtsplashAd release];
     }
+
+    //设置插屏广告
+    [[NSUserDefaults standardUserDefaults]setObject:@"no" forKey:@"dmInterstitialIsShow"];
+
+    CGSize adSize2;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+    {
+        adSize2 = DOMOB_AD_SIZE_300x250;
+    }
+    else
+    {
+        adSize2 = DOMOB_AD_SIZE_600x500;
+    }
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    // Get your own ID from Domob website
+    _dmInterstitial = [[DMInterstitialAdController alloc] initWithPublisherId:@"56OJzI84uNJBRyZr7o"
+                                                                  placementId:@"16TLmgPlApEQcNUfkzx0Maji"
+                                                           rootViewController:rootViewController
+                                                                         size:adSize2];
+    _dmInterstitial.delegate = self;
+    // load advertisement
+    [_dmInterstitial loadAd];
 
     return YES;
 }
@@ -155,6 +178,31 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [UMSocialSnsService  applicationDidBecomeActive];
+    
+    // 在需要呈现插屏广告前，先通过isReady方法检查广告是否就绪
+    // before present advertisement view please check if isReady
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"dmInterstitialIsShow"]isEqualToString:@"no"])
+    {
+        if (_dmInterstitial.isReady)
+        {
+            // present advertisement view
+            NSLog(@"展示插屏广告");
+            [[NSUserDefaults standardUserDefaults]setObject:@"yes" forKey:@"dmInterstitialIsShow"];
+            [_dmInterstitial present];
+        }
+        else
+        {
+            // 如果还没有ready，可以再调用loadAd
+            // if !ready load again
+            [_dmInterstitial loadAd];
+        }
+
+    }
+    else
+    {
+        NSLog(@"插屏广告已经展示过了");
+    }
+
 
 }
 - (void)applicationWillTerminate:(UIApplication *)application

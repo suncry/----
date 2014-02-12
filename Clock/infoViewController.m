@@ -10,8 +10,6 @@
 #import "DayViewController.h"
 #import "UMSocial.h"
 #import "SetYearViewController.h"
-#import "ASIHTTPRequest.h"
-#import "SBJson.h"
 #import "FeedbackViewController.h"
 #import "RecommendationAPPCell.h"
 #import "DataCenter.h"
@@ -651,19 +649,19 @@
     
     
 }
-- (id)toArrayOrNSDictionary:(NSData *)jsonData{
-    NSError *error = nil;
-    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                    options:NSJSONReadingAllowFragments
-                                                      error:&error];
-    
-    if (jsonObject != nil && error == nil){
-        return jsonObject;
-    }else{
-        // 解析错误
-        return nil;
-    }
-    
-}
+//- (id)toArrayOrNSDictionary:(NSData *)jsonData{
+//    NSError *error = nil;
+//    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+//                                                    options:NSJSONReadingAllowFragments
+//                                                      error:&error];
+//    
+//    if (jsonObject != nil && error == nil){
+//        return jsonObject;
+//    }else{
+//        // 解析错误
+//        return nil;
+//    }
+//    
+//}
 
 @end

@@ -14,7 +14,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MMDrawerController.h"
 
-
 @interface DayViewController ()
 
 @end
@@ -345,8 +344,7 @@
 
         }
     }
-   }
-
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -354,6 +352,7 @@
 }
 - (void)colorBtnClick:(id)sender
 {
+    
     MyDB * mydb = [[MyDB alloc]init];
     UIButton *tmpBtn = (UIButton *)sender;
     [mydb setColor:tmpBtn.tag - 1];

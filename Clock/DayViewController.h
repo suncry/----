@@ -43,7 +43,6 @@
     UIButton *_lineBtnYear;
     UIButton *_lineBtnDay;
 
-
 }
 @property (nonatomic,retain)UIScrollView *scrollView;
 @end

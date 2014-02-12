@@ -1217,7 +1217,7 @@
 				ORGANIZATIONNAME = ipointek;
 				TargetAttributes = {
 					CCB5A25F1778117F00A94C11 = {
-						DevelopmentTeam = JYDP63YT25;
+						DevelopmentTeam = MQQ8WAF9RH;
 					};
 				};
 			};
@@ -1700,7 +1700,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thinew JE (ZZ6C3ZS9B3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Chongqing Thinew Technology Co.,Ltd (MQQ8WAF9RH)";
 				FRAMEWORK_SEARCH_PATHS = /Volumes/work/Clock/Clock/UMSocial_Sdk_3.1/frameworks/TencentOpenAPI;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Clock/Clock-Prefix.pch";
@@ -1712,10 +1712,10 @@
 					"$(inherited)",
 					/Volumes/work/Clock/Clock/UMAnalytics_Sdk_2.2.1.OpenUDID,
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "DCF1C416-E128-4394-A9B3-6947BF89BEC2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "925C6D31-2047-48DE-930C-D43ECCD3B527";
+				PROVISIONING_PROFILE = "655EA75A-06AE-4FC0-AC92-E7F952FFC89D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "655EA75A-06AE-4FC0-AC92-E7F952FFC89D";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1727,7 +1727,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thinew JE (ZZ6C3ZS9B3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Chongqing Thinew Technology Co.,Ltd (MQQ8WAF9RH)";
 				FRAMEWORK_SEARCH_PATHS = /Volumes/work/Clock/Clock/UMSocial_Sdk_3.1/frameworks/TencentOpenAPI;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Clock/Clock-Prefix.pch";
@@ -1739,10 +1739,10 @@
 					"$(inherited)",
 					/Volumes/work/Clock/Clock/UMAnalytics_Sdk_2.2.1.OpenUDID,
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "DCF1C416-E128-4394-A9B3-6947BF89BEC2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C2DFD7E-2650-4173-ADB4-9B1164C9693B";
+				PROVISIONING_PROFILE = "655EA75A-06AE-4FC0-AC92-E7F952FFC89D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "655EA75A-06AE-4FC0-AC92-E7F952FFC89D";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
